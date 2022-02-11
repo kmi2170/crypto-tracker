@@ -7,10 +7,21 @@ body {
 }
 
 a {
-  color: inherit;
+  /* color: inherit; */
+  color: gold;
   text-decoration: none;
 }
 
 * {
+  padding: 0;
+  margin: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
+
+body{
+  background-color: #14161a;
+  color: white;
+  min-height: 100vh;
+}
+
