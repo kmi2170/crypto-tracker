@@ -5,11 +5,12 @@ import { CryptoState } from "../context/CryptoContext"
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from "@mui/material/Box"
+import Container from "@mui/material/Container"
 import CircularProgress from "@mui/material/CircularProgress"
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement,
-  Title, Tooltip, Legend,
+  Title, Tooltip, Legend, ChartOptions,
 } from "chart.js";
 
 import SelectButton from "./SelectButton";
@@ -18,7 +19,7 @@ import { chartDays } from "../config/data";
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const CoinInfo = ({ coin }: { coin: any }) => {
-  const [histricalData, setHistricalDate] = useState<any[]>([])
+  const [histricalData, setHistricalDate] = useState<[]>([])
   const [days, setDays] = useState<number>(1)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -45,10 +46,20 @@ const CoinInfo = ({ coin }: { coin: any }) => {
     },
   });
 
+  const options: ChartOptions = {
+    responsive: true,
+    maintainAspectRatio: true,
+    elements: {
+      point: {
+        radius: 1,
+      }
+    }
+  }
+
   return (
     <ThemeProvider theme={darkTheme}>
-      <Box sx={{
-        width: { sm:"100$", md: "75%", lg: "75%" },
+      <Container sx={{
+        width: { sm: "100%", md: "75%", lg: "75%" },
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -81,15 +92,7 @@ const CoinInfo = ({ coin }: { coin: any }) => {
                     },
                   ]
                 }}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: true,
-                  elements: {
-                    point: {
-                      radius: 1,
-                    }
-                  }
-                }}
+                options={options}
               />
               <Box sx={{
                 display: "flex", mt: 3,
@@ -111,7 +114,7 @@ const CoinInfo = ({ coin }: { coin: any }) => {
               </Box>
             </>
           )}
-      </Box>
+      </Container>
     </ThemeProvider>
   )
 }
