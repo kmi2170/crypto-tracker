@@ -4,7 +4,7 @@ An app to track cryptocurrency prices, powerd by
 ([CoinGecko API](https://www.coingecko.com/en/api),
 
 ## Features
-- Ranking of cryputocurrencies by market cap, listed in a table with a pagination function.
+- Prices of cryputocurrencies ranked by market cap are listed in a table with pagination function.
 - Histrical Charts of the price of each currency (24 hours, 30 days, 3 months, 1 year)
 - Prices are in USD, Euro and JPY (Japanese Yen)
 
