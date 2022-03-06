@@ -11,7 +11,7 @@ export const numberWithComma = (x: number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-const Carousel = () => {
+const Carousel = ({ data }: { data: any }) => {
   const [trending, setTrending] = useState<string[]>([])
   const { currency, symbol } = CryptoState()
 
@@ -29,9 +29,9 @@ const Carousel = () => {
 
   useEffect(() => {
     fetchTrendingCoins()
-  }, [currency])
+  }, [currency,data])
 
-  const items = trending.map((coin: any) => {
+  const items = trending?.map((coin: any) => {
     const profit = coin?.price_change_percentage_24h >= 0
 
     return (
