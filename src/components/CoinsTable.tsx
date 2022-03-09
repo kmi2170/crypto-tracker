@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react"
 import Link from "next/link";
 import Image from "next/image"
-import axios from "axios"
-import { CoinList } from "../config/api"
 import { CryptoState } from "../context/CryptoContext"
 
 import Container from "@mui/material/Container";
@@ -22,24 +20,11 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { numberWithComma } from "./Banner/Carousel";
 
 const CoinsTable = () => {
-  const [coins, setCoins] = useState<string[]>([])
-  const [loading, setLoading] = useState<boolean>(false)
   const [search, setSearch] = useState<string>("")
   const [page, setPage] = useState<number>(1)
 
-  const { currency, symbol } = CryptoState()
+  const { currency, symbol ,coins, loading, fetchCoins} = CryptoState()
 
-  const fetchCoins = async () => {
-    try {
-      setLoading(true)
-      const { data } = await axios.get(CoinList(currency))
-
-      setCoins(data)
-      setLoading(false)
-    } catch (error) {
-      console.error(error)
-    }
-  }
 
   useEffect(() => {
     fetchCoins()

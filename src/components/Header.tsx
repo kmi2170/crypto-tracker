@@ -7,7 +7,10 @@ import Select, { SelectChangeEvent } from "@mui/material/Select"
 import MenuItem from "@mui/material/MenuItem"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
+
 import { CryptoState } from "../context/CryptoContext";
+import AuthModal from "./Authentication/AuthModal";
+import UserSidebar from "./Authentication/UserSidebar";
 
 const useStyles = makeStyles(() => ({
   bannerContent: {
@@ -28,7 +31,7 @@ const Header = () => {
     },
   });
 
-  const { currency, setCurrency } = CryptoState()
+  const { currency, setCurrency, user } = CryptoState()
 
   const handleChange = (e: SelectChangeEvent) => setCurrency(e.target.value as string)
 
@@ -66,6 +69,9 @@ const Header = () => {
               <MenuItem value={"EUR"}>EUR</MenuItem>
               <MenuItem value={"JPY"}>JPY</MenuItem>
             </Select>
+
+            {user ? <UserSidebar /> : <AuthModal />}
+
           </Toolbar>
         </Container>
       </AppBar>
