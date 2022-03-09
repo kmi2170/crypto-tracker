@@ -1,10 +1,10 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyCMrgU6BRSXdit-46h13dN-7szbrFcz4yM",
-  authDomain: "crypto-tracker-afa40.firebaseapp.com",
-  projectId: "crypto-tracker-afa40",
-  storageBucket: "crypto-tracker-afa40.appspot.com",
-  messagingSenderId: "615256672699",
-  appId: "1:615256672699:web:afe30f6dbb949790a29c9e"
-}
+  apiKey: process.env.NEXT_PUBLIC_APP_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
+};
 
-export default firebaseConfig
+export default firebaseConfig;
