@@ -40,7 +40,6 @@ const CoinsTable = () => {
     fetchCoins();
   }, [currency]);
 
-  console.log('coinstable');
   console.log(coins);
 
   const darkTheme = createTheme({

@@ -69,7 +69,7 @@ const CryptoProvider = ({ children }: ProviderProps) => {
     onAuthStateChanged(auth, (user) => {
       if (user) setUser(user);
       else setUser(null);
-      console.log(user);
+      // console.log(user);
     });
   }, []);
 

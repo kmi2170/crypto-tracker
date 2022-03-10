@@ -49,8 +49,6 @@ export default function UserSidebar() {
 
   const removeFromWatchlist = async (coin: any) => {
     if (user) {
-      console.log('click');
-
       const coinRef = doc(db, 'watchlist', user.uid);
 
       try {
@@ -161,8 +159,6 @@ export default function UserSidebar() {
 
                   {coins.map((coin: any) => {
                     if (watchlist.includes(coin.id)) {
-                      console.log(coin);
-
                       return (
                         <div
                           key={coin.name}
