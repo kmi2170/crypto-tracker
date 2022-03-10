@@ -12,14 +12,6 @@ import { CryptoState } from '../../context/CryptoContext';
 import { numberWithComma } from '../Banner/Carousel';
 import { auth, db } from '../../lib/firebase';
 
-// import List from '@mui/material/List';
-// import Divider from '@mui/material/Divider';
-// import ListItem from '@mui/material/ListItem';
-// import ListItemIcon from '@mui/material/ListItemIcon';
-// import ListItemText from '@mui/material/ListItemText';
-// import InboxIcon from '@mui/icons-material/MoveToInbox';
-// import MailIcon from '@mui/icons-material/Mail';
-
 type Anchor = 'right';
 
 export default function UserSidebar() {
