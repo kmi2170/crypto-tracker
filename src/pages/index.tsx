@@ -21,7 +21,7 @@ const fetchCoins = async (currency: string) => {
 
 const configRQ = {
   refetchInterval: 300000,
-  refetchIntervalInBackground: true,
+  // refetchIntervalInBackground: true,
   onSuccess: () => {
     console.log('Success data fetching');
   },

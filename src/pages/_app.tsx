@@ -1,12 +1,13 @@
 import * as React from 'react';
 import Head from 'next/head';
 import { AppProps } from 'next/app';
-import { ThemeProvider,createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import theme from '../styles/theme/theme';
 import createEmotionCache from '../styles/theme/createEmotionCache';
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 import '../styles/globals.css';
 import 'react-alice-carousel/lib/alice-carousel.css';
@@ -19,11 +20,11 @@ import Footer from '../components/Footer';
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-  const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-    },
-  });
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
@@ -53,6 +54,7 @@ export default function MyApp(props: MyAppProps) {
               <AlertMessage />
               <Footer />
             </CryptoProvider>
+            <ReactQueryDevtools />
           </Hydrate>
         </QueryClientProvider>
       </ThemeProvider>
