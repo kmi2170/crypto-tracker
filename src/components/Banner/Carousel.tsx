@@ -1,18 +1,20 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import axios from 'axios';
 import { makeStyles } from '@mui/styles';
 import AliceCarousel from 'react-alice-carousel';
+import { useQuery } from 'react-query';
 
 import { CryptoState } from '../../context/CryptoContext';
-import { TrendingCoins } from '../../config/api';
+import { fetchTrendCoins, configRQ } from '../../lib/fetchFunctions';
+import { Coin } from '../../context/types';
 
 const useStyles = makeStyles(() => ({
   carousel: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
     cursor: 'pointer',
     textTransform: 'uppercase',
     color: 'white',
@@ -26,26 +28,15 @@ export const numberWithComma = (x: number) => {
 const Carousel = () => {
   const classes = useStyles();
 
-  const [trending, setTrending] = useState<string[]>([]);
   const { currency, symbol } = CryptoState();
 
-  const fetchTrendingCoins = async () => {
-    try {
-      const { data } = await axios.get(TrendingCoins(currency));
+  const { data: trending } = useQuery<Coin[]>(
+    ['trending', currency],
+    () => fetchTrendCoins(currency),
+    configRQ
+  );
 
-      setTrending(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // console.log(trending);
-
-  useEffect(() => {
-    fetchTrendingCoins();
-  }, [currency]);
-
-  const items = trending?.map((coin: any) => {
+  const items = trending?.map((coin: Coin) => {
     const isProfit = coin?.price_change_percentage_24h >= 0;
 
     return (
@@ -62,12 +53,12 @@ const Carousel = () => {
                 }}
               >
                 {isProfit && '+'}{' '}
-                {coin?.price_change_percentage_24h?.toFixed(2)}%
+                {+coin?.price_change_percentage_24h?.toFixed(2)}%
               </span>
             </span>
 
             <span style={{ fontSize: 22 }}>
-              {symbol} {numberWithComma(coin?.current_price.toFixed(2))}
+              {symbol} {numberWithComma(+coin?.current_price.toFixed(2))}
             </span>
           </div>
         </a>

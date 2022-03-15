@@ -7,10 +7,13 @@ import Button from '@mui/material/Button';
 import { signOut } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { AiFillDelete } from 'react-icons/ai/index';
+import { useQuery } from 'react-query';
 
 import { CryptoState } from '../../context/CryptoContext';
 import { numberWithComma } from '../Banner/Carousel';
 import { auth, db } from '../../lib/firebase';
+import { fetchCoins, configRQ } from '../../lib/fetchFunctions';
+import { Coin } from '../../context/types';
 
 type Anchor = 'right';
 
@@ -19,7 +22,13 @@ export default function UserSidebar() {
     right: false,
   });
 
-  const { user, setAlert, watchlist, coins, symbol } = CryptoState();
+  const { user, setAlert, watchlist, symbol, currency } = CryptoState();
+
+  const { data: coins } = useQuery<Coin[]>(
+    ['coins', currency],
+    () => fetchCoins(currency),
+    configRQ
+  );
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
@@ -47,7 +56,7 @@ export default function UserSidebar() {
     toggleDrawer('right', false);
   };
 
-  const removeFromWatchlist = async (coin: any) => {
+  const removeFromWatchlist = async (coin: Coin) => {
     if (user) {
       const coinRef = doc(db, 'watchlist', user.uid);
 
@@ -157,7 +166,7 @@ export default function UserSidebar() {
                     Watchlist
                   </span>
 
-                  {coins.map((coin: any) => {
+                  {coins?.map((coin: Coin) => {
                     if (watchlist.includes(coin.id)) {
                       return (
                         <div
@@ -177,7 +186,7 @@ export default function UserSidebar() {
                           <span>{coin.name}</span>
                           <span style={{ display: 'flex', gap: 8 }}>
                             {symbol}
-                            {numberWithComma(coin.current_price.toFixed(2))}
+                            {numberWithComma(+coin.current_price.toFixed(2))}
                             <AiFillDelete
                               style={{ cursor: 'pointer' }}
                               onClick={() => removeFromWatchlist(coin)}

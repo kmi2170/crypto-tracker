@@ -46,6 +46,9 @@ const Banner = () => {
             Get your favorite crypto currency info
           </Typography>
         </div>
+        <Typography variant='h4' align='center' sx={{ mt: 2, mb: 3 }}>
+          Trend
+        </Typography>
         <Carousel />
       </Container>
     </div>

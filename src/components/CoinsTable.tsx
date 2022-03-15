@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Container from '@mui/material/Container';
@@ -13,10 +13,12 @@ import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
 import Pagination from '@mui/material/Pagination';
 import { makeStyles } from '@mui/styles';
+import { useQuery } from 'react-query';
 
 import { CryptoState } from '../context/CryptoContext';
 import { numberWithComma } from './Banner/Carousel';
 import { Coin } from '../context/types';
+import { fetchCoins, configRQ } from '../lib/fetchFunctions';
 
 const useStyles = makeStyles(() => ({
   tableBodyRow: {
@@ -28,21 +30,27 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-// const CoinsTable = ({ coins }: { coins: Coin[] | undefined }) => {
-const CoinsTable = ({ coins }: { coins: Coin[] }) => {
+const CoinsTable = () => {
   const classes = useStyles();
 
   const [search, setSearch] = useState<string>('');
   const [page, setPage] = useState<number>(1);
 
-  const { symbol, loading } = CryptoState();
+  const { currency, symbol } = CryptoState();
+
+  const { data: coins, isLoading } = useQuery<Coin[]>(
+    ['coins', currency],
+    () => fetchCoins(currency),
+    configRQ
+  );
+  // console.log(coins);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
   const handleSearch = () => {
-    return coins?.filter(
+    return (coins as Coin[])?.filter(
       (coin: Coin) =>
         coin.name.toLowerCase().includes(search) ||
         coin.symbol.toLowerCase().includes(search)
@@ -61,7 +69,7 @@ const CoinsTable = ({ coins }: { coins: Coin[] }) => {
         onChange={handleChange}
       />
 
-      {loading ? (
+      {isLoading ? (
         <LinearProgress sx={{ backgroundColor: 'gold' }} />
       ) : (
         <TableContainer>
@@ -158,7 +166,7 @@ const CoinsTable = ({ coins }: { coins: Coin[] }) => {
           </Table>
         </TableContainer>
       )}
-      {loading && (
+      {isLoading && (
         <Pagination
           count={handleSearch() ? +(handleSearch()?.length / 10).toFixed(0) : 1}
           sx={{

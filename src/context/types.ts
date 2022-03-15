@@ -2,13 +2,8 @@ import { User } from 'firebase/auth';
 
 export interface ContextProps {
   currency: string;
-  symbol: string;
   setCurrency: React.Dispatch<React.SetStateAction<string>>;
-  coins: Coin[];
-  setCoins: React.Dispatch<React.SetStateAction<Coin[]>>;
-  loading: boolean;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  fetchCoins: () => void;
+  symbol: string;
   alert: Alert;
   setAlert: React.Dispatch<React.SetStateAction<Alert>>;
   user: User | null;
@@ -26,7 +21,7 @@ export interface ProviderProps {
 }
 
 export interface Coin {
-  id: number;
+  id: string;
   name: string;
   symbol: string;
   image: string;

@@ -1,11 +1,9 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import axios from 'axios';
 import { onAuthStateChanged, Unsubscribe, User } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore';
 
 import { auth } from '../lib/firebase';
 import { db } from '../lib/firebase';
-import { CoinList } from '../config/api';
 import { ContextProps, ProviderProps, Alert, Coin } from './types';
 
 export const CryptoContext = createContext({} as ContextProps);
@@ -51,18 +49,6 @@ const CryptoProvider = ({ children }: ProviderProps) => {
     });
   }, []);
 
-  const fetchCoins = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get(CoinList(currency));
-
-      setCoins(data);
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     if (currency === 'USD') setSymbol('$');
     else if (currency === 'EUR') setSymbol('€');
@@ -71,13 +57,8 @@ const CryptoProvider = ({ children }: ProviderProps) => {
 
   const value = {
     currency,
-    symbol,
     setCurrency,
-    coins,
-    setCoins,
-    loading,
-    setLoading,
-    fetchCoins,
+    symbol,
     alert,
     setAlert,
     user,
