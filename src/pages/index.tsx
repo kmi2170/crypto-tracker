@@ -19,15 +19,27 @@ const fetchCoins = async (currency: string) => {
   }
 };
 
+const configRQ = {
+  refetchInterval: 300000,
+  refetchIntervalInBackground: true,
+  onSuccess: () => {
+    console.log('Success data fetching');
+  },
+};
+
 const Home: NextPage = () => {
   const { currency, setLoading } = CryptoState();
 
-  const { data, isLoading } = useQuery<Coin[]>(['coins', currency], () =>
-    fetchCoins(currency)
+  const { data, isLoading, isFetching } = useQuery<Coin[]>(
+    ['coins', currency],
+    () => fetchCoins(currency),
+    configRQ
   );
-  console.log(data);
+  console.log(isLoading, isFetching);
+  // console.log(data);
 
   useEffect(() => {
+    // setLoading(isLoading);
     setLoading(isLoading);
   }, [isLoading]);
 

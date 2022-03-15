@@ -133,7 +133,7 @@ const CoinsTable = ({ coins }: { coins: Coin[] }) => {
                         <TableCell
                           align='right'
                           sx={{
-                            color: isProfit ? 'rgb(14, 203, 129' : 'red',
+                            color: isProfit ? 'rgb(14, 203, 129)' : 'red',
                             fontSize: 22,
                             fontWeight: 'bold',
                           }}
@@ -158,20 +158,22 @@ const CoinsTable = ({ coins }: { coins: Coin[] }) => {
           </Table>
         </TableContainer>
       )}
-      <Pagination
-        count={handleSearch() ? +(handleSearch()?.length / 10).toFixed(0) : 1}
-        sx={{
-          p: 3,
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          '& .MuiPaginationItem-root': { color: 'gold' },
-        }}
-        onChange={(_, value: number) => {
-          setPage(value);
-          window.scroll(0, 450);
-        }}
-      />
+      {loading && (
+        <Pagination
+          count={handleSearch() ? +(handleSearch()?.length / 10).toFixed(0) : 1}
+          sx={{
+            p: 3,
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            '& .MuiPaginationItem-root': { color: 'gold' },
+          }}
+          onChange={(_, value: number) => {
+            setPage(value);
+            window.scroll(0, 450);
+          }}
+        />
+      )}
     </Container>
   );
 };
