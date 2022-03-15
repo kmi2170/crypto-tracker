@@ -3,39 +3,17 @@ import axios from 'axios';
 import { onAuthStateChanged, Unsubscribe, User } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore';
 
-import { CoinList } from '../config/api';
 import { auth } from '../lib/firebase';
 import { db } from '../lib/firebase';
-
-interface ContextProps {
-  currency: string;
-  symbol: string;
-  setCurrency: React.Dispatch<React.SetStateAction<string>>;
-  coins: string[];
-  loading: boolean;
-  fetchCoins: () => void;
-  alert: Alert;
-  setAlert: React.Dispatch<React.SetStateAction<Alert>>;
-  user: User | null;
-  watchlist: string[];
-}
-
-type Alert = {
-  open: boolean;
-  message?: string;
-  type?: string;
-};
+import { CoinList } from '../config/api';
+import { ContextProps, ProviderProps, Alert, Coin } from './types';
 
 export const CryptoContext = createContext({} as ContextProps);
-
-interface ProviderProps {
-  children: React.ReactNode;
-}
 
 const CryptoProvider = ({ children }: ProviderProps) => {
   const [currency, setCurrency] = useState('USD');
   const [symbol, setSymbol] = useState('$');
-  const [coins, setCoins] = useState<string[]>([]);
+  const [coins, setCoins] = useState<Coin[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
   const [alert, setAlert] = useState<Alert>({
@@ -96,7 +74,9 @@ const CryptoProvider = ({ children }: ProviderProps) => {
     symbol,
     setCurrency,
     coins,
+    setCoins,
     loading,
+    setLoading,
     fetchCoins,
     alert,
     setAlert,

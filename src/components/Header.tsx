@@ -5,7 +5,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 
 import { CryptoState } from '../context/CryptoContext';
@@ -31,19 +30,12 @@ const useStyles = makeStyles(() => ({
 const Header = () => {
   const classes = useStyles();
 
-  const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-    },
-  });
-
   const { currency, setCurrency, user } = CryptoState();
 
   const handleChange = (e: SelectChangeEvent) =>
     setCurrency(e.target.value as string);
 
   return (
-    <ThemeProvider theme={darkTheme}>
       <AppBar color='transparent' position='static'>
         <Container className={classes.bannerContent}>
           <Toolbar>
@@ -68,7 +60,6 @@ const Header = () => {
           </Toolbar>
         </Container>
       </AppBar>
-    </ThemeProvider>
   );
 };
 

@@ -39,14 +39,14 @@ const Carousel = () => {
     }
   };
 
-  console.log(trending);
+  // console.log(trending);
 
   useEffect(() => {
     fetchTrendingCoins();
   }, [currency]);
 
   const items = trending?.map((coin: any) => {
-    const profit = coin?.price_change_percentage_24h >= 0;
+    const isProfit = coin?.price_change_percentage_24h >= 0;
 
     return (
       <Link key={coin.id} href={`/coins/${coin.id}`}>
@@ -57,11 +57,12 @@ const Carousel = () => {
               {coin?.symbol}
               <span
                 style={{
-                  color: profit ? 'rgb(14, 203, 129)' : 'red',
+                  color: isProfit ? 'rgb(14, 203, 129)' : 'red',
                   fontWeight: 'bold',
                 }}
               >
-                {profit && '+'} {coin?.price_change_percentage_24h?.toFixed(2)}%
+                {isProfit && '+'}{' '}
+                {coin?.price_change_percentage_24h?.toFixed(2)}%
               </span>
             </span>
 

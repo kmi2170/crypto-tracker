@@ -1,11 +1,12 @@
 import * as React from 'react';
 import Head from 'next/head';
 import { AppProps } from 'next/app';
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider,createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import theme from '../styles/theme/theme';
 import createEmotionCache from '../styles/theme/createEmotionCache';
+import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 
 import '../styles/globals.css';
 import 'react-alice-carousel/lib/alice-carousel.css';
@@ -18,12 +19,20 @@ import Footer from '../components/Footer';
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
+
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+
+  const queryClient = React.useRef(new QueryClient());
 
   return (
     <CacheProvider value={emotionCache}>
@@ -34,14 +43,18 @@ export default function MyApp(props: MyAppProps) {
         <link rel='icon' href='/dollar-coin.png' />
       </Head>
       <ThemeProvider theme={theme}>
-        <CryptoProvider>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <Header />
-          <Component {...pageProps} />
-          <AlertMessage />
-          <Footer />
-        </CryptoProvider>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+        <CssBaseline />
+        <QueryClientProvider client={queryClient.current}>
+          <Hydrate state={pageProps.dehydrateState}>
+            <CryptoProvider>
+              <Header />
+              <Component {...pageProps} />
+              <AlertMessage />
+              <Footer />
+            </CryptoProvider>
+          </Hydrate>
+        </QueryClientProvider>
       </ThemeProvider>
     </CacheProvider>
   );

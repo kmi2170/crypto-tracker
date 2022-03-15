@@ -1,14 +1,70 @@
-import type { NextPage } from 'next';
+import { useEffect } from 'react';
+import type { GetServerSideProps, NextPage } from 'next';
+import { useQuery, QueryClient, dehydrate } from 'react-query';
+import axios from 'axios';
+
 import Banner from '../components/Banner/Banner';
 import CoinsTable from '../components/CoinsTable';
+import { CryptoState } from '../context/CryptoContext';
+import { CoinList } from '../config/api';
+import { Coin } from '../context/types';
+
+const fetchCoins = async (currency: string) => {
+  try {
+    const { data } = await axios.get(CoinList(currency));
+
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const Home: NextPage = () => {
+  const { currency, setLoading } = CryptoState();
+
+  const { data, isLoading } = useQuery<Coin[]>(['coins', currency], () =>
+    fetchCoins(currency)
+  );
+  console.log(data);
+
+  useEffect(() => {
+    setLoading(isLoading);
+  }, [isLoading]);
+
   return (
     <>
       <Banner />
-      <CoinsTable />
+      <CoinsTable coins={data as Coin[]} />
     </>
   );
 };
 
 export default Home;
+
+const fetchCoinsServerSide = async () => {
+  try {
+    const { data } = await axios.get(CoinList('USD'));
+
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const currency = 'USD';
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(['coins', currency], () =>
+    fetchCoins(currency)
+  );
+
+  const _dehydrate = dehydrate(queryClient);
+  // console.log(_dehydrate.queries[0].state);
+
+  return {
+    props: {
+      dehydrateState: _dehydrate,
+    },
+  };
+};
