@@ -2,9 +2,12 @@ import axios from "axios";
 
 import { CoinList, TrendingCoins } from "../config/api";
 
-export const configRQ = {
-  refetchInterval: 300000,
+export const configForUseQuery = {
+  // refetchInterval: 300000,
   // refetchIntervalInBackground: true,
+  refetchOnMount: false,
+  refetchOnReconnect: false,
+  refetchOnWindowFocus: false,
   onSuccess: () => {
     console.log("Success data fetching");
   },

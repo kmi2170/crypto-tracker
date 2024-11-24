@@ -12,7 +12,7 @@ import { useQuery } from "react-query";
 import { CryptoState } from "../../context/CryptoContext";
 import { numberWithComma } from "../Banner/Carousel";
 import { auth, db } from "../../lib/firebase";
-import { configRQ } from "../../lib/fetchFunctions";
+import { configForUseQuery } from "../../lib/fetchFunctions";
 import { Coin } from "../../context/types";
 import axios from "axios";
 
@@ -33,7 +33,7 @@ export default function UserSidebar() {
   const { data: coins } = useQuery<Coin[]>(
     ["coins", currency],
     () => fetchFn(currency),
-    configRQ
+    configForUseQuery
   );
 
   const toggleDrawer =

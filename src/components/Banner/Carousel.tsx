@@ -6,7 +6,7 @@ import AliceCarousel from "react-alice-carousel";
 import { useQuery } from "react-query";
 
 import { CryptoState } from "../../context/CryptoContext";
-import { fetchTrendCoins, configRQ } from "../../lib/fetchFunctions";
+import { fetchTrendCoins, configForUseQuery } from "../../lib/fetchFunctions";
 import { Coin } from "../../context/types";
 import axios from "axios";
 
@@ -41,7 +41,7 @@ const Carousel = () => {
   const { data: trending } = useQuery<Coin[]>(
     ["trending", currency],
     () => fetchFn(currency),
-    configRQ
+    configForUseQuery
   );
 
   if (!trending) return;

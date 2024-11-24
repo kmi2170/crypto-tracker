@@ -18,7 +18,7 @@ import { useQuery } from "react-query";
 import { CryptoState } from "../context/CryptoContext";
 import { numberWithComma } from "./Banner/Carousel";
 import { Coin } from "../context/types";
-import { configRQ } from "../lib/fetchFunctions";
+import { configForUseQuery } from "../lib/fetchFunctions";
 import axios from "axios";
 
 const useStyles = makeStyles(() => ({
@@ -47,7 +47,7 @@ const CoinsTable = () => {
   const { data: coins, isLoading } = useQuery<Coin[]>(
     ["coins", currency],
     () => fetchFn(currency),
-    configRQ
+    configForUseQuery
   );
 
   if (!currency) return;
