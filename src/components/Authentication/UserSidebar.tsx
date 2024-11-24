@@ -1,21 +1,27 @@
-import * as React from 'react';
+import * as React from "react";
 // import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import { signOut } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
-import { AiFillDelete } from 'react-icons/ai/index';
-import { useQuery } from 'react-query';
+import Drawer from "@mui/material/Drawer";
+import Box from "@mui/material/Box";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import { signOut } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { AiFillDelete } from "react-icons/ai/index";
+import { useQuery } from "react-query";
 
-import { CryptoState } from '../../context/CryptoContext';
-import { numberWithComma } from '../Banner/Carousel';
-import { auth, db } from '../../lib/firebase';
-import { fetchCoins, configRQ } from '../../lib/fetchFunctions';
-import { Coin } from '../../context/types';
+import { CryptoState } from "../../context/CryptoContext";
+import { numberWithComma } from "../Banner/Carousel";
+import { auth, db } from "../../lib/firebase";
+import { configRQ } from "../../lib/fetchFunctions";
+import { Coin } from "../../context/types";
+import axios from "axios";
 
-type Anchor = 'right';
+type Anchor = "right";
+
+const fetchFn = async (currency: string) => {
+  const { data } = await axios.get(`/api/coin-list/route?currency=${currency}`);
+  return data;
+};
 
 export default function UserSidebar() {
   const [state, setState] = React.useState({
@@ -25,8 +31,8 @@ export default function UserSidebar() {
   const { user, setAlert, watchlist, symbol, currency } = CryptoState();
 
   const { data: coins } = useQuery<Coin[]>(
-    ['coins', currency],
-    () => fetchCoins(currency),
+    ["coins", currency],
+    () => fetchFn(currency),
     configRQ
   );
 
@@ -34,9 +40,9 @@ export default function UserSidebar() {
     (anchor: Anchor, open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
-        event.type === 'keydown' &&
-        ((event as React.KeyboardEvent).key === 'Tab' ||
-          (event as React.KeyboardEvent).key === 'Shift')
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
       ) {
         return;
       }
@@ -49,16 +55,16 @@ export default function UserSidebar() {
 
     setAlert({
       open: true,
-      type: 'success',
-      message: 'Logout Successful!',
+      type: "success",
+      message: "Logout Successful!",
     });
 
-    toggleDrawer('right', false);
+    toggleDrawer("right", false);
   };
 
   const removeFromWatchlist = async (coin: Coin) => {
     if (user) {
-      const coinRef = doc(db, 'watchlist', user.uid);
+      const coinRef = doc(db, "watchlist", user.uid);
 
       try {
         await setDoc(
@@ -72,13 +78,13 @@ export default function UserSidebar() {
         setAlert({
           open: true,
           message: `${coin.name} Removed from the Watchlist`,
-          type: 'success',
+          type: "success",
         });
       } catch (error: any) {
         setAlert({
           open: true,
           message: error.message,
-          type: 'error',
+          type: "error",
         });
       }
     }
@@ -86,18 +92,18 @@ export default function UserSidebar() {
 
   return (
     <>
-      {(['right'] as const).map((anchor) => (
+      {(["right"] as const).map((anchor) => (
         <React.Fragment key={anchor}>
           <Avatar
             onClick={toggleDrawer(anchor, true)}
             sx={{
               height: 38,
               width: 38,
-              cursor: 'pointer',
-              backgroundColor: '#EEBC1D',
+              cursor: "pointer",
+              backgroundColor: "#EEBC1D",
             }}
-            src={user?.photoURL || ''}
-            alt={user?.displayName || user?.email || 'userName'}
+            src={user?.photoURL || ""}
+            alt={user?.displayName || user?.email || "userName"}
           />
           <Drawer
             anchor={anchor}
@@ -108,42 +114,42 @@ export default function UserSidebar() {
               sx={{
                 width: 350,
                 padding: 3,
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                fontFamily: 'monospace',
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                fontFamily: "monospace",
               }}
             >
               <Box
                 sx={{
                   flex: 1,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '20px',
-                  height: '92%',
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "20px",
+                  height: "92%",
                 }}
               >
                 <Avatar
                   sx={{
                     height: 200,
                     width: 200,
-                    cursor: 'pointer',
-                    backgroundColor: '#EEBC1D',
-                    objectFit: 'contain',
+                    cursor: "pointer",
+                    backgroundColor: "#EEBC1D",
+                    objectFit: "contain",
                   }}
-                  src={user?.photoURL || ''}
-                  alt={user?.displayName || user?.email || 'userName'}
+                  src={user?.photoURL || ""}
+                  alt={user?.displayName || user?.email || "userName"}
                 />
                 <span
                   style={{
-                    width: '100%',
+                    width: "100%",
                     fontSize: 25,
-                    fontWeight: 'bolder',
-                    wordWrap: 'break-word',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
+                    fontWeight: "bolder",
+                    wordWrap: "break-word",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
                   }}
                 >
                   {user?.displayName || user?.email}
@@ -151,18 +157,18 @@ export default function UserSidebar() {
                 <Box
                   sx={{
                     flex: 1,
-                    width: '100%',
-                    backgroundColor: 'grey',
+                    width: "100%",
+                    backgroundColor: "grey",
                     borderRadius: 10,
                     p: 2,
                     pt: 1,
-                    flexDirection: 'column',
-                    alignItems: 'center',
+                    flexDirection: "column",
+                    alignItems: "center",
                     gap: 12,
-                    overflowY: 'scroll',
+                    overflowY: "scroll",
                   }}
                 >
-                  <span style={{ fontSize: 15, textShadow: '0 0 5p black' }}>
+                  <span style={{ fontSize: 15, textShadow: "0 0 5p black" }}>
                     Watchlist
                   </span>
 
@@ -174,21 +180,21 @@ export default function UserSidebar() {
                           style={{
                             padding: 10,
                             borderRadius: 5,
-                            color: 'black',
-                            width: '100%',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            backgroundColor: '#EEBC1D',
-                            boxShadow: '0 0 3px black',
+                            color: "black",
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            backgroundColor: "#EEBC1D",
+                            boxShadow: "0 0 3px black",
                           }}
                         >
                           <span>{coin.name}</span>
-                          <span style={{ display: 'flex', gap: 8 }}>
+                          <span style={{ display: "flex", gap: 8 }}>
                             {symbol}
                             {numberWithComma(+coin.current_price.toFixed(2))}
                             <AiFillDelete
-                              style={{ cursor: 'pointer' }}
+                              style={{ cursor: "pointer" }}
                               onClick={() => removeFromWatchlist(coin)}
                             />
                           </span>
@@ -199,12 +205,12 @@ export default function UserSidebar() {
                 </Box>
               </Box>
               <Button
-                variant='contained'
+                variant="contained"
                 onClick={logOut}
                 sx={{
-                  height: '8%',
-                  width: '100%',
-                  backgroundColor: '#EEBC1D',
+                  height: "8%",
+                  width: "100%",
+                  backgroundColor: "#EEBC1D",
                   mt: 3,
                 }}
                 fullWidth

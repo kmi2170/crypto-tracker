@@ -18,7 +18,8 @@ import { useQuery } from "react-query";
 import { CryptoState } from "../context/CryptoContext";
 import { numberWithComma } from "./Banner/Carousel";
 import { Coin } from "../context/types";
-import { fetchCoins, configRQ } from "../lib/fetchFunctions";
+import { configRQ } from "../lib/fetchFunctions";
+import axios from "axios";
 
 const useStyles = makeStyles(() => ({
   tableBodyRow: {
@@ -30,6 +31,11 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const fetchFn = async (currency: string) => {
+  const { data } = await axios.get(`/api/coin-list/route?currency=${currency}`);
+  return data;
+};
+
 const CoinsTable = () => {
   const classes = useStyles();
 
@@ -40,10 +46,11 @@ const CoinsTable = () => {
 
   const { data: coins, isLoading } = useQuery<Coin[]>(
     ["coins", currency],
-    () => fetchCoins(currency),
+    () => fetchFn(currency),
     configRQ
   );
-  // console.log(coins);
+
+  if (!currency) return;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -103,12 +110,12 @@ const CoinsTable = () => {
                           sx={{ display: "flex", gap: 3 }}
                         >
                           <Link href={`coins/${row.id}`}>
-                            {/* <Image
+                            <Image
                               src={row?.image}
                               alt={row.name}
                               width="50"
                               height="50"
-                            /> */}
+                            />
                             <div
                               style={{
                                 display: "flex",

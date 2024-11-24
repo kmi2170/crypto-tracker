@@ -2,6 +2,8 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['assets.coingecko.com'],
+    remotePatterns: [
+      { protocol: "https", hostname: "coin-images.coingecko.com", port: "" },
+    ],
   },
-}
+};

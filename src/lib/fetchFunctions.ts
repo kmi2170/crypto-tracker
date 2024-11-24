@@ -1,12 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
 
-import { CoinList, TrendingCoins } from '../config/api';
+import { CoinList, TrendingCoins } from "../config/api";
 
 export const configRQ = {
   refetchInterval: 300000,
   // refetchIntervalInBackground: true,
   onSuccess: () => {
-    console.log('Success data fetching');
+    console.log("Success data fetching");
   },
 };
 

@@ -8,6 +8,7 @@ import { useQuery } from "react-query";
 import { CryptoState } from "../../context/CryptoContext";
 import { fetchTrendCoins, configRQ } from "../../lib/fetchFunctions";
 import { Coin } from "../../context/types";
+import axios from "axios";
 
 const useStyles = makeStyles(() => ({
   carousel: {
@@ -25,6 +26,13 @@ export const numberWithComma = (x: number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
+const fetchFn = async (currency: string) => {
+  const { data } = await axios.get(
+    `/api/trend-list/route?currency=${currency}`
+  );
+  return data;
+};
+
 const Carousel = () => {
   const classes = useStyles();
 
@@ -32,9 +40,11 @@ const Carousel = () => {
 
   const { data: trending } = useQuery<Coin[]>(
     ["trending", currency],
-    () => fetchTrendCoins(currency),
+    () => fetchFn(currency),
     configRQ
   );
+
+  if (!trending) return;
 
   const items = trending?.map((coin: Coin) => {
     const isProfit = coin?.price_change_percentage_24h >= 0;
@@ -42,7 +52,7 @@ const Carousel = () => {
     return (
       <Link key={coin.id} href={`/coins/${coin.id}`}>
         <div className={classes.carousel}>
-          {/* <Image src={coin?.image} alt={coin.name} width="80" height="80" /> */}
+          <Image src={coin?.image} alt={coin.name} width="80" height="80" />
           <span>
             {coin?.symbol}
             <span

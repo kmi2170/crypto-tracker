@@ -121,12 +121,12 @@ const Coins: NextPage = () => {
           borderRight: "2px solid gray",
         }}
       >
-        {/* <Image
+        <Image
           src={coin?.image.large}
           alt={coin?.name}
-          width='200'
-          height='200'
-        /> */}
+          width="200"
+          height="200"
+        />
         <Typography variant="h3" sx={{ fontWeight: "bold", mt: 2 }}>
           {coin?.name}
         </Typography>
