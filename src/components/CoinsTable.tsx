@@ -1,31 +1,31 @@
-import { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import LinearProgress from '@mui/material/LinearProgress';
-import TableContainer from '@mui/material/TableContainer';
-import Table from '@mui/material/Table';
-import TableHead from '@mui/material/TableHead';
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
-import TableBody from '@mui/material/TableBody';
-import Pagination from '@mui/material/Pagination';
-import { makeStyles } from '@mui/styles';
-import { useQuery } from 'react-query';
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import LinearProgress from "@mui/material/LinearProgress";
+import TableContainer from "@mui/material/TableContainer";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
+import TableBody from "@mui/material/TableBody";
+import Pagination from "@mui/material/Pagination";
+import { makeStyles } from "@mui/styles";
+import { useQuery } from "react-query";
 
-import { CryptoState } from '../context/CryptoContext';
-import { numberWithComma } from './Banner/Carousel';
-import { Coin } from '../context/types';
-import { fetchCoins, configRQ } from '../lib/fetchFunctions';
+import { CryptoState } from "../context/CryptoContext";
+import { numberWithComma } from "./Banner/Carousel";
+import { Coin } from "../context/types";
+import { fetchCoins, configRQ } from "../lib/fetchFunctions";
 
 const useStyles = makeStyles(() => ({
   tableBodyRow: {
-    backgroundColor: '#16171a',
-    cursor: 'pointer',
-    '&:hover': {
-      backgroundColor: '#131111',
+    backgroundColor: "#16171a",
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: "#131111",
     },
   },
 }));
@@ -33,13 +33,13 @@ const useStyles = makeStyles(() => ({
 const CoinsTable = () => {
   const classes = useStyles();
 
-  const [search, setSearch] = useState<string>('');
+  const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
   const { currency, symbol } = CryptoState();
 
   const { data: coins, isLoading } = useQuery<Coin[]>(
-    ['coins', currency],
+    ["coins", currency],
     () => fetchCoins(currency),
     configRQ
   );
@@ -58,29 +58,29 @@ const CoinsTable = () => {
   };
 
   return (
-    <Container sx={{ textAlign: 'center' }}>
-      <Typography variant='h4' sx={{ m: 3 }}>
+    <Container sx={{ textAlign: "center" }}>
+      <Typography variant="h4" sx={{ m: 3 }}>
         Cryptocurrency Prices by Market Cap
       </Typography>
       <TextField
-        label='Search for a Cryptocurrency'
-        variant='outlined'
-        sx={{ mb: 5, width: '80%' }}
+        label="Search for a Cryptocurrency"
+        variant="outlined"
+        sx={{ mb: 5, width: "80%" }}
         onChange={handleChange}
       />
 
       {isLoading ? (
-        <LinearProgress sx={{ backgroundColor: 'gold' }} />
+        <LinearProgress sx={{ backgroundColor: "gold" }} />
       ) : (
         <TableContainer>
           <Table>
-            <TableHead sx={{ backgroundColor: '#EEBC1D' }}>
+            <TableHead sx={{ backgroundColor: "#EEBC1D" }}>
               <TableRow>
-                {['Coin', 'Price', '24h Change', 'Market Cap'].map((head) => (
+                {["Coin", "Price", "24h Change", "Market Cap"].map((head) => (
                   <TableCell
-                    sx={{ color: 'black', fontWeight: 'bold' }}
+                    sx={{ color: "black", fontWeight: "bold" }}
                     key={head}
-                    align={head === 'Coin' ? 'left' : 'right'}
+                    align={head === "Coin" ? "left" : "right"}
                   >
                     {head}
                   </TableCell>
@@ -98,62 +98,60 @@ const CoinsTable = () => {
                     return (
                       <TableRow key={row.name} className={classes.tableBodyRow}>
                         <TableCell
-                          component='th'
-                          scope='row'
-                          sx={{ display: 'flex', gap: 3 }}
+                          component="th"
+                          scope="row"
+                          sx={{ display: "flex", gap: 3 }}
                         >
                           <Link href={`coins/${row.id}`}>
-                            <a>
-                              <Image
-                                src={row?.image}
-                                alt={row.name}
-                                width='50'
-                                height='50'
-                              />
-                              <div
+                            {/* <Image
+                              src={row?.image}
+                              alt={row.name}
+                              width="50"
+                              height="50"
+                            /> */}
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                              }}
+                            >
+                              <span
                                 style={{
-                                  display: 'flex',
-                                  flexDirection: 'column',
+                                  textTransform: "uppercase",
+                                  fontSize: 22,
                                 }}
                               >
-                                <span
-                                  style={{
-                                    textTransform: 'uppercase',
-                                    fontSize: 22,
-                                  }}
-                                >
-                                  {row.symbol}
-                                </span>
-                                <span style={{ color: 'darkgrey' }}>
-                                  {row.name}
-                                </span>
-                              </div>
-                            </a>
+                                {row.symbol}
+                              </span>
+                              <span style={{ color: "darkgrey" }}>
+                                {row.name}
+                              </span>
+                            </div>
                           </Link>
                         </TableCell>
                         <TableCell
-                          align='right'
-                          sx={{ fontSize: 22, fontWeight: 'bold' }}
+                          align="right"
+                          sx={{ fontSize: 22, fontWeight: "bold" }}
                         >
-                          {symbol}{' '}
+                          {symbol}{" "}
                           {numberWithComma(+row.current_price.toFixed(2))}
                         </TableCell>
                         <TableCell
-                          align='right'
+                          align="right"
                           sx={{
-                            color: isProfit ? 'rgb(14, 203, 129)' : 'red',
+                            color: isProfit ? "rgb(14, 203, 129)" : "red",
                             fontSize: 22,
-                            fontWeight: 'bold',
+                            fontWeight: "bold",
                           }}
                         >
-                          {isProfit && '+'}
+                          {isProfit && "+"}
                           {row.price_change_percentage_24h.toFixed(2)}%
                         </TableCell>
                         <TableCell
-                          align='right'
-                          sx={{ fontSize: 22, fontWeight: 'bold' }}
+                          align="right"
+                          sx={{ fontSize: 22, fontWeight: "bold" }}
                         >
-                          {symbol}{' '}
+                          {symbol}{" "}
                           {numberWithComma(
                             +row.market_cap.toString().slice(0, -6)
                           )}
@@ -171,10 +169,10 @@ const CoinsTable = () => {
           count={handleSearch() ? +(handleSearch()?.length / 10).toFixed(0) : 1}
           sx={{
             p: 3,
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            '& .MuiPaginationItem-root': { color: 'gold' },
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            "& .MuiPaginationItem-root": { color: "gold" },
           }}
           onChange={(_, value: number) => {
             setPage(value);

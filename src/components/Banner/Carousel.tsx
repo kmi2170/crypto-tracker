@@ -1,28 +1,28 @@
 // import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { makeStyles } from '@mui/styles';
-import AliceCarousel from 'react-alice-carousel';
-import { useQuery } from 'react-query';
+import Link from "next/link";
+import Image from "next/image";
+import { makeStyles } from "@mui/styles";
+import AliceCarousel from "react-alice-carousel";
+import { useQuery } from "react-query";
 
-import { CryptoState } from '../../context/CryptoContext';
-import { fetchTrendCoins, configRQ } from '../../lib/fetchFunctions';
-import { Coin } from '../../context/types';
+import { CryptoState } from "../../context/CryptoContext";
+import { fetchTrendCoins, configRQ } from "../../lib/fetchFunctions";
+import { Coin } from "../../context/types";
 
 const useStyles = makeStyles(() => ({
   carousel: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    textTransform: 'uppercase',
-    color: 'white',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    textTransform: "uppercase",
+    color: "white",
   },
 }));
 
 export const numberWithComma = (x: number) => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 const Carousel = () => {
@@ -31,7 +31,7 @@ const Carousel = () => {
   const { currency, symbol } = CryptoState();
 
   const { data: trending } = useQuery<Coin[]>(
-    ['trending', currency],
+    ["trending", currency],
     () => fetchTrendCoins(currency),
     configRQ
   );
@@ -41,27 +41,25 @@ const Carousel = () => {
 
     return (
       <Link key={coin.id} href={`/coins/${coin.id}`}>
-        <a>
-          <div className={classes.carousel}>
-            <Image src={coin?.image} alt={coin.name} width='80' height='80' />
-            <span>
-              {coin?.symbol}
-              <span
-                style={{
-                  color: isProfit ? 'rgb(14, 203, 129)' : 'red',
-                  fontWeight: 'bold',
-                }}
-              >
-                {isProfit && '+'}{' '}
-                {+coin?.price_change_percentage_24h?.toFixed(2)}%
-              </span>
+        <div className={classes.carousel}>
+          {/* <Image src={coin?.image} alt={coin.name} width="80" height="80" /> */}
+          <span>
+            {coin?.symbol}
+            <span
+              style={{
+                color: isProfit ? "rgb(14, 203, 129)" : "red",
+                fontWeight: "bold",
+              }}
+            >
+              {isProfit && "+"} {+coin?.price_change_percentage_24h?.toFixed(2)}
+              %
             </span>
+          </span>
 
-            <span style={{ fontSize: 22 }}>
-              {symbol} {numberWithComma(+coin?.current_price.toFixed(2))}
-            </span>
-          </div>
-        </a>
+          <span style={{ fontSize: 22 }}>
+            {symbol} {numberWithComma(+coin?.current_price.toFixed(2))}
+          </span>
+        </div>
       </Link>
     );
   });
@@ -76,7 +74,7 @@ const Carousel = () => {
   };
 
   return (
-    <div style={{ height: '50%', display: 'flex', alignItems: 'center' }}>
+    <div style={{ height: "50%", display: "flex", alignItems: "center" }}>
       <AliceCarousel
         mouseTracking
         infinite
