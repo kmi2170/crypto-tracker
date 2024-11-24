@@ -7,14 +7,14 @@ import Button from "@mui/material/Button";
 import { signOut } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { AiFillDelete } from "react-icons/ai/index";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 import { CryptoState } from "../../context/CryptoContext";
 import { numberWithComma } from "../Banner/Carousel";
 import { auth, db } from "../../lib/firebase";
 import { configForUseQuery } from "../../lib/fetchFunctions";
 import { Coin } from "../../context/types";
-import axios from "axios";
 
 type Anchor = "right";
 
@@ -30,11 +30,11 @@ export default function UserSidebar() {
 
   const { user, setAlert, watchlist, symbol, currency } = CryptoState();
 
-  const { data: coins } = useQuery<Coin[]>(
-    ["coins", currency],
-    () => fetchFn(currency),
-    configForUseQuery
-  );
+  const { data: coins } = useQuery<Coin[]>({
+    queryKey: ["coins", currency],
+    queryFn: () => fetchFn(currency),
+    ...configForUseQuery,
+  });
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>

@@ -6,8 +6,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import theme from "../styles/theme/theme";
 import createEmotionCache from "../styles/theme/createEmotionCache";
-import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import "../styles/globals.css";
 import "react-alice-carousel/lib/alice-carousel.css";
@@ -47,15 +47,15 @@ export default function MyApp(props: MyAppProps) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <QueryClientProvider client={queryClient.current}>
-          <Hydrate state={pageProps.dehydrateState}>
-            <CryptoProvider>
-              <Header />
-              <Component {...pageProps} />
-              <AlertMessage />
-              <Footer />
-            </CryptoProvider>
-            <ReactQueryDevtools />
-          </Hydrate>
+          <CryptoProvider>
+            <Header />
+            <Component {...pageProps} />
+            <AlertMessage />
+            <Footer />
+          </CryptoProvider>
+          <ReactQueryDevtools />
+          {/* <Hydrate state={pageProps.dehydrateState}>
+          </Hydrate> */}
         </QueryClientProvider>
       </ThemeProvider>
     </CacheProvider>

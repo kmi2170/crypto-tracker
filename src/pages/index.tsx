@@ -8,7 +8,7 @@ import { fetchCoins, fetchTrendCoins } from "../lib/fetchFunctions";
 const Home: NextPage = () => {
   return (
     <>
-      <Banner />
+      {/* <Banner /> */}
       <CoinsTable />
     </>
   );

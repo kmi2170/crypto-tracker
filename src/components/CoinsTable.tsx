@@ -13,13 +13,13 @@ import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import Pagination from "@mui/material/Pagination";
 import { makeStyles } from "@mui/styles";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 import { CryptoState } from "../context/CryptoContext";
 import { numberWithComma } from "./Banner/Carousel";
 import { Coin } from "../context/types";
 import { configForUseQuery } from "../lib/fetchFunctions";
-import axios from "axios";
 
 const useStyles = makeStyles(() => ({
   tableBodyRow: {
@@ -44,11 +44,11 @@ const CoinsTable = () => {
 
   const { currency, symbol } = CryptoState();
 
-  const { data: coins, isLoading } = useQuery<Coin[]>(
-    ["coins", currency],
-    () => fetchFn(currency),
-    configForUseQuery
-  );
+  const { data: coins, isLoading } = useQuery<Coin[]>({
+    queryKey: ["coins", currency],
+    queryFn: () => fetchFn(currency),
+    ...configForUseQuery,
+  });
 
   if (!currency) return;
 

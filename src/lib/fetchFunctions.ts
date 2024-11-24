@@ -8,9 +8,9 @@ export const configForUseQuery = {
   refetchOnMount: false,
   refetchOnReconnect: false,
   refetchOnWindowFocus: false,
-  onSuccess: () => {
-    console.log("Success data fetching");
-  },
+  // onSuccess: () => {
+  //   console.log("Success data fetching");
+  // },
 };
 
 export const fetchCoins = async (currency: string) => {

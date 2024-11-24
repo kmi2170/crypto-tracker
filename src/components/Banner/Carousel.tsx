@@ -3,12 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { makeStyles } from "@mui/styles";
 import AliceCarousel from "react-alice-carousel";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 import { CryptoState } from "../../context/CryptoContext";
-import { fetchTrendCoins, configForUseQuery } from "../../lib/fetchFunctions";
+import { configForUseQuery } from "../../lib/fetchFunctions";
 import { Coin } from "../../context/types";
-import axios from "axios";
 
 const useStyles = makeStyles(() => ({
   carousel: {
@@ -38,11 +38,11 @@ const Carousel = () => {
 
   const { currency, symbol } = CryptoState();
 
-  const { data: trending } = useQuery<Coin[]>(
-    ["trending", currency],
-    () => fetchFn(currency),
-    configForUseQuery
-  );
+  const { data: trending } = useQuery<Coin[]>({
+    queryKey: ["trending", currency],
+    queryFn: () => fetchFn(currency),
+    ...configForUseQuery,
+  });
 
   if (!trending) return;
 
