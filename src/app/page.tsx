@@ -1,15 +1,12 @@
-import type { GetServerSideProps, NextPage } from "next";
-import { QueryClient, dehydrate } from "react-query";
-
-import Banner from "../components/Banner/Banner";
+// import Banner from "../components/Banner/Banner";
 import CoinsTable from "../components/CoinsTable";
-import { fetchCoins, fetchTrendCoins } from "../lib/fetchFunctions";
 
-const Home: NextPage = () => {
+const Home = () => {
   return (
     <>
       {/* <Banner /> */}
       <CoinsTable />
+      test
     </>
   );
 };

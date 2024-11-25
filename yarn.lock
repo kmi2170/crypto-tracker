@@ -800,6 +800,13 @@
   resolved "https://registry.yarnpkg.com/@mui/core-downloads-tracker/-/core-downloads-tracker-6.1.8.tgz#4fccd4eb9960ffa17ebf0533a6e9cfd2787cba57"
   integrity sha512-TGAvzwUg9hybDacwfIGFjI2bXYXrIqky+vMfaeay8rvT56/PNAlvIDUJ54kpT5KRc9AWAihOvtDI7/LJOThOmQ==
 
+"@mui/material-nextjs@^6.1.8":
+  version "6.1.8"
+  resolved "https://registry.yarnpkg.com/@mui/material-nextjs/-/material-nextjs-6.1.8.tgz#c059c63e0cc40b7bdb2441f696c59330847313c2"
+  integrity sha512-gSNZ+wCq38eX0rcIpsDCwUbWR2+z8/5mVv6+piwJc+ZByLFF8Xuq59vKx3m4IF8+AR8VIYzmfEzKOYxzS7p1aw==
+  dependencies:
+    "@babel/runtime" "^7.26.0"
+
 "@mui/material@^6.1.8":
   version "6.1.8"
   resolved "https://registry.yarnpkg.com/@mui/material/-/material-6.1.8.tgz#67cc5796aaa3f81ac94783fd79c85c80062e4a99"
