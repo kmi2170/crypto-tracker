@@ -19,7 +19,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 import { CryptoState } from "../context/CryptoContext";
-import { numberWithComma } from "./Banner/Carousel";
+import { numberWithComma } from "./Banner/Carousel-old";
 import { Coin } from "../context/types";
 import { configForUseQuery } from "../lib/fetchFunctions";
 
@@ -34,7 +34,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const fetchFn = async (currency: string) => {
-  const { data } = await axios.get(`/api/coin-list/route?currency=${currency}`);
+  const { data } = await axios.get(`/api/coin-list?currency=${currency}`);
   return data;
 };
 

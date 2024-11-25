@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { CoinList, TrendingCoins } from "../config/api";
+import { CoinList, TrendingCoins } from "../config/api-endpoints";
 
 export const configForUseQuery = {
   // refetchInterval: 300000,

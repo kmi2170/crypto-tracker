@@ -1,10 +1,10 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { HistoricalChart } from '../config/api';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import CircularProgress from '@mui/material/CircularProgress';
-import { Line } from 'react-chartjs-2';
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { HistoricalChart } from "../config/api-endpoints";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import CircularProgress from "@mui/material/CircularProgress";
+import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,11 +15,11 @@ import {
   Tooltip,
   Legend,
   ChartOptions,
-} from 'chart.js';
+} from "chart.js";
 
-import SelectButton from './SelectButton';
-import { CryptoState } from '../context/CryptoContext';
-import { chartDays } from '../config/data';
+import SelectButton from "./SelectButton";
+import { CryptoState } from "../context/CryptoContext";
+import { chartDays } from "../config/data";
 
 ChartJS.register(
   CategoryScale,
@@ -68,17 +68,17 @@ const CoinInfo = ({ coin }: { coin: any }) => {
   return (
     <Container
       sx={{
-        width: { sm: '100%', md: '75%', lg: '75%' },
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
+        width: { sm: "100%", md: "75%", lg: "75%" },
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
         mt: 3,
         p: 5,
       }}
     >
       {!histricalData || isLoading ? (
-        <CircularProgress sx={{ color: 'gold' }} size={250} thickness={3} />
+        <CircularProgress sx={{ color: "gold" }} size={250} thickness={3} />
       ) : (
         <>
           <Line
@@ -95,7 +95,7 @@ const CoinInfo = ({ coin }: { coin: any }) => {
                 {
                   data: histricalData.map((coin: any) => coin[1]),
                   label: `Price ( Past ${days} Days ) in ${currency}`,
-                  borderColor: '#EEBC1D',
+                  borderColor: "#EEBC1D",
                 },
               ],
             }}
@@ -103,10 +103,10 @@ const CoinInfo = ({ coin }: { coin: any }) => {
           />
           <Box
             sx={{
-              display: 'flex',
+              display: "flex",
               mt: 3,
-              justifyContent: 'space-around',
-              width: '100%',
+              justifyContent: "space-around",
+              width: "100%",
             }}
           >
             {chartDays.map((day) => (

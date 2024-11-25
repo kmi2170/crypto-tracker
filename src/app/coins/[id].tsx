@@ -10,34 +10,33 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
+import { useQuery } from "@tanstack/react-query";
 
-import { SingleCoin } from "../../config/api";
 import { CryptoState } from "../../context/CryptoContext";
 import CoinInfo from "../../components/CoinInfo";
-import { numberWithComma } from "../../components/Banner/Carousel";
+import { numberWithComma } from "../../components/Banner/Carousel-old";
 import { db } from "../../lib/firebase";
+import { configForUseQuery } from "../../lib/fetchFunctions";
+import { Coin } from "../../context/types";
+
+const fetchFn = async (currency: string) => {
+  const { data } = await axios.get(`/api/single-coin?currency=${currency}`);
+  return data;
+};
 
 const Coins: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const [coin, setCoin] = useState<any>({});
+  const { data: coin, isLoading } = useQuery<Coin>({
+    queryKey: ["single-coin", id],
+    queryFn: () => fetchFn(currency),
+    ...configForUseQuery,
+  });
 
   const { currency, symbol, user, setAlert, watchlist } = CryptoState();
-
-  const fetchCoin = async () => {
-    try {
-      const { data } = await axios.get(SingleCoin(id as string));
-
-      setCoin(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    if (id) fetchCoin();
-  }, [id, currency]);
+  1;
+  if (!coin) return;
 
   const inWatchlist = watchlist.includes(coin?.id);
 
@@ -121,12 +120,12 @@ const Coins: NextPage = () => {
           borderRight: "2px solid gray",
         }}
       >
-        <Image
+        {/* <Image
           src={coin?.image.large}
           alt={coin?.name}
           width="200"
           height="200"
-        />
+        /> */}
         <Typography variant="h3" sx={{ fontWeight: "bold", mt: 2 }}>
           {coin?.name}
         </Typography>

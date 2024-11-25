@@ -1,8 +1,11 @@
-// import { useState, useEffect } from 'react';
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import AliceCarousel from "react-alice-carousel";
+import "react-alice-carousel/lib/alice-carousel.css";
+
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -10,33 +13,36 @@ import { CryptoState } from "../../context/CryptoContext";
 import { configForUseQuery } from "../../lib/fetchFunctions";
 import { Coin } from "../../context/types";
 
-const useStyles = makeStyles(() => ({
-  carousel: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    cursor: "pointer",
-    textTransform: "uppercase",
-    color: "white",
-  },
-}));
+const CarouselWrapper = styled("div")({
+  height: "50%",
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+  background: "pink",
+});
+
+const ItemWrapper = styled("div")({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+  textTransform: "uppercase",
+  color: "white",
+});
 
 export const numberWithComma = (x: number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 const fetchFn = async (currency: string) => {
-  const { data } = await axios.get(
-    `/api/trend-list/route?currency=${currency}`
-  );
+  const { data } = await axios.get(`/api/trend-list?currency=${currency}`);
   return data;
 };
 
 const Carousel = () => {
-  const classes = useStyles();
-
-  const { currency, symbol } = CryptoState();
+  const { currency = "usd", symbol } = CryptoState();
 
   const { data: trending } = useQuery<Coin[]>({
     queryKey: ["trending", currency],
@@ -44,35 +50,39 @@ const Carousel = () => {
     ...configForUseQuery,
   });
 
+  console.log(trending);
+
   if (!trending) return;
 
   const items = trending?.map((coin: Coin) => {
-    const isProfit = coin?.price_change_percentage_24h >= 0;
+    const isPriceUp = coin?.price_change_percentage_24h >= 0;
 
     return (
       <Link key={coin.id} href={`/coins/${coin.id}`}>
-        <div className={classes.carousel}>
+        <ItemWrapper>
           <Image src={coin?.image} alt={coin.name} width="80" height="80" />
           <span>
             {coin?.symbol}
             <span
               style={{
-                color: isProfit ? "rgb(14, 203, 129)" : "red",
+                color: isPriceUp ? "rgb(14, 203, 129)" : "red",
                 fontWeight: "bold",
               }}
             >
-              {isProfit && "+"} {+coin?.price_change_percentage_24h?.toFixed(2)}
-              %
+              {isPriceUp && "+"}{" "}
+              {+coin?.price_change_percentage_24h?.toFixed(2)}%
             </span>
           </span>
 
           <span style={{ fontSize: 22 }}>
             {symbol} {numberWithComma(+coin?.current_price.toFixed(2))}
           </span>
-        </div>
+        </ItemWrapper>
       </Link>
     );
   });
+
+  console.log(items);
 
   const responsive = {
     0: {
@@ -81,22 +91,27 @@ const Carousel = () => {
     512: {
       items: 4,
     },
+    1024: {
+      items: 8,
+    },
   };
 
   return (
-    <div style={{ height: "50%", display: "flex", alignItems: "center" }}>
+    <CarouselWrapper>
       <AliceCarousel
         mouseTracking
         infinite
         autoPlayInterval={10000}
         animationDuration={1500}
-        disableDotsControls
+        // disableDotsControls
         // disableButtonsControls
         responsive={responsive}
         autoPlay
         items={items}
+        // autoHeight
+        // autoWidth
       />
-    </div>
+    </CarouselWrapper>
   );
 };
 

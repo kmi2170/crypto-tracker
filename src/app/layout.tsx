@@ -6,6 +6,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TanstackQueryClientProvider from "./QueryClientProvider";
 
 // import "../styles/global.css";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 import theme from "../styles/theme/theme";
 
 export const metadata: Metadata = {
