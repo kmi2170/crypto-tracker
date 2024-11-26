@@ -1,47 +1,57 @@
+"use client";
+
 import Link from "next/link";
+import Form from "next/form";
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 
-import { CryptoState } from "../context/CryptoContext";
-import AuthModal from "./Authentication/AuthModal";
-import UserSidebar from "./Authentication/UserSidebar";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { colors } from "@mui/material";
+// import AuthModal from "./Authentication/AuthModal";
+// import UserSidebar from "./Authentication/UserSidebar";
 
-const useStyles = makeStyles(() => ({
-  bannerContent: {
-    // height: 400,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    paddingTop: 2,
-  },
-  title: {
-    flex: 1,
+const Wrapper = styled(Container)({
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  paddingTop: 2,
+});
+
+const Title = styled(Typography)({
+  flex: 1,
+  "& a": {
     color: "gold",
     fontWeight: "bold",
     cursor: "pointer",
   },
-}));
+});
 
 const Header = () => {
-  const classes = useStyles();
+  const router = useRouter();
+  const pathName = usePathname();
+  const searchParams = useSearchParams();
+  const currency = searchParams.get("currency") || "usd";
 
-  const { currency, setCurrency, user } = CryptoState();
-
-  const handleChange = (e: SelectChangeEvent) =>
-    setCurrency(e.target.value as string);
+  const handleChange = (e: SelectChangeEvent) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("currency", e.target.value);
+    const newUrl = `${pathName}?${params.toString()}`;
+    router.push(newUrl);
+  };
 
   return (
-    <AppBar color="transparent" position="static">
-      <Container className={classes.bannerContent}>
-        <Toolbar>
-          <Typography className={classes.title} variant="h5">
+    <AppBar color="transparent" position="sticky">
+      <Toolbar>
+        <Wrapper maxWidth="lg">
+          <Title variant="h5">
             <Link href="/">Crypto Tracker</Link>
-          </Typography>
+          </Title>
 
           <Select
             variant="outlined"
@@ -49,14 +59,14 @@ const Header = () => {
             value={currency}
             onChange={handleChange}
           >
-            <MenuItem value={"USD"}>USD</MenuItem>
-            <MenuItem value={"EUR"}>EUR</MenuItem>
-            <MenuItem value={"JPY"}>JPY</MenuItem>
+            <MenuItem value="usd">USD</MenuItem>
+            <MenuItem value="eur">EUR</MenuItem>
+            <MenuItem value="jpy">JPY</MenuItem>
           </Select>
 
-          {user ? <UserSidebar /> : <AuthModal />}
-        </Toolbar>
-      </Container>
+          {/* {user ? <UserSidebar /> : <AuthModal />} */}
+        </Wrapper>
+      </Toolbar>
     </AppBar>
   );
 };

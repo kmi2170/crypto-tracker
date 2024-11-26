@@ -12,6 +12,7 @@ import axios from "axios";
 import { CryptoState } from "../../context/CryptoContext";
 import { configForUseQuery } from "../../lib/fetchFunctions";
 import { Coin } from "../../context/types";
+import { useSearchParams } from "next/navigation";
 
 const CarouselWrapper = styled("div")({
   height: "50%",
@@ -41,7 +42,12 @@ const fetchFn = async (currency: string) => {
 };
 
 const Carousel = () => {
-  const { currency = "usd", symbol } = CryptoState();
+  const searchParams = useSearchParams();
+  const currency = searchParams.get("currency") || "usd";
+
+  const symbol = currency.toUpperCase();
+  console.log({ currency });
+  // const { currency = "usd", symbol } = CryptoState();
 
   const { data: trending } = useQuery<Coin[]>({
     queryKey: ["trending", currency],
