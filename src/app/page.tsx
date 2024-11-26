@@ -1,11 +1,11 @@
 import Banner from "../components/Banner/Banner";
-// import CoinsTable from "../components/CoinsTable";
+import CoinsTable from "../components/CoinsTable";
 
 const Home = () => {
   return (
     <>
       <Banner />
-      {/* <CoinsTable /> */}
+      <CoinsTable />
     </>
   );
 };

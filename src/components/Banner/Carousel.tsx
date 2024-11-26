@@ -19,7 +19,6 @@ const CarouselWrapper = styled("div")({
   flexDirection: "row",
   justifyContent: "center",
   alignItems: "center",
-  background: "pink",
 });
 
 const ItemWrapper = styled("div")({
@@ -50,8 +49,6 @@ const Carousel = () => {
     ...configForUseQuery,
   });
 
-  console.log(trending);
-
   if (!trending) return;
 
   const items = trending?.map((coin: Coin) => {
@@ -81,8 +78,6 @@ const Carousel = () => {
       </Link>
     );
   });
-
-  console.log(items);
 
   const responsive = {
     0: {

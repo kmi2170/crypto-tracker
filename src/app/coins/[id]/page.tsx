@@ -1,6 +1,6 @@
-import type { NextPage } from "next";
+"use client";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ReactHtmlParser from "react-html-parser";
 import axios from "axios";
@@ -12,33 +12,33 @@ import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useQuery } from "@tanstack/react-query";
 
-import { CryptoState } from "../../context/CryptoContext";
-import CoinInfo from "../../components/CoinInfo";
-import { numberWithComma } from "../../components/Banner/Carousel-old";
-import { db } from "../../lib/firebase";
-import { configForUseQuery } from "../../lib/fetchFunctions";
-import { Coin } from "../../context/types";
+import { CryptoState } from "../../../context/CryptoContext";
+import CoinInfo from "../../../components/CoinInfo";
+import { numberWithComma } from "../../../components/Banner/Carousel";
+import { db } from "../../../lib/firebase";
+import { configForUseQuery } from "../../../lib/fetchFunctions";
+import { SingleCoin } from "../../../context/types";
 
 const fetchFn = async (currency: string) => {
   const { data } = await axios.get(`/api/single-coin?currency=${currency}`);
   return data;
 };
 
-const Coins: NextPage = () => {
-  const router = useRouter();
-  const { id } = router.query;
+const Coins = () => {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
 
-  const { data: coin, isLoading } = useQuery<Coin>({
+  const { currency = "usd", symbol, user, setAlert, watchlist } = CryptoState();
+
+  const { data: coin, isLoading } = useQuery<SingleCoin>({
     queryKey: ["single-coin", id],
     queryFn: () => fetchFn(currency),
     ...configForUseQuery,
   });
 
-  const { currency, symbol, user, setAlert, watchlist } = CryptoState();
-  1;
   if (!coin) return;
 
-  const inWatchlist = watchlist.includes(coin?.id);
+  const inWatchlist = watchlist?.includes(coin?.id);
 
   const addToWatchlist = async () => {
     if (user) {
@@ -95,6 +95,8 @@ const Coins: NextPage = () => {
       }
     }
   };
+
+  console.log({ symbol });
 
   return !coin?.image ? (
     <Box
@@ -155,7 +157,7 @@ const Coins: NextPage = () => {
             <Typography variant="h6">Current Price:</Typography>
             &nbsp; &nbsp;
             <Typography variant="h6">
-              {symbol}{" "}
+              {coin?.symbol}{" "}
               {numberWithComma(
                 coin?.market_data.current_price[currency.toLowerCase()]
               )}
@@ -165,12 +167,10 @@ const Coins: NextPage = () => {
             <Typography variant="h6">Market Cap:</Typography>
             &nbsp; &nbsp;
             <Typography variant="h5">
-              {symbol}{" "}
+              {coin?.symbol}{" "}
               {numberWithComma(
                 coin?.market_data.market_cap[currency.toLowerCase()]
-                  .toString()
-                  .slice(0, 6)
-              )}
+              ).slice(0, 6)}
               M
             </Typography>
           </Box>

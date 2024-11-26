@@ -19,7 +19,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 import { CryptoState } from "../context/CryptoContext";
-import { numberWithComma } from "./Banner/Carousel-old";
+import { numberWithComma } from "./Banner/Carousel";
 import { Coin } from "../context/types";
 import { configForUseQuery } from "../lib/fetchFunctions";
 
@@ -44,7 +44,7 @@ const CoinsTable = () => {
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
-  const { currency, symbol } = CryptoState();
+  const { currency = "usd", symbol } = CryptoState();
 
   const { data: coins, isLoading } = useQuery<Coin[]>({
     queryKey: ["coins", currency],
@@ -111,7 +111,7 @@ const CoinsTable = () => {
                           scope="row"
                           sx={{ display: "flex", gap: 3 }}
                         >
-                          <Link href={`coins/${row.id}`}>
+                          <Link href={`/coins/${row.id}`}>
                             <Image
                               src={row?.image}
                               alt={row.name}
@@ -142,7 +142,7 @@ const CoinsTable = () => {
                           align="right"
                           sx={{ fontSize: 22, fontWeight: "bold" }}
                         >
-                          {symbol}{" "}
+                          {row.symbol}{" "}
                           {numberWithComma(+row.current_price.toFixed(2))}
                         </TableCell>
                         <TableCell
@@ -160,7 +160,7 @@ const CoinsTable = () => {
                           align="right"
                           sx={{ fontSize: 22, fontWeight: "bold" }}
                         >
-                          {symbol}{" "}
+                          {row.symbol}{" "}
                           {numberWithComma(
                             +row.market_cap.toString().slice(0, -6)
                           )}
