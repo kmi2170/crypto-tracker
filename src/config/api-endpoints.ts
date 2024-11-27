@@ -4,7 +4,7 @@ export const CoinList = (currency: string) =>
 export const SingleCoin = (id: string, currency: string) =>
   `https://api.coingecko.com/api/v3/coins/${id}?vs_currency=${currency}`;
 
-export const HistoricalChart = (id: string, days = 365, currency: string) =>
+export const HistoricalChart = (id: string, currency: string, days: string) =>
   `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=${currency}&days=${days}`;
 
 export const TrendingCoins = (currency: string) =>

@@ -1,6 +1,7 @@
 "use client";
+
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ReactHtmlParser from "react-html-parser";
 import axios from "axios";
@@ -18,6 +19,7 @@ import { numberWithComma } from "../../../components/Banner/Carousel";
 import { db } from "../../../lib/firebase";
 import { configForUseQuery } from "../../../lib/fetchFunctions";
 import { SingleCoin } from "../../../context/types";
+import { useRouter } from "next/router";
 
 const fetchFn = async (id: string, currency: string) => {
   const { data } = await axios.get(
@@ -26,11 +28,12 @@ const fetchFn = async (id: string, currency: string) => {
   return data;
 };
 
-const Coins = ({ params }: { params: { id: string } }) => {
-  const { id } = params;
-  console.log(id);
+//const Coins = async ({ params }: { params: Promise<{ id: string }> }) => {
+const Coins = () => {
+  // const router = useRouter();
+  const params = useParams();
+  const id = params.id as string;
   const searchParams = useSearchParams();
-  // const id = searchParams.get("id");
   const currency = searchParams.get("currency") || "usd";
 
   const { symbol, user, setAlert, watchlist } = CryptoState();
@@ -101,8 +104,6 @@ const Coins = ({ params }: { params: { id: string } }) => {
     }
   };
 
-  console.log({ symbol });
-
   return !coin?.image ? (
     <Box
       sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -162,7 +163,7 @@ const Coins = ({ params }: { params: { id: string } }) => {
             <Typography variant="h6">Current Price:</Typography>
             &nbsp; &nbsp;
             <Typography variant="h6">
-              {coin?.symbol}{" "}
+              {currency}{" "}
               {numberWithComma(
                 coin?.market_data.current_price[currency.toLowerCase()]
               )}
@@ -172,7 +173,7 @@ const Coins = ({ params }: { params: { id: string } }) => {
             <Typography variant="h6">Market Cap:</Typography>
             &nbsp; &nbsp;
             <Typography variant="h5">
-              {coin?.symbol}{" "}
+              {currency}{" "}
               {numberWithComma(
                 coin?.market_data.market_cap[currency.toLowerCase()]
               ).slice(0, 6)}
@@ -202,7 +203,7 @@ const Coins = ({ params }: { params: { id: string } }) => {
         </Box>
       </Box>
 
-      <CoinInfo coin={coin} />
+      <CoinInfo id={id} currency={currency} />
     </Box>
   );
 };

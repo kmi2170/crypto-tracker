@@ -47,7 +47,6 @@ const Carousel = () => {
   const currency = searchParams.get("currency") || "usd";
 
   const symbol = currency.toUpperCase();
-  console.log({ currency });
   // const { currency = "usd", symbol } = CryptoState();
 
   const { data: trending } = useQuery<Coin[]>({

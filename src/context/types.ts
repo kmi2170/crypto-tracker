@@ -45,3 +45,7 @@ export interface SingleCoin {
   current_price: number;
   market_cap: number;
 }
+
+export interface Historical {
+  prices: [number, number][];
+}

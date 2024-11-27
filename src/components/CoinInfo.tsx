@@ -19,7 +19,10 @@ import {
 
 import SelectButton from "./SelectButton";
 import { CryptoState } from "../context/CryptoContext";
-import { chartDays } from "../config/data";
+import { chartDays } from "../config/chartDays";
+import { configForUseQuery } from "../lib/fetchFunctions";
+import { useQuery } from "@tanstack/react-query";
+import { Historical } from "../context/types";
 
 ChartJS.register(
   CategoryScale,
@@ -31,29 +34,53 @@ ChartJS.register(
   Legend
 );
 
-const CoinInfo = ({ coin }: { coin: any }) => {
-  const [histricalData, setHistricalDate] = useState<[]>([]);
+const fetchFn = async (id: string, currency: string, days: number) => {
+  const { data } = await axios.get(
+    `/api/historical?id=${id}&currency=${currency}&days=${days}`
+  );
+  return data;
+};
+
+type CoinInfoProps = {
+  id: string;
+  currency: string;
+};
+
+const CoinInfo = (props: CoinInfoProps) => {
+  const { id, currency } = props;
+  // const [histricalData, setHistricalDate] = useState<[]>([]);
   const [days, setDays] = useState<number>(1);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { currency } = CryptoState();
+  // const { currency } = CryptoState();
 
-  const fetchHistricalData = async () => {
-    try {
-      const { data } = await axios.get(
-        HistoricalChart(coin.id, days, currency)
-      );
+  const { data: historical, isLoading } = useQuery<Historical>({
+    queryKey: ["history", { id, currency, days }],
+    queryFn: () => fetchFn(id, currency, days),
+    ...configForUseQuery,
+  });
 
-      setIsLoading(false);
-      setHistricalDate(data.prices);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const labels = historical?.prices.map((data) => {
+    return data[0];
+  });
+  const prices = historical?.prices.map((data) => data[0]);
 
-  useEffect(() => {
-    fetchHistricalData();
-  }, [currency, days]);
+  // const fetchHistricalData = async () => {
+  //   try {
+  //     const { data } = await axios.get(
+  //       HistoricalChart(coin.id, days, currency)
+  //     );
+
+  //     setIsLoading(false);
+  //     setHistricalDate(data.prices);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchHistricalData();
+  // }, [currency, days]);
 
   const options: ChartOptions = {
     responsive: true,
@@ -77,24 +104,25 @@ const CoinInfo = ({ coin }: { coin: any }) => {
         p: 5,
       }}
     >
-      {!histricalData || isLoading ? (
+      {!historical || isLoading ? (
         <CircularProgress sx={{ color: "gold" }} size={250} thickness={3} />
       ) : (
         <>
           <Chart
             type="line"
             data={{
-              labels: histricalData.map((coin: any) => {
-                const date = new Date(coin[0]);
-                const time =
-                  date.getHours() > 12
-                    ? `${date.getHours() - 12}:${date.getMinutes()} PM`
-                    : `${date.getHours()}:${date.getMinutes()} AM`;
-                return days === 1 ? time : date.toLocaleString();
-              }),
+              // labels: historical.prices.map((coin: any) => {
+              //   const date = new Date(coin[0]);
+              //   const time =
+              //     date.getHours() > 12
+              //       ? `${date.getHours() - 12}:${date.getMinutes()} PM`
+              //       : `${date.getHours()}:${date.getMinutes()} AM`;
+              //   return days === 1 ? time : date.toLocaleString();
+              // })
+              labels,
               datasets: [
                 {
-                  data: histricalData.map((coin: any) => coin[1]),
+                  data: historical.prices.map((coin: any) => coin[1]),
                   label: `Price ( Past ${days} Days ) in ${currency}`,
                   borderColor: "#EEBC1D",
                 },
@@ -115,7 +143,6 @@ const CoinInfo = ({ coin }: { coin: any }) => {
                 key={day.value}
                 onClick={() => {
                   setDays(day.value);
-                  setIsLoading(true);
                 }}
                 selected={day.value === days}
               >
