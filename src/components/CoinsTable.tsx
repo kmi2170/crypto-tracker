@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -41,10 +43,13 @@ const fetchFn = async (currency: string) => {
 const CoinsTable = () => {
   const classes = useStyles();
 
+  const searchParams = useSearchParams();
+  const currency = searchParams.get("currency") || "usd";
+
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
-  const { currency = "usd", symbol } = CryptoState();
+  // const { currency = "usd", symbol } = CryptoState();
 
   const { data: coins, isLoading } = useQuery<Coin[]>({
     queryKey: ["coins", currency],

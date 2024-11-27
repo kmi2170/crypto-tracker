@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import Banner from "../components/Banner/Banner";
 import CoinsTable from "../components/CoinsTable";
 import Header from "../components/Header";
@@ -5,9 +7,13 @@ import Header from "../components/Header";
 const Home = () => {
   return (
     <>
-      <Header />
+      <Suspense>
+        <Header />
+      </Suspense>
       <Banner />
-      <CoinsTable />
+      <Suspense>
+        <CoinsTable />
+      </Suspense>
     </>
   );
 };

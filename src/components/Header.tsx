@@ -13,6 +13,7 @@ import { styled } from "@mui/material/styles";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { colors } from "@mui/material";
+import useLocalStorage from "../hooks/useLocalStrage";
 // import AuthModal from "./Authentication/AuthModal";
 // import UserSidebar from "./Authentication/UserSidebar";
 
@@ -33,18 +34,6 @@ const Title = styled(Typography)({
 });
 
 const Header = () => {
-  const router = useRouter();
-  const pathName = usePathname();
-  const searchParams = useSearchParams();
-  const currency = searchParams.get("currency") || "usd";
-
-  const handleChange = (e: SelectChangeEvent) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("currency", e.target.value);
-    const newUrl = `${pathName}?${params.toString()}`;
-    router.push(newUrl);
-  };
-
   return (
     <AppBar color="transparent" position="sticky">
       <Toolbar>
@@ -53,17 +42,7 @@ const Header = () => {
             <Link href="/">Crypto Tracker</Link>
           </Title>
 
-          <Select
-            variant="outlined"
-            sx={{ width: 100, height: 40, mr: 2 }}
-            value={currency}
-            onChange={handleChange}
-          >
-            <MenuItem value="usd">USD</MenuItem>
-            <MenuItem value="eur">EUR</MenuItem>
-            <MenuItem value="jpy">JPY</MenuItem>
-          </Select>
-
+          <SelectCurrency />
           {/* {user ? <UserSidebar /> : <AuthModal />} */}
         </Wrapper>
       </Toolbar>
@@ -72,3 +51,40 @@ const Header = () => {
 };
 
 export default Header;
+
+const initStorage = "";
+
+const SelectCurrency = () => {
+  const router = useRouter();
+  const pathName = usePathname();
+  const searchParams = useSearchParams();
+
+  const { value: storedCurrency, setValueToLocalStorage } = useLocalStorage(
+    "currency",
+    initStorage
+  );
+
+  const currency = storedCurrency || searchParams.get("currency") || "usd";
+
+  const handleChange = (e: SelectChangeEvent) => {
+    const params = new URLSearchParams(searchParams);
+    const newCurrency = e.target.value;
+    params.set("currency", newCurrency);
+    const newUrl = `${pathName}?${params.toString()}`;
+    setValueToLocalStorage("currency", newCurrency);
+    router.push(newUrl);
+  };
+
+  return (
+    <Select
+      variant="outlined"
+      sx={{ width: 100, height: 40, mr: 2 }}
+      value={currency}
+      onChange={handleChange}
+    >
+      <MenuItem value="usd">USD</MenuItem>
+      <MenuItem value="eur">EUR</MenuItem>
+      <MenuItem value="jpy">JPY</MenuItem>
+    </Select>
+  );
+};

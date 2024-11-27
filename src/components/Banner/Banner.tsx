@@ -1,5 +1,7 @@
 "use client";
 
+import { Suspense } from "react";
+
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
@@ -46,7 +48,9 @@ const Banner = () => {
       <Typography variant="h4" align="center" sx={{ mt: 2, mb: 3 }}>
         Trend
       </Typography>
-      <Carousel />
+      <Suspense>
+        <Carousel />
+      </Suspense>
     </Container>
   );
 };

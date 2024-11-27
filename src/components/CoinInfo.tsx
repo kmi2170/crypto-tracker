@@ -4,7 +4,7 @@ import { HistoricalChart } from "../config/api-endpoints";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Line } from "react-chartjs-2";
+import { Chart } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -81,7 +81,8 @@ const CoinInfo = ({ coin }: { coin: any }) => {
         <CircularProgress sx={{ color: "gold" }} size={250} thickness={3} />
       ) : (
         <>
-          <Line
+          <Chart
+            type="line"
             data={{
               labels: histricalData.map((coin: any) => {
                 const date = new Date(coin[0]);
