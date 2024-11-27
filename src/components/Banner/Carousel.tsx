@@ -43,6 +43,7 @@ const fetchFn = async (currency: string) => {
 
 const Carousel = () => {
   const searchParams = useSearchParams();
+  const currentSearchParams = new URLSearchParams(searchParams).toString();
   const currency = searchParams.get("currency") || "usd";
 
   const symbol = currency.toUpperCase();
@@ -61,7 +62,7 @@ const Carousel = () => {
     const isPriceUp = coin?.price_change_percentage_24h >= 0;
 
     return (
-      <Link key={coin.id} href={`/coins/${coin.id}`}>
+      <Link key={coin.id} href={`/coins/${coin.id}?${currentSearchParams}`}>
         <ItemWrapper>
           <Image src={coin?.image} alt={coin.name} width="80" height="80" />
           <span>

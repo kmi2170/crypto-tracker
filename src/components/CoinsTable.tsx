@@ -44,6 +44,7 @@ const CoinsTable = () => {
   const classes = useStyles();
 
   const searchParams = useSearchParams();
+  const currentSearchPrams = new URLSearchParams(searchParams).toString();
   const currency = searchParams.get("currency") || "usd";
 
   const [search, setSearch] = useState<string>("");
@@ -116,7 +117,7 @@ const CoinsTable = () => {
                           scope="row"
                           sx={{ display: "flex", gap: 3 }}
                         >
-                          <Link href={`/coins/${row.id}`}>
+                          <Link href={`/coins/${row.id}?${currentSearchPrams}`}>
                             <Image
                               src={row?.image}
                               alt={row.name}

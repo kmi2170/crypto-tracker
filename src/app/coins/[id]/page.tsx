@@ -19,20 +19,25 @@ import { db } from "../../../lib/firebase";
 import { configForUseQuery } from "../../../lib/fetchFunctions";
 import { SingleCoin } from "../../../context/types";
 
-const fetchFn = async (currency: string) => {
-  const { data } = await axios.get(`/api/single-coin?currency=${currency}`);
+const fetchFn = async (id: string, currency: string) => {
+  const { data } = await axios.get(
+    `/api/single-coin?id=${id}&currency=${currency}`
+  );
   return data;
 };
 
-const Coins = () => {
+const Coins = ({ params }: { params: { id: string } }) => {
+  const { id } = params;
+  console.log(id);
   const searchParams = useSearchParams();
-  const id = searchParams.get("id");
+  // const id = searchParams.get("id");
+  const currency = searchParams.get("currency") || "usd";
 
-  const { currency = "usd", symbol, user, setAlert, watchlist } = CryptoState();
+  const { symbol, user, setAlert, watchlist } = CryptoState();
 
   const { data: coin, isLoading } = useQuery<SingleCoin>({
-    queryKey: ["single-coin", id],
-    queryFn: () => fetchFn(currency),
+    queryKey: ["single-coin", { id, currency }],
+    queryFn: () => fetchFn(id, currency),
     ...configForUseQuery,
   });
 
