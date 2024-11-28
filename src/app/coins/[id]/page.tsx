@@ -2,35 +2,26 @@
 
 import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import ReactHtmlParser from "react-html-parser";
-import axios from "axios";
 import { doc, setDoc } from "firebase/firestore";
+import { useQuery } from "@tanstack/react-query";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
-import { useQuery } from "@tanstack/react-query";
 
 import { CryptoState } from "../../../context/CryptoContext";
 import CoinInfo from "../../../components/CoinInfo";
 import { numberWithComma } from "../../../components/Banner/Carousel";
 import { db } from "../../../lib/firebase";
-import { configForUseQuery } from "../../../lib/fetchFunctions";
+import {
+  configForUseQuery,
+  fetchSingleCoin,
+} from "../../../lib/fetchFunctions";
 import { SingleCoin } from "../../../context/types";
-import { useRouter } from "next/router";
 
-const fetchFn = async (id: string, currency: string) => {
-  const { data } = await axios.get(
-    `/api/single-coin?id=${id}&currency=${currency}`
-  );
-  return data;
-};
-
-//const Coins = async ({ params }: { params: Promise<{ id: string }> }) => {
 const Coins = () => {
-  // const router = useRouter();
   const params = useParams();
   const id = params.id as string;
   const searchParams = useSearchParams();
@@ -40,7 +31,7 @@ const Coins = () => {
 
   const { data: coin, isLoading } = useQuery<SingleCoin>({
     queryKey: ["single-coin", { id, currency }],
-    queryFn: () => fetchFn(id, currency),
+    queryFn: () => fetchSingleCoin(id, currency),
     ...configForUseQuery,
   });
 

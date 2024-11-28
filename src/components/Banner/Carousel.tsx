@@ -1,18 +1,16 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
+
 import { styled } from "@mui/material/styles";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-
-import { CryptoState } from "../../context/CryptoContext";
-import { configForUseQuery } from "../../lib/fetchFunctions";
+import { configForUseQuery, fetchTrendCoins } from "../../lib/fetchFunctions";
 import { Coin } from "../../context/types";
-import { useSearchParams } from "next/navigation";
 
 const CarouselWrapper = styled("div")({
   height: "50%",
@@ -36,11 +34,6 @@ export const numberWithComma = (x: number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-const fetchFn = async (currency: string) => {
-  const { data } = await axios.get(`/api/trend-list?currency=${currency}`);
-  return data;
-};
-
 const Carousel = () => {
   const searchParams = useSearchParams();
   const currentSearchParams = new URLSearchParams(searchParams).toString();
@@ -51,7 +44,7 @@ const Carousel = () => {
 
   const { data: trending } = useQuery<Coin[]>({
     queryKey: ["trending", currency],
-    queryFn: () => fetchFn(currency),
+    queryFn: () => fetchTrendCoins(currency),
     ...configForUseQuery,
   });
 

@@ -11,7 +11,6 @@ export async function GET(req: NextRequest) {
     const currency = searchParams.get("currency") as string;
 
     const { data } = await axios.get(SingleCoin(id, currency));
-    console.log(data);
 
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
