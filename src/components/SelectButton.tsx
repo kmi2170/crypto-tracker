@@ -1,16 +1,17 @@
 import { memo } from "react";
-import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
 type SelectButtonPros = {
-  children: React.ReactNode;
+  name: string;
+  days: number;
   selected: boolean;
-  onClick: () => void;
+  onClick: (days: number) => void;
 };
 
 const SelectButton = memo(
-  ({ children, selected, onClick }: SelectButtonPros) => {
+  ({ name, days, selected, onClick }: SelectButtonPros) => {
     return (
-      <Box
+      <Button
         sx={{
           border: "1px solid gold",
           borderRadius: 3,
@@ -19,17 +20,17 @@ const SelectButton = memo(
           pr: 3,
           cursor: "pointer",
           backgroundColor: selected ? "gold" : "",
-          color: selected ? "black" : "",
+          color: selected ? "black" : "white",
           fontWeight: "bold",
           "&:hover": {
             backgroundColor: "darkgoldenrod",
             color: "black",
           },
         }}
-        onClick={onClick}
+        onClick={() => onClick(days)}
       >
-        {children}
-      </Box>
+        {name}
+      </Button>
     );
   }
 );
