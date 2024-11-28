@@ -9,6 +9,7 @@ import "../styles/global.css";
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
 import theme from "../styles/theme/theme";
+import Footer from "../components/Footer";
 
 export const metadata: Metadata = {
   title: "Crypto Tracker",
@@ -30,6 +31,7 @@ export default function RootLayout({
             <TanstackQueryClientProvider>
               {children}
             </TanstackQueryClientProvider>
+            <Footer />
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
