@@ -13,8 +13,6 @@ export async function GET(req: NextRequest) {
 
     const { data } = await axios.get(HistoricalChart(id, currency, days));
 
-    console.log(data);
-
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     return NextResponse.json(error, { status: 500 });

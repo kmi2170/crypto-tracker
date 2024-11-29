@@ -13,17 +13,15 @@ const SelectButton = memo(
     return (
       <Button
         sx={{
-          border: "1px solid gold",
-          borderRadius: 3,
-          p: 1,
+          border: `1px solid ${selected ? "gold" : "black"}`,
           pl: 2,
-          pr: 3,
+          pr: 2,
           cursor: "pointer",
           backgroundColor: selected ? "gold" : "",
-          color: selected ? "black" : "white",
+          color: "black",
           fontWeight: "bold",
           "&:hover": {
-            backgroundColor: "darkgoldenrod",
+            backgroundColor: "goldenrod",
             color: "black",
           },
         }}

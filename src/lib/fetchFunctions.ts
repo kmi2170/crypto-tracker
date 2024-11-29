@@ -1,7 +1,9 @@
 import axios from "axios";
+import { dummyHistoricalData } from "../config/chart/dummyHistoricalData";
+import { Historical } from "../context/types";
 
 export const configForUseQuery = {
-  // refetchInterval: 300000,
+  refetchInterval: 300000,
   // refetchIntervalInBackground: true,
   refetchOnMount: false,
   refetchOnReconnect: false,
@@ -43,9 +45,17 @@ export const fetchHistorical = async (
   id: string,
   currency: string,
   days: number
-) => {
-  const { data } = await axios.get(
+): Promise<Historical> => {
+  const { data } = await axios.get<Historical>(
     `/api/historical?id=${id}&currency=${currency}&days=${days}`
   );
   return data;
+};
+
+export const fetchHistoricalDummy = async (
+  id: string,
+  currency: string,
+  days: number
+): Promise<Historical> => {
+  return dummyHistoricalData as Historical;
 };
