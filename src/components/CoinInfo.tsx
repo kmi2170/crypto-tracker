@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { Chart } from "react-chartjs-2";
@@ -12,7 +12,6 @@ import {
   Tooltip,
   Legend,
   ChartOptions,
-  Plugin,
 } from "chart.js";
 
 import SelectButton from "./SelectButton";
@@ -26,7 +25,8 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { Historical } from "../context/types";
 import { getDate, getDayTime } from "../lib/dateTime";
-import { externalTooltipHandler } from "../config/chart/tooltip";
+import { createExternalTooltipHandler } from "../config/chart/tooltip";
+import { verticalLineOnHover } from "../config/chart/plugins";
 
 ChartJS.register(
   CategoryScale,
@@ -47,7 +47,6 @@ const CoinInfo = (props: CoinInfoProps) => {
   const { id, currency } = props;
 
   const [days, setDays] = useState<number>(1);
-  const chartRef = useRef<ChartJS | null>(null);
 
   const { data: historical, isLoading } = useQuery({
     queryKey: ["history", { id, currency, days }],
@@ -63,6 +62,8 @@ const CoinInfo = (props: CoinInfoProps) => {
   const prices = historical?.prices.map((data) => data[1]);
 
   const handleSelectDays = useCallback((days: number) => setDays(days), []);
+
+  const externalTooltipHandler = createExternalTooltipHandler(currency);
 
   const options: ChartOptions = {
     responsive: true,
@@ -133,7 +134,6 @@ const CoinInfo = (props: CoinInfoProps) => {
         }}
       >
         <Chart
-          ref={chartRef}
           type="line"
           data={{
             labels,
@@ -156,28 +156,6 @@ const CoinInfo = (props: CoinInfoProps) => {
       {/* )} */}
     </Container>
   );
-};
-
-const verticalLineOnHover: Plugin<"line"> = {
-  id: "verticalLineOnHover",
-  beforeDatasetsDraw(chart, args, plugins) {
-    const {
-      ctx,
-      chartArea: { top, bottom, height },
-    } = chart;
-
-    ctx.save();
-
-    chart.getDatasetMeta(0).data.forEach((dataPoint, index) => {
-      if (dataPoint.active === true) {
-        ctx.beginPath();
-        ctx.strokeStyle = "gray";
-        ctx.moveTo(dataPoint.x, top);
-        ctx.lineTo(dataPoint.x, bottom);
-        ctx.stroke();
-      }
-    });
-  },
 };
 
 export default CoinInfo;
