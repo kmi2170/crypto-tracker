@@ -1,11 +1,13 @@
+const baseUrl = "https://api.coingecko.com/api/v3";
+
 export const CoinList = (currency: string) =>
-  `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=100&page=1&sparkline=false`;
+  `${baseUrl}/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=100&page=1&sparkline=false`;
 
 export const SingleCoin = (id: string, currency: string) =>
-  `https://api.coingecko.com/api/v3/coins/${id}?vs_currency=${currency}`;
+  `${baseUrl}/coins/${id}?vs_currency=${currency}`;
 
 export const HistoricalChart = (id: string, currency: string, days: string) =>
-  `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=${currency}&days=${days}`;
+  `${baseUrl}/coins/${id}/market_chart?vs_currency=${currency}&days=${days}`;
 
 export const TrendingCoins = (currency: string) =>
-  `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=gecko_desc&per_page=10&page=1&sparkline=false&price_change_percentage=24h`;
+  `${baseUrl}/coins/markets?vs_currency=${currency}&order=gecko_desc&per_page=10&page=1&sparkline=false&price_change_percentage=24h`;
