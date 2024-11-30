@@ -5,11 +5,10 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import CssBaseline from "@mui/material/CssBaseline";
 import TanstackQueryClientProvider from "./QueryClientProvider";
 
-import "../styles/global.css";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
 import theme from "../styles/theme/theme";
 import Footer from "../components/Footer";
+import Header from "../components/Header";
+import "../styles/global.css";
 
 export const metadata: Metadata = {
   title: "Crypto Tracker",
@@ -28,6 +27,7 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
+            <Header />
             <TanstackQueryClientProvider>
               {children}
             </TanstackQueryClientProvider>

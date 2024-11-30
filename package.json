@@ -19,7 +19,6 @@
     "@tanstack/react-query-devtools": "^5.61.3",
     "axios": "^1.7.7",
     "chart.js": "^3.7.0",
-    "chartjs-plugin-crosshair": "^2.0.0",
     "dayjs": "^1.11.13",
     "firebase": "^9.6.8",
     "next": "^15.0.3",

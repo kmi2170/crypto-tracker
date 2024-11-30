@@ -1,19 +1,11 @@
-import { Suspense } from "react";
-
 import Banner from "../components/Banner/Banner";
 import CoinsTable from "../components/CoinsTable";
-import Header from "../components/Header";
 
 const Home = () => {
   return (
     <>
-      <Suspense>
-        <Header />
-      </Suspense>
       <Banner />
-      <Suspense>
-        <CoinsTable />
-      </Suspense>
+      <CoinsTable />
     </>
   );
 };
