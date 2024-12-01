@@ -12,7 +12,8 @@ const getOrCreateTooltip = (chart: ChartJS) => {
     tooltipEl.style.opacity = "1";
     tooltipEl.style.pointerEvents = "none";
     tooltipEl.style.position = "absolute";
-    tooltipEl.style.transform = "translate(-50%, 30%)";
+    tooltipEl.style.transform = "translate(0%, -50%)";
+    // tooltipEl.style.transform = "translate(-50%, -50%)";
     tooltipEl.style.transition = "all .1s ease";
 
     const table = document.createElement("table");
@@ -74,7 +75,7 @@ export const createExternalTooltipHandler =
         span.style.marginRight = "10px";
         span.style.height = "10px";
         span.style.width = "10px";
-        span.style.display = "inline-block";
+        // span.style.display = "inline-block";
 
         const tr = document.createElement("tr");
         tr.style.backgroundColor = "inherit";
@@ -110,10 +111,21 @@ export const createExternalTooltipHandler =
 
     const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
 
+    const {
+      chartArea: { left, right },
+    } = chart;
+    const xAxisLength = right - left;
+    const xShiftLeft = -140;
+    const xShiftRight = 10;
+
     // Display, position, and set styles for font
-    tooltipEl.style.opacity = "1";
-    tooltipEl.style.left = positionX + tooltip.caretX + "px";
+    if (tooltip.caretX > left + xAxisLength * 0.5) {
+      tooltipEl.style.left = positionX + tooltip.caretX + xShiftLeft + "px";
+    } else {
+      tooltipEl.style.left = positionX + tooltip.caretX + xShiftRight + "px";
+    }
     tooltipEl.style.top = positionY + tooltip.caretY + "px";
+    tooltipEl.style.opacity = "1";
     // @ts-ignore
     tooltipEl.style.font = tooltip.options.bodyFont.string;
     tooltipEl.style.padding =

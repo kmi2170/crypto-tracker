@@ -14,6 +14,8 @@ import {
   Tooltip,
   Legend,
   ChartOptions,
+  ChartData,
+  Filler,
 } from "chart.js";
 
 import SelectButton from "./SelectButton";
@@ -39,7 +41,8 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 );
 
 type CoinInfoProps = {
@@ -63,8 +66,8 @@ const CoinInfo = (props: CoinInfoProps) => {
   const labels = historical?.[dataItem].map((data) => {
     const dt = days === 1 ? getDayTime(data[0]) : getDate(data[0]);
     return dt;
-  });
-  const prices = historical?.[dataItem].map((data) => data[1]);
+  }) as string[];
+  const dataValues = historical?.[dataItem].map((data) => data[1]) as number[];
 
   const handleSelectDays = useCallback((value: number) => setDays(value), []);
   const handleSelectDataItem = useCallback(
@@ -83,7 +86,7 @@ const CoinInfo = (props: CoinInfoProps) => {
     },
     scales: {
       x: {
-        ticks: {},
+        ticks: { maxTicksLimit: 6 },
       },
       y: {
         ticks: {},
@@ -99,6 +102,49 @@ const CoinInfo = (props: CoinInfoProps) => {
         display: false,
       },
     },
+  };
+
+  const chartData: ChartData<"line"> = {
+    labels: labels,
+    datasets: [
+      {
+        data: dataValues,
+
+        borderColor: "goldenrod",
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHoverBackgroundColor: "cyan",
+        pointHoverRadius: 6,
+        fill: true,
+        backgroundColor: (context) => {
+          const bgColor = [
+            "rgb(218,165,32, 0.5)",
+            "rgb(218,165,32, 0.4)",
+            "rgb(218,165,32, 0.2)",
+            "rgb(218,165,32, 0.15)",
+            "rgb(218,165,32, 0.1)",
+            "rgb(218,165,32, 0.0)",
+          ];
+
+          if (!context.chart.chartArea) {
+            return;
+          }
+
+          const {
+            ctx,
+            data,
+            chartArea: { top, bottom },
+          } = context.chart;
+          const gradientBg = ctx.createLinearGradient(0, top, 0, bottom);
+          const colorTranches = 1 / (bgColor.length - 1);
+          for (let i = 0; i < bgColor.length; i++) {
+            gradientBg.addColorStop(0 + i * colorTranches, bgColor[i]);
+          }
+
+          return gradientBg;
+        },
+      },
+    ],
   };
 
   return (
@@ -164,20 +210,7 @@ const CoinInfo = (props: CoinInfoProps) => {
       >
         <Chart
           type="line"
-          data={{
-            labels,
-            datasets: [
-              {
-                data: prices,
-                borderColor: "goldenrod",
-                // borderColor: "#EEBC1D",
-                borderWidth: 1,
-                pointRadius: 0,
-                pointHoverBackgroundColor: "pink",
-                // backgroundColor: "rgba(0, 0, 0, 0)",
-              },
-            ],
-          }}
+          data={chartData}
           options={options}
           plugins={[verticalLineOnHover]}
         />
