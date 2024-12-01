@@ -5,23 +5,26 @@ type SelectButtonPros<T> = {
   name: string;
   value: T;
   selected: boolean;
+  colorRGB: string;
   handleValueSelect: (value: T) => void;
 };
 
 const SelectButton = memo((props) => {
-  const { name, value, selected, handleValueSelect } = props;
+  const { name, value, selected, colorRGB, handleValueSelect } = props;
+  const color = `rgba(${colorRGB},1.0)`;
+  const colorTransparent = `rgba(${colorRGB},0.5)`;
   return (
     <Button
       sx={{
-        border: `1px solid ${selected ? "gold" : "black"}`,
+        border: `1px solid ${selected ? color : "black"}`,
         pl: 2,
         pr: 2,
         cursor: "pointer",
-        backgroundColor: selected ? "gold" : "",
+        backgroundColor: selected ? color : "",
         color: "black",
         fontWeight: "bold",
         "&:hover": {
-          backgroundColor: "goldenrod",
+          backgroundColor: selected ? color : colorTransparent,
           color: "black",
         },
       }}

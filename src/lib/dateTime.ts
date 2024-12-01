@@ -5,6 +5,10 @@ import dayjs from "dayjs";
 // dayjs.extend(utc);
 // dayjs.extend(timezone);
 
+export const getTime = (time: number) => {
+  return dayjs(time).format("h:mm A");
+};
+
 export const getDayTime = (time: number) => {
   return dayjs(time).format("D h:mm A");
 };

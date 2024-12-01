@@ -24,9 +24,9 @@ export const chartDays = [
 ];
 
 export const dataItems = [
-  { label: "Price", value: "prices" },
-  { label: "Market Cap", value: "market_caps" },
-  { label: "Total Volume", value: "total_volumes" },
+  { label: "Price", value: "prices", colorRGB: "218,165,32" },
+  { label: "Market Cap", value: "market_caps", colorRGB: "46,139,87" },
+  { label: "Total Volume", value: "total_volumes", colorRGB: "178,34,34" },
 ] as const;
 
 export type ItemType = (typeof dataItems)[number];

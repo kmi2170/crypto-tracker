@@ -30,7 +30,7 @@ import {
   fetchHistoricalDummy,
 } from "../lib/fetchFunctions";
 import { Historical } from "../context/types";
-import { getDate, getDayTime } from "../lib/dateTime";
+import { getDate, getDayTime, getTime } from "../lib/dateTime";
 import { createExternalTooltipHandler } from "../config/chart/tooltip";
 import { verticalLineOnHover } from "../config/chart/plugins";
 
@@ -64,7 +64,7 @@ const CoinInfo = (props: CoinInfoProps) => {
   });
 
   const labels = historical?.[dataItem].map((data) => {
-    const dt = days === 1 ? getDayTime(data[0]) : getDate(data[0]);
+    const dt = days === 1 ? getTime(data[0]) : getDate(data[0]);
     return dt;
   }) as string[];
   const dataValues = historical?.[dataItem].map((data) => data[1]) as number[];
@@ -175,6 +175,7 @@ const CoinInfo = (props: CoinInfoProps) => {
             name={item.label}
             value={item.value}
             selected={item.value === dataItem}
+            colorRGB={`${item.colorRGB}`}
             handleValueSelect={handleSelectDataItem}
           />
         ))}
@@ -195,6 +196,7 @@ const CoinInfo = (props: CoinInfoProps) => {
             name={day.label}
             value={days}
             selected={day.value === days}
+            colorRGB="255,215,0"
             handleValueSelect={handleSelectDays}
           />
         ))}
