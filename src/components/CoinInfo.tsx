@@ -1,4 +1,6 @@
 import { useCallback, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { Chart } from "react-chartjs-2";
@@ -15,14 +17,16 @@ import {
 } from "chart.js";
 
 import SelectButton from "./SelectButton";
-import { chartDays } from "../config/chartDays";
+import {
+  chartDays,
+  dataItems,
+  DataItemsType,
+} from "../config/chart/chartButtons";
 import {
   configForUseQuery,
-  fetchCoinList,
   fetchHistorical,
   fetchHistoricalDummy,
 } from "../lib/fetchFunctions";
-import { useQuery } from "@tanstack/react-query";
 import { Historical } from "../context/types";
 import { getDate, getDayTime } from "../lib/dateTime";
 import { createExternalTooltipHandler } from "../config/chart/tooltip";
@@ -47,6 +51,7 @@ const CoinInfo = (props: CoinInfoProps) => {
   const { id, currency } = props;
 
   const [days, setDays] = useState<number>(1);
+  const [dataItem, setDataItem] = useState<DataItemsType>("prices");
 
   const { data: historical, isLoading } = useQuery({
     queryKey: ["history", { id, currency, days }],
@@ -55,13 +60,17 @@ const CoinInfo = (props: CoinInfoProps) => {
     ...configForUseQuery,
   });
 
-  const labels = historical?.prices.map((data) => {
+  const labels = historical?.[dataItem].map((data) => {
     const dt = days === 1 ? getDayTime(data[0]) : getDate(data[0]);
     return dt;
   });
-  const prices = historical?.prices.map((data) => data[1]);
+  const prices = historical?.[dataItem].map((data) => data[1]);
 
-  const handleSelectDays = useCallback((days: number) => setDays(days), []);
+  const handleSelectDays = useCallback((value: number) => setDays(value), []);
+  const handleSelectDataItem = useCallback(
+    (value: DataItemsType) => setDataItem(value),
+    []
+  );
 
   const externalTooltipHandler = createExternalTooltipHandler(currency);
 
@@ -114,13 +123,33 @@ const CoinInfo = (props: CoinInfoProps) => {
           flexWrap: "wrap",
         }}
       >
+        {dataItems.map((item) => (
+          <SelectButton
+            key={item.value}
+            name={item.label}
+            value={item.value}
+            selected={item.value === dataItem}
+            handleValueSelect={handleSelectDataItem}
+          />
+        ))}
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          mt: 3,
+          justifyContent: "flex-start",
+          alignItems: "center",
+          gap: "0.5rem",
+          flexWrap: "wrap",
+        }}
+      >
         {chartDays.map((day) => (
           <SelectButton
             key={day.value}
             name={day.label}
-            days={days}
+            value={days}
             selected={day.value === days}
-            onClick={handleSelectDays}
+            handleValueSelect={handleSelectDays}
           />
         ))}
       </Box>

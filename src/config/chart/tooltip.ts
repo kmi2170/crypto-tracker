@@ -93,7 +93,6 @@ export const createExternalTooltipHandler =
         td.appendChild(span);
         td.appendChild(text);
         tr.appendChild(td);
-        console.log(td);
         tableBody.appendChild(tr);
       });
 

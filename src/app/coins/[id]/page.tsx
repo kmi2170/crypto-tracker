@@ -128,12 +128,12 @@ const Coins = () => {
         <Typography variant="h3" sx={{ fontWeight: "bold", mt: 2 }}>
           {coin?.name}
         </Typography>
-        <Typography
+        {/* <Typography
           variant="subtitle1"
           sx={{ width: "100%", p: 3, pb: 2, pt: 0, textAlign: "justify" }}
         >
           {ReactHtmlParser(coin?.description.en.split(". ")[0])}
-        </Typography>
+        </Typography> */}
         <Box
           sx={{
             alignSelf: "start",
