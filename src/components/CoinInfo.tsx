@@ -33,6 +33,8 @@ import { Historical } from "../context/types";
 import { getDate, getDayTime, getTime } from "../lib/dateTime";
 import { createExternalTooltipHandler } from "../config/chart/tooltip";
 import { verticalLineOnHover } from "../config/chart/plugins";
+import { getCurrencySymbol } from "../lib/getCurrencySymbol";
+import { formatNumber } from "../lib/formatNumber";
 
 ChartJS.register(
   CategoryScale,
@@ -75,7 +77,7 @@ const CoinInfo = (props: CoinInfoProps) => {
     []
   );
 
-  const externalTooltipHandler = createExternalTooltipHandler(currency);
+  // const externalTooltipHandler = createExternalTooltipHandler(currency);
 
   const options: ChartOptions = {
     responsive: true,
@@ -89,14 +91,25 @@ const CoinInfo = (props: CoinInfoProps) => {
         ticks: { maxTicksLimit: 6 },
       },
       y: {
-        ticks: {},
+        ticks: {
+          callback: (value) => formatNumber(Number(value)),
+        },
       },
     },
     plugins: {
       tooltip: {
-        enabled: false,
+        enabled: true,
         position: "nearest",
-        external: externalTooltipHandler,
+        // external: externalTooltipHandler,
+        callbacks: {
+          label: (context) => {
+            const symbol = getCurrencySymbol(currency);
+            const label = dataItems.filter((item) => item.value === dataItem)[0]
+              .label;
+            const value = context.parsed.y;
+            return `${label}: ${symbol} ${formatNumber(value, 2)}`;
+          },
+        },
       },
       legend: {
         display: false,
@@ -104,13 +117,17 @@ const CoinInfo = (props: CoinInfoProps) => {
     },
   };
 
+  const rgba = (opacity: number) =>
+    `rgba(${
+      dataItems.filter((item) => item.value === dataItem)[0].colorRGB
+    }, ${opacity})`;
+
   const chartData: ChartData<"line"> = {
     labels: labels,
     datasets: [
       {
         data: dataValues,
-
-        borderColor: "goldenrod",
+        borderColor: rgba(1.0),
         borderWidth: 2,
         pointRadius: 0,
         pointHoverBackgroundColor: "cyan",
@@ -118,12 +135,12 @@ const CoinInfo = (props: CoinInfoProps) => {
         fill: true,
         backgroundColor: (context) => {
           const bgColor = [
-            "rgb(218,165,32, 0.5)",
-            "rgb(218,165,32, 0.4)",
-            "rgb(218,165,32, 0.2)",
-            "rgb(218,165,32, 0.15)",
-            "rgb(218,165,32, 0.1)",
-            "rgb(218,165,32, 0.0)",
+            rgba(0.5),
+            rgba(0.4),
+            rgba(0.3),
+            rgba(0.2),
+            rgba(0.1),
+            rgba(0.0),
           ];
 
           if (!context.chart.chartArea) {

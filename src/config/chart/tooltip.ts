@@ -1,11 +1,12 @@
 import { Chart as ChartJS, TooltipModel, ChartTypeRegistry } from "chart.js";
+import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
 
 const getOrCreateTooltip = (chart: ChartJS) => {
   let tooltipEl = chart.canvas.parentNode?.querySelector("div");
 
   if (!tooltipEl) {
     tooltipEl = document.createElement("div");
-    tooltipEl.style.background = "rgba(0, 0, 0, 0.7)";
+    tooltipEl.style.background = "rgba(0, 0, 0, 0.85)";
     tooltipEl.style.borderRadius = "5px";
     tooltipEl.style.color = "white";
     tooltipEl.style.fontSize = "14px";
@@ -67,6 +68,7 @@ export const createExternalTooltipHandler =
       const tableBody = document.createElement("tbody");
       bodyLines.forEach((body, i) => {
         const colors = tooltip.labelColors[i];
+        console.log(colors);
 
         const span = document.createElement("span");
         span.style.background = colors.backgroundColor as string;
@@ -75,7 +77,7 @@ export const createExternalTooltipHandler =
         span.style.marginRight = "10px";
         span.style.height = "10px";
         span.style.width = "10px";
-        // span.style.display = "inline-block";
+        span.style.display = "inline-block";
 
         const tr = document.createElement("tr");
         tr.style.backgroundColor = "inherit";
@@ -83,11 +85,13 @@ export const createExternalTooltipHandler =
 
         const td = document.createElement("td");
         td.style.borderWidth = "0";
-        td.style.color = "gold";
+        td.style.color = "white";
+        td.style.fontWeight = "bold";
 
-        const text = document.createTextNode(
-          `${currency.toUpperCase()} ${body[0]}`
-        );
+        const itemText = body[0];
+        const texts = itemText.split(":");
+        const _text = texts[0] + ": " + getCurrencySymbol(currency) + texts[1];
+        const text = document.createTextNode(_text);
 
         // const text = document.createTextNode(body);
 
