@@ -17,6 +17,7 @@ import {
   ChartData,
   Filler,
 } from "chart.js";
+import zoomPlugin, { zoom } from "chartjs-plugin-zoom";
 
 import SelectButton from "./SelectButton";
 import {
@@ -44,7 +45,8 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
+  zoomPlugin
 );
 
 type SingleCoinInfoProps = {
@@ -113,6 +115,17 @@ const SingleCoinInfo = (props: SingleCoinInfoProps) => {
       },
       legend: {
         display: false,
+      },
+      zoom: {
+        zoom: {
+          wheel: {
+            enabled: true,
+          },
+          pinch: {
+            enabled: true,
+          },
+          mode: "x",
+        },
       },
     },
   };
