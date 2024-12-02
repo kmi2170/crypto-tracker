@@ -49,12 +49,12 @@ ChartJS.register(
   zoomPlugin
 );
 
-type SingleCoinInfoProps = {
+type CoinChartProps = {
   id: string;
   currency: string;
 };
 
-const SingleCoinInfo = (props: SingleCoinInfoProps) => {
+const CoinChart = (props: CoinChartProps) => {
   const { id, currency } = props;
 
   const [days, setDays] = useState<number>(1);
@@ -126,6 +126,10 @@ const SingleCoinInfo = (props: SingleCoinInfoProps) => {
           },
           mode: "x",
         },
+        // limits: {
+        //   x: { min: 0, max: 5 },
+        //   y: { min: 0, max: 5 },
+        // },
       },
     },
   };
@@ -254,4 +258,4 @@ const SingleCoinInfo = (props: SingleCoinInfoProps) => {
   );
 };
 
-export default SingleCoinInfo;
+export default CoinChart;

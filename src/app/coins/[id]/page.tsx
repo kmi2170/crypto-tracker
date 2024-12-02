@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
 
 import { CryptoState } from "../../../context/CryptoContext";
-import SingleCoinInfo from "../../../components/SingleCoinInfo";
+import CoinChart from "../../../components/CoinChart";
 import { numberWithComma } from "../../../components/Banner/Carousel";
 import { db } from "../../../lib/firebase";
 import {
@@ -21,7 +21,7 @@ import {
 } from "../../../lib/fetchFunctions";
 import { SingleCoin } from "../../../context/types";
 
-const Coins = () => {
+const Coin = () => {
   const params = useParams();
   const id = params.id as string;
   const searchParams = useSearchParams();
@@ -196,9 +196,9 @@ const Coins = () => {
         </Box>
       </Box>
 
-      <SingleCoinInfo id={id} currency={currency} />
+      <CoinChart id={id} currency={currency} />
     </Box>
   );
 };
 
-export default Coins;
+export default Coin;
