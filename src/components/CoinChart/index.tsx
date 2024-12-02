@@ -24,18 +24,18 @@ import {
   chartDays,
   dataItems,
   DataItemsType,
-} from "../config/chart/chartButtons";
+} from "../../config/chart/chartButtons";
 import {
   configForUseQuery,
   fetchHistorical,
   fetchHistoricalDummy,
-} from "../lib/fetchFunctions";
-import { Historical } from "../context/types";
-import { getDate, getDayTime, getTime } from "../lib/dateTime";
-import { createExternalTooltipHandler } from "../config/chart/tooltip";
-import { verticalLineOnHover } from "../config/chart/plugins";
-import { getCurrencySymbol } from "../lib/getCurrencySymbol";
-import { formatNumber } from "../lib/formatNumber";
+} from "../../lib/fetchFunctions";
+import { Historical } from "../../context/types";
+import { getDate, getDayTime, getTime } from "../../lib/dateTime";
+import { createExternalTooltipHandler } from "../../config/chart/tooltip";
+import { verticalLineOnHover } from "../../config/chart/plugins";
+import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
+import { formatNumber } from "../../lib/formatNumber";
 
 ChartJS.register(
   CategoryScale,
