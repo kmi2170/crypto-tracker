@@ -47,12 +47,12 @@ ChartJS.register(
   Filler
 );
 
-type CoinInfoProps = {
+type SingleCoinInfoProps = {
   id: string;
   currency: string;
 };
 
-const CoinInfo = (props: CoinInfoProps) => {
+const SingleCoinInfo = (props: SingleCoinInfoProps) => {
   const { id, currency } = props;
 
   const [days, setDays] = useState<number>(1);
@@ -88,11 +88,11 @@ const CoinInfo = (props: CoinInfoProps) => {
     },
     scales: {
       x: {
-        ticks: { maxTicksLimit: 6 },
+        ticks: { maxTicksLimit: 8 },
       },
       y: {
         ticks: {
-          callback: (value) => formatNumber(Number(value)),
+          callback: (value) => formatNumber(Number(value), 2),
         },
       },
     },
@@ -107,7 +107,7 @@ const CoinInfo = (props: CoinInfoProps) => {
             const label = dataItems.filter((item) => item.value === dataItem)[0]
               .label;
             const value = context.parsed.y;
-            return `${label}: ${symbol} ${formatNumber(value, 2)}`;
+            return `${label}: ${symbol} ${formatNumber(value, 3)}`;
           },
         },
       },
@@ -166,8 +166,9 @@ const CoinInfo = (props: CoinInfoProps) => {
 
   return (
     <Container
+      maxWidth="lg"
       sx={{
-        width: { sm: "100%", md: "75%", lg: "75%" },
+        // width: { sm: "100%", md: "75%", lg: "75%" },
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -225,6 +226,7 @@ const CoinInfo = (props: CoinInfoProps) => {
       <Box
         sx={{
           width: "100%",
+          height: "500px",
         }}
       >
         <Chart
@@ -239,4 +241,4 @@ const CoinInfo = (props: CoinInfoProps) => {
   );
 };
 
-export default CoinInfo;
+export default SingleCoinInfo;

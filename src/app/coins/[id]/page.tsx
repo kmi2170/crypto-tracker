@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
 
 import { CryptoState } from "../../../context/CryptoContext";
-import CoinInfo from "../../../components/CoinInfo";
+import SingleCoinInfo from "../../../components/SingleCoinInfo";
 import { numberWithComma } from "../../../components/Banner/Carousel";
 import { db } from "../../../lib/firebase";
 import {
@@ -142,12 +142,14 @@ const Coins = () => {
             width: "100%",
             display: "flex",
             flexDirection: "column",
-            justifyContent: {
-              xs: "flex-start",
-              sm: "center",
-              md: "flex-start",
-            },
-            alignItems: { xs: "start", sm: "center", md: "start" },
+            justifyContent: "center",
+            alignItems: "center",
+            // justifyContent: {
+            //   xs: "flex-start",
+            //   sm: "center",
+            //   md: "flex-start",
+            // },
+            // alignItems: { xs: "start", sm: "center", md: "start" },
           }}
         >
           <Box sx={{ display: "flex" }}>
@@ -194,7 +196,7 @@ const Coins = () => {
         </Box>
       </Box>
 
-      <CoinInfo id={id} currency={currency} />
+      <SingleCoinInfo id={id} currency={currency} />
     </Box>
   );
 };
