@@ -1,4 +1,4 @@
-import { ComponentProps, memo } from "react";
+import { memo } from "react";
 import Button from "@mui/material/Button";
 
 type SelectButtonPros<T> = {
@@ -13,12 +13,12 @@ const SelectButton = memo((props) => {
   const { name, value, selected, colorRGB, handleValueSelect } = props;
   const color = `rgba(${colorRGB},1.0)`;
   const colorTransparent = `rgba(${colorRGB},0.5)`;
+
   return (
     <Button
+      size="small"
       sx={{
         border: `1px solid ${selected ? color : "black"}`,
-        pl: 2,
-        pr: 2,
         cursor: "pointer",
         backgroundColor: selected ? color : "",
         color: "black",

@@ -2,32 +2,40 @@
 
 import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
-import ReactHtmlParser from "react-html-parser";
-import { doc, setDoc } from "firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
 
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import LinearProgress from "@mui/material/LinearProgress";
+import { styled } from "@mui/material/styles";
 
-import { CryptoState } from "../../../context/CryptoContext";
 import CoinChart from "../../../components/CoinChart";
-import { numberWithComma } from "../../../components/Banner/Carousel";
-import { db } from "../../../lib/firebase";
 import {
   configForUseQuery,
   fetchSingleCoin,
 } from "../../../lib/fetchFunctions";
 import { SingleCoin } from "../../../context/types";
+import { getCurrencySymbol } from "../../../lib/getCurrencySymbol";
+import { formatNumber } from "../../../lib/formatNumber";
+
+const TitleWrapper = styled("div")({
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+const PricesWrapper = styled("div")({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+});
 
 const Coin = () => {
   const params = useParams();
   const id = params.id as string;
   const searchParams = useSearchParams();
   const currency = searchParams.get("currency") || "usd";
-
-  const { symbol, user, setAlert, watchlist } = CryptoState();
 
   const { data: coin, isLoading } = useQuery<SingleCoin>({
     queryKey: ["single-coin", { id, currency }],
@@ -37,149 +45,43 @@ const Coin = () => {
 
   if (!coin) return;
 
-  const inWatchlist = watchlist?.includes(coin?.id);
-
-  const addToWatchlist = async () => {
-    if (user) {
-      console.log("click");
-
-      const coinRef = doc(db, "watchlist", user.uid);
-
-      try {
-        await setDoc(coinRef, {
-          coins: watchlist ? [...watchlist, coin?.id] : [coin?.id],
-        });
-
-        setAlert({
-          open: true,
-          message: `${coin.name} Added to the Watchlist`,
-          type: "success",
-        });
-      } catch (error: any) {
-        setAlert({
-          open: true,
-          message: error.message,
-          type: "error",
-        });
-      }
-    }
-  };
-
-  const removeFromWatchlist = async () => {
-    if (user) {
-      console.log("click");
-
-      const coinRef = doc(db, "watchlist", user.uid);
-
-      try {
-        await setDoc(
-          coinRef,
-          {
-            coins: watchlist.filter((watch) => watch !== coin?.id),
-          },
-          { merge: true }
-        );
-
-        setAlert({
-          open: true,
-          message: `${coin.name} Removed from the Watchlist`,
-          type: "success",
-        });
-      } catch (error: any) {
-        setAlert({
-          open: true,
-          message: error.message,
-          type: "error",
-        });
-      }
-    }
-  };
-
-  return !coin?.image ? (
-    <Box
-      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-    >
-      <LinearProgress sx={{ backgroundColor: "gold" }} />
-    </Box>
-  ) : (
+  return (
     <Box
       sx={{
+        mt: "1rem",
         display: "flex",
-        flexDirection: { xs: "column", sm: "column", md: "row" },
-        alignItems: { xs: "center", md: "" },
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
-      <Box
-        sx={{
-          width: { xs: "100%", lg: "30%" },
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          mt: 3,
-          borderRight: "2px solid gray",
-        }}
-      >
-        {/* <Image
-          src={coin?.image.large}
+      <TitleWrapper>
+        <Image
+          src={coin?.image.small}
           alt={coin?.name}
-          width="200"
-          height="200"
-        /> */}
-        <Typography variant="h3" sx={{ fontWeight: "bold", mt: 2 }}>
+          width="50"
+          height="50"
+        />
+        <Typography variant="h4" sx={{ fontWeight: "bold" }}>
           {coin?.name}
         </Typography>
-        {/* <Typography
-          variant="subtitle1"
-          sx={{ width: "100%", p: 3, pb: 2, pt: 0, textAlign: "justify" }}
-        >
-          {ReactHtmlParser(coin?.description.en.split(". ")[0])}
-        </Typography> */}
-        <Box
-          sx={{
-            alignSelf: "start",
-            p: 3,
-            pt: 1,
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            // justifyContent: {
-            //   xs: "flex-start",
-            //   sm: "center",
-            //   md: "flex-start",
-            // },
-            // alignItems: { xs: "start", sm: "center", md: "start" },
-          }}
-        >
-          <Box sx={{ display: "flex" }}>
-            <Typography variant="h6">Current Price:</Typography>
-            &nbsp; &nbsp;
-            <Typography variant="h6">
-              {currency}{" "}
-              {numberWithComma(
-                coin?.market_data.current_price[currency.toLowerCase()]
-              )}
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex" }}>
-            <Typography variant="h6">Market Cap:</Typography>
-            &nbsp; &nbsp;
-            <Typography variant="h5">
-              {currency}{" "}
-              {numberWithComma(
-                coin?.market_data.market_cap[currency.toLowerCase()]
-              ).slice(0, 6)}
-              M
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex" }}>
-            <Typography variant="h5">Rank:</Typography>
-            &nbsp; &nbsp;
-            <Typography variant="h5">{coin?.market_cap_rank}</Typography>
-          </Box>
-
-          {user && (
+        <Typography variant="h4" sx={{ fontWeight: "bold", ml: "0.5rem" }}>
+          ({coin?.symbol})
+        </Typography>
+      </TitleWrapper>
+      <PricesWrapper sx={{ mt: "1rem", mb: "1rem" }}>
+        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+          Current Price: {getCurrencySymbol(currency)}
+          {formatNumber(coin?.market_data.current_price[currency], 2)}
+        </Typography>
+        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+          Market Cap: {getCurrencySymbol(currency)}
+          {formatNumber(coin?.market_data.market_cap[currency])}
+        </Typography>
+        <Typography variant="subtitle1">
+          Rank: {coin?.market_cap_rank}
+        </Typography>
+        {/* {user && (
             <Button
               variant="outlined"
               sx={{
@@ -192,9 +94,8 @@ const Coin = () => {
             >
               {inWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
             </Button>
-          )}
-        </Box>
-      </Box>
+          )} */}
+      </PricesWrapper>
 
       <CoinChart id={id} currency={currency} />
     </Box>
@@ -202,3 +103,61 @@ const Coin = () => {
 };
 
 export default Coin;
+
+// const inWatchlist = watchlist?.includes(coin?.id);
+
+// const addToWatchlist = async () => {
+//   if (user) {
+//     console.log("click");
+
+//     const coinRef = doc(db, "watchlist", user.uid);
+
+//     try {
+//       await setDoc(coinRef, {
+//         coins: watchlist ? [...watchlist, coin?.id] : [coin?.id],
+//       });
+
+//       setAlert({
+//         open: true,
+//         message: `${coin.name} Added to the Watchlist`,
+//         type: "success",
+//       });
+//     } catch (error: any) {
+//       setAlert({
+//         open: true,
+//         message: error.message,
+//         type: "error",
+//       });
+//     }
+//   }
+// };
+
+// const removeFromWatchlist = async () => {
+//   if (user) {
+//     console.log("click");
+
+//     const coinRef = doc(db, "watchlist", user.uid);
+
+//     try {
+//       await setDoc(
+//         coinRef,
+//         {
+//           coins: watchlist.filter((watch) => watch !== coin?.id),
+//         },
+//         { merge: true }
+//       );
+
+//       setAlert({
+//         open: true,
+//         message: `${coin.name} Removed from the Watchlist`,
+//         type: "success",
+//       });
+//     } catch (error: any) {
+//       setAlert({
+//         open: true,
+//         message: error.message,
+//         type: "error",
+//       });
+//     }
+//   }
+// };

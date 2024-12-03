@@ -7,7 +7,7 @@ import TanstackQueryClientProvider from "./QueryClientProvider";
 
 import theme from "../styles/theme/theme";
 import Footer from "../components/Footer";
-import Header from "../components/Header";
+import Navbar from "../components/Navbar";
 import "../styles/global.css";
 
 export const metadata: Metadata = {
@@ -27,7 +27,7 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Header />
+            <Navbar />
             <TanstackQueryClientProvider>
               {children}
             </TanstackQueryClientProvider>

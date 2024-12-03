@@ -32,14 +32,14 @@ ChartJS.register(
   zoomPlugin
 );
 
-type ChartMain = {
+type ChartMainProps = {
   currency: string;
   itemName: DataItemsType;
   labels: string[];
   values: number[];
 };
 
-const ChartMain = (props: ChartMain) => {
+const ChartMain = (props: ChartMainProps) => {
   const { currency, itemName, labels, values } = props;
 
   const options: ChartOptions = {
@@ -145,7 +145,9 @@ const ChartMain = (props: ChartMain) => {
     <Box
       sx={{
         width: "100%",
-        height: "500px",
+        height: "450px",
+        display: "flex",
+        justifyContent: "center",
       }}
     >
       <Chart

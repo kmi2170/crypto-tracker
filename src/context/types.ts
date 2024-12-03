@@ -40,7 +40,7 @@ export interface SingleCoin {
     market_cap: Record<string, number>;
   };
   market_cap_rank: number;
-  image: string;
+  image: { thumb: string; small: string; large: string };
   price_change_percentage_24h: number;
   current_price: number;
   market_cap: number;
