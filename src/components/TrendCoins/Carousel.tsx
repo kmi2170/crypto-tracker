@@ -5,7 +5,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Container from "@mui/material/Container";
 import { styled } from "@mui/material/styles";
+
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 
@@ -15,9 +19,15 @@ import {
   fetchTrendCoinsDummy,
 } from "../../lib/fetchFunctions";
 import { Coin } from "../../context/types";
+import { formatNumber } from "../../lib/formatNumber";
+import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
 
-const CarouselWrapper = styled("div")({
+const CarouselWrapper = styled(Paper)({
   height: "50%",
+  margin: "auto",
+  paddingTop: "2rem",
+  paddingBottom: "1rem",
+  maxWidth: "1000px",
   display: "flex",
   flexDirection: "row",
   justifyContent: "center",
@@ -34,17 +44,10 @@ const ItemWrapper = styled("div")({
   color: "white",
 });
 
-export const numberWithComma = (x: number) => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
-
 const Carousel = () => {
   const searchParams = useSearchParams();
   const currentSearchParams = new URLSearchParams(searchParams).toString();
   const currency = searchParams.get("currency") || "usd";
-
-  const symbol = currency.toUpperCase();
-  // const { currency = "usd", symbol } = CryptoState();
 
   const { data: trending } = useQuery({
     queryKey: ["trending", currency],
@@ -52,31 +55,42 @@ const Carousel = () => {
     ...configForUseQuery,
   });
 
-  if (!trending) return;
+  // if (!trending) return;
 
   const items = trending?.map((coin: Coin) => {
     const isPriceUp = coin?.price_change_percentage_24h >= 0;
+    console.log(coin.symbol);
 
     return (
       <Link key={coin.id} href={`/coins/${coin.id}?${currentSearchParams}`}>
         <ItemWrapper>
-          <Image src={coin?.image} alt={coin.name} width="80" height="80" />
-          <span>
+          <Typography
+            variant="subtitle2"
+            align="center"
+            sx={{ color: "black", fontWeight: "bold" }}
+          >
             {coin?.symbol}
-            <span
-              style={{
-                color: isPriceUp ? "rgb(14, 203, 129)" : "red",
-                fontWeight: "bold",
-              }}
-            >
-              {isPriceUp && "+"}{" "}
-              {+coin?.price_change_percentage_24h?.toFixed(2)}%
-            </span>
-          </span>
-
-          <span style={{ fontSize: 22 }}>
-            {symbol} {numberWithComma(+coin?.current_price.toFixed(2))}
-          </span>
+          </Typography>
+          <Image src={coin?.image} alt={coin.name} width="35" height="35" />
+          <Typography
+            variant="subtitle1"
+            align="center"
+            sx={{ color: "black", fontWeight: "bold" }}
+          >
+            {getCurrencySymbol(currency)}
+            {formatNumber(+coin?.current_price.toFixed(3))}
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            align="center"
+            sx={{
+              color: isPriceUp ? "rgb(14, 203, 129)" : "red",
+              fontWeight: "bold",
+            }}
+          >
+            {isPriceUp && "+"}
+            {coin?.price_change_percentage_24h?.toFixed(2)}%
+          </Typography>
         </ItemWrapper>
       </Link>
     );
@@ -84,32 +98,35 @@ const Carousel = () => {
 
   const responsive = {
     0: {
-      items: 2,
+      items: 3,
     },
-    512: {
+    400: {
       items: 4,
     },
-    1024: {
+    512: {
+      items: 6,
+    },
+    1080: {
       items: 8,
     },
   };
 
   return (
-    <CarouselWrapper>
+    <>
       <AliceCarousel
         mouseTracking
         infinite
         autoPlayInterval={10000}
         animationDuration={1500}
         // disableDotsControls
-        // disableButtonsControls
+        disableButtonsControls
         responsive={responsive}
         autoPlay
         items={items}
         // autoHeight
         // autoWidth
       />
-    </CarouselWrapper>
+    </>
   );
 };
 

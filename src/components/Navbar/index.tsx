@@ -4,7 +4,7 @@ import Link from "next/link";
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+import Typography, { TypographyProps } from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 
 import SelectCurrency from "./SelectCurrency";
@@ -15,7 +15,7 @@ const Wrapper = styled(Container)({
   justifyContent: "space-between",
 });
 
-const Title = styled(Typography)({
+const Title = styled(Typography)<TypographyProps>({
   "& a": {
     color: "gold",
     fontWeight: "bold",
@@ -28,7 +28,7 @@ const Navbar = () => {
     <AppBar position="sticky" sx={{ backgroundColor: "rgba(0,65,106,0.8)" }}>
       <Toolbar>
         <Wrapper maxWidth="lg">
-          <Title variant="h5">
+          <Title variant="h4" component="h1">
             <Link href="/">Crypto Tracker</Link>
           </Title>
           <SelectCurrency />

@@ -18,10 +18,7 @@ import TableBody from "@mui/material/TableBody";
 import Pagination from "@mui/material/Pagination";
 import { makeStyles } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
-import { CryptoState } from "../context/CryptoContext";
-import { numberWithComma } from "./TrendCoins/Carousel";
 import { Coin } from "../context/types";
 import {
   configForUseQuery,
@@ -39,6 +36,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+export const numberWithComma = (x: number) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 const CoinsTable = () => {
   const classes = useStyles();
 
@@ -48,8 +49,6 @@ const CoinsTable = () => {
 
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
-
-  // const { currency = "usd", symbol } = CryptoState();
 
   const { data: coins, isLoading } = useQuery({
     queryKey: ["coins", currency],
@@ -72,7 +71,7 @@ const CoinsTable = () => {
   };
 
   return (
-    <Container sx={{ textAlign: "center" }}>
+    <>
       <Typography variant="h4" sx={{ m: 3 }}>
         Cryptocurrency Prices by Market Cap
       </Typography>
@@ -194,7 +193,7 @@ const CoinsTable = () => {
           }}
         />
       )}
-    </Container>
+    </>
   );
 };
 export default CoinsTable;

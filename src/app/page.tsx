@@ -1,12 +1,14 @@
+import Container from "@mui/material/Container";
+
 import TrendCoins from "../components/TrendCoins";
 import CoinsTable from "../components/CoinsTable";
 
 const Home = () => {
   return (
-    <>
+    <Container maxWidth="lg">
       <TrendCoins />
       <CoinsTable />
-    </>
+    </Container>
   );
 };
 
