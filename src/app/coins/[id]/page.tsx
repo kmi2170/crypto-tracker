@@ -12,10 +12,11 @@ import CoinChart from "../../../components/CoinChart";
 import {
   configForUseQuery,
   fetchSingleCoin,
+  fetchSingleCoinDummy,
 } from "../../../lib/fetchFunctions";
-import { SingleCoin } from "../../../context/types";
 import { getCurrencySymbol } from "../../../lib/getCurrencySymbol";
 import { formatNumber } from "../../../lib/formatNumber";
+import { Currencies } from "../../../config/chart/dummyData/SingleCoin";
 
 const TitleWrapper = styled("div")({
   display: "flex",
@@ -35,11 +36,11 @@ const Coin = () => {
   const params = useParams();
   const id = params.id as string;
   const searchParams = useSearchParams();
-  const currency = searchParams.get("currency") || "usd";
+  const currency = (searchParams.get("currency") || "usd") as Currencies;
 
-  const { data: coin, isLoading } = useQuery<SingleCoin>({
+  const { data: coin, isLoading } = useQuery({
     queryKey: ["single-coin", { id, currency }],
-    queryFn: () => fetchSingleCoin(id, currency),
+    queryFn: () => fetchSingleCoinDummy(id, currency),
     ...configForUseQuery,
   });
 

@@ -15,7 +15,7 @@ const TitleWrapper = styled("div")({
   textAlign: "center",
 });
 
-const Banner = () => {
+const TrendCoins = () => {
   return (
     <Container
       sx={{
@@ -55,4 +55,4 @@ const Banner = () => {
   );
 };
 
-export default Banner;
+export default TrendCoins;

@@ -11,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 import { CryptoState } from "../../context/CryptoContext";
-import { numberWithComma } from "../Banner/Carousel";
+import { numberWithComma } from "../TrendCoins/Carousel";
 import { auth, db } from "../../lib/firebase";
 import { configForUseQuery } from "../../lib/fetchFunctions";
 import { Coin } from "../../context/types";

@@ -9,7 +9,11 @@ import { styled } from "@mui/material/styles";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 
-import { configForUseQuery, fetchTrendCoins } from "../../lib/fetchFunctions";
+import {
+  configForUseQuery,
+  fetchTrendCoins,
+  fetchTrendCoinsDummy,
+} from "../../lib/fetchFunctions";
 import { Coin } from "../../context/types";
 
 const CarouselWrapper = styled("div")({
@@ -42,9 +46,9 @@ const Carousel = () => {
   const symbol = currency.toUpperCase();
   // const { currency = "usd", symbol } = CryptoState();
 
-  const { data: trending } = useQuery<Coin[]>({
+  const { data: trending } = useQuery({
     queryKey: ["trending", currency],
-    queryFn: () => fetchTrendCoins(currency),
+    queryFn: () => fetchTrendCoinsDummy(currency),
     ...configForUseQuery,
   });
 

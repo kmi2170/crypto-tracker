@@ -32,9 +32,9 @@ export interface Coin {
 
 export interface SingleCoin {
   id: string;
-  name: string;
   symbol: string;
-  description: { en: string };
+  name: string;
+  description: Record<string, string>;
   market_data: {
     current_price: Record<string, number>;
     market_cap: Record<string, number>;

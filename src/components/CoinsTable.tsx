@@ -21,9 +21,13 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 import { CryptoState } from "../context/CryptoContext";
-import { numberWithComma } from "./Banner/Carousel";
+import { numberWithComma } from "./TrendCoins/Carousel";
 import { Coin } from "../context/types";
-import { configForUseQuery } from "../lib/fetchFunctions";
+import {
+  configForUseQuery,
+  fetchCoinList,
+  fetchCoinListDummy,
+} from "../lib/fetchFunctions";
 
 const useStyles = makeStyles(() => ({
   tableBodyRow: {
@@ -34,11 +38,6 @@ const useStyles = makeStyles(() => ({
     },
   },
 }));
-
-const fetchFn = async (currency: string) => {
-  const { data } = await axios.get(`/api/coin-list?currency=${currency}`);
-  return data;
-};
 
 const CoinsTable = () => {
   const classes = useStyles();
@@ -52,9 +51,9 @@ const CoinsTable = () => {
 
   // const { currency = "usd", symbol } = CryptoState();
 
-  const { data: coins, isLoading } = useQuery<Coin[]>({
+  const { data: coins, isLoading } = useQuery({
     queryKey: ["coins", currency],
-    queryFn: () => fetchFn(currency),
+    queryFn: () => fetchCoinListDummy(currency),
     ...configForUseQuery,
   });
 
