@@ -60,10 +60,10 @@ const Coin = () => {
         <Image
           src={coin?.image.small}
           alt={coin?.name}
-          width="50"
-          height="50"
+          width="35"
+          height="35"
         />
-        <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+        <Typography variant="h4" sx={{ fontWeight: "bold", ml: "0.5rem" }}>
           {coin?.name}
         </Typography>
         <Typography variant="h4" sx={{ fontWeight: "bold", ml: "0.5rem" }}>

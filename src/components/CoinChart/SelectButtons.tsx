@@ -60,7 +60,7 @@ const SelectButtons = (props: CoinChartProps) => {
             name={day.label}
             value={days}
             selected={day.value === days}
-            colorRGB="255,215,0"
+            colorRGB="155,221,255"
             handleValueSelect={handleSelectDays}
           />
         ))}
