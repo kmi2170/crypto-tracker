@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -89,15 +90,24 @@ const CoinsTable = () => {
       ) : ( */}
       <TableContainer>
         <Table>
-          <TableHead sx={{ backgroundColor: "#EEBC1D" }}>
+          <TableHead sx={{ backgroundColor: "rgba(255,215,0,0.5)" }}>
             <TableRow>
-              {["Coin", "Price", "24h Change", "Market Cap"].map((head) => (
-                <TableCell
-                  sx={{ color: "black", fontWeight: "bold" }}
-                  key={head}
-                  align={head === "Coin" ? "left" : "right"}
-                >
-                  {head}
+              {[
+                "Coin",
+                "Price",
+                "High / Low (24h)",
+                "Change (24h)",
+                "Market Cap",
+                "Total Volume",
+              ].map((head) => (
+                <TableCell key={head}>
+                  <Typography
+                    variant="subtitle2"
+                    align="center"
+                    sx={{ color: "black", fontWeight: "bold" }}
+                  >
+                    {head}
+                  </Typography>
                 </TableCell>
               ))}
             </TableRow>
@@ -111,63 +121,110 @@ const CoinsTable = () => {
                   const isProfit = row.price_change_percentage_24h > 0;
 
                   return (
-                    <TableRow key={row.name} className={classes.tableBodyRow}>
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        sx={{ display: "flex", gap: 3 }}
-                      >
+                    <TableRow key={row.name}>
+                      <TableCell component="th" scope="row">
                         <Link href={`/coins/${row.id}?${currentSearchPrams}`}>
-                          <Image
-                            src={row?.image}
-                            alt={row.name}
-                            width="50"
-                            height="50"
-                          />
-                          <div
-                            style={{
+                          <Box
+                            sx={{
                               display: "flex",
-                              flexDirection: "column",
+                              flexDirection: "row",
+                              alignItems: "center",
                             }}
                           >
-                            <span
-                              style={{
-                                textTransform: "uppercase",
-                                fontSize: 22,
+                            <Image
+                              src={row?.image}
+                              alt={row.name}
+                              width="30"
+                              height="30"
+                            />
+                            <Box
+                              sx={{
+                                ml: "0.5rem",
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "center",
+                                alignItems: "flex-start",
                               }}
                             >
-                              {row.symbol}
-                            </span>
-                            <span style={{ color: "darkgrey" }}>
-                              {row.name}
-                            </span>
-                          </div>
+                              <Typography
+                                variant="body2"
+                                sx={{ color: "black", fontWeight: "bold" }}
+                              >
+                                {row.name}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                sx={{ color: "dodgerblue" }}
+                              >
+                                {row.symbol.toUpperCase()}
+                              </Typography>
+                            </Box>
+                          </Box>
                         </Link>
                       </TableCell>
-                      <TableCell
-                        align="right"
-                        sx={{ fontSize: 22, fontWeight: "bold" }}
-                      >
-                        {getCurrencySymbol(currency)}
-                        {formatNumber(+row.current_price.toFixed(2), 3)}
+                      <TableCell align="right">
+                        <Typography
+                          variant="subtitle1"
+                          sx={{ color: "black", fontWeight: "bold" }}
+                        >
+                          {getCurrencySymbol(currency)}
+                          {formatNumber(row.current_price, 3)}
+                        </Typography>
                       </TableCell>
-                      <TableCell
-                        align="right"
-                        sx={{
-                          color: isProfit ? "rgb(14, 203, 129)" : "red",
-                          fontSize: 22,
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {isProfit && "+"}
-                        {row.price_change_percentage_24h.toFixed(2)}%
+                      <TableCell align="right">
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "flex-start",
+                          }}
+                        >
+                          <Typography
+                            variant="subtitle2"
+                            sx={{ color: "black", fontWeight: "bold" }}
+                          >
+                            {getCurrencySymbol(currency)}
+                            {formatNumber(row.high_24h, 3)} /
+                          </Typography>
+                          <Typography
+                            variant="subtitle2"
+                            sx={{ color: "black", fontWeight: "bold" }}
+                          >
+                            {getCurrencySymbol(currency)}
+                            {formatNumber(row.low_24h, 3)}
+                          </Typography>
+                        </Box>
                       </TableCell>
-                      <TableCell
-                        align="right"
-                        sx={{ fontSize: 22, fontWeight: "bold" }}
-                      >
-                        {getCurrencySymbol(currency)}
-                        {formatNumber(+row.market_cap.toFixed(2), 2)}
+                      <TableCell align="right">
+                        <Typography
+                          variant="subtitle1"
+                          sx={{
+                            color: isProfit ? "rgb(14, 203, 129)" : "red",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {isProfit && "+"}
+                          {row.price_change_percentage_24h.toFixed(2)}%
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <Typography
+                          variant="subtitle1"
+                          sx={{ color: "black", fontWeight: "bold" }}
+                        >
+                          {getCurrencySymbol(currency)}
+                          {formatNumber(row.market_cap, 2)}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <Typography
+                          variant="subtitle1"
+                          sx={{ color: "black", fontWeight: "bold" }}
+                        >
+                          {getCurrencySymbol(currency)}
+                          {formatNumber(row.total_volume, 2)}
+                        </Typography>
                       </TableCell>
                     </TableRow>
                   );

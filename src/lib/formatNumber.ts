@@ -8,6 +8,6 @@ export const formatNumber = (number: number, numOfDecimals: number = 1) => {
   } else if (number >= 1e3) {
     return (number / 1e3).toFixed(numOfDecimals) + "K";
   } else {
-    return number.toString();
+    return number.toFixed(numOfDecimals).toString();
   }
 };

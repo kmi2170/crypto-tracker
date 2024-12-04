@@ -74,11 +74,11 @@ const Coin = () => {
       <PricesWrapper sx={{ mt: "1rem", mb: "1rem" }}>
         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
           Current Price: {getCurrencySymbol(currency)}
-          {formatNumber(coin?.market_data.current_price[currency], 2)}
+          {formatNumber(coin?.market_data.current_price[currency], 3)}
         </Typography>
         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
           Market Cap: {getCurrencySymbol(currency)}
-          {formatNumber(coin?.market_data.market_cap[currency])}
+          {formatNumber(coin?.market_data.market_cap[currency], 2)}
         </Typography>
         <Typography variant="subtitle1">
           Rank: {coin?.market_cap_rank}

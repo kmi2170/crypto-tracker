@@ -120,7 +120,7 @@ const DisplayItem = ({ coin, currency }: DisplayItemProps) => {
         sx={{ color: "black", fontWeight: "bold" }}
       >
         {getCurrencySymbol(currency)}
-        {formatNumber(+coin?.current_price.toFixed(3))}
+        {formatNumber(coin?.current_price, 3)}
       </Typography>
       <Typography
         variant="subtitle1"
