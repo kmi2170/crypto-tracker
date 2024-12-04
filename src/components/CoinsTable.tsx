@@ -25,6 +25,8 @@ import {
   fetchCoinList,
   fetchCoinListDummy,
 } from "../lib/fetchFunctions";
+import { getCurrencySymbol } from "../lib/getCurrencySymbol";
+import { formatNumber } from "../lib/formatNumber";
 
 const useStyles = makeStyles(() => ({
   tableBodyRow: {
@@ -146,8 +148,8 @@ const CoinsTable = () => {
                         align="right"
                         sx={{ fontSize: 22, fontWeight: "bold" }}
                       >
-                        {row.symbol}{" "}
-                        {numberWithComma(+row.current_price.toFixed(2))}
+                        {getCurrencySymbol(currency)}
+                        {formatNumber(+row.current_price.toFixed(2), 3)}
                       </TableCell>
                       <TableCell
                         align="right"
@@ -164,11 +166,8 @@ const CoinsTable = () => {
                         align="right"
                         sx={{ fontSize: 22, fontWeight: "bold" }}
                       >
-                        {row.symbol}{" "}
-                        {numberWithComma(
-                          +row.market_cap.toString().slice(0, -6)
-                        )}
-                        M
+                        {getCurrencySymbol(currency)}
+                        {formatNumber(+row.market_cap.toFixed(2), 2)}
                       </TableCell>
                     </TableRow>
                   );
