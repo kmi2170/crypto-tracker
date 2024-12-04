@@ -7,6 +7,7 @@ import Image from "next/image";
 
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -78,16 +79,26 @@ const CoinsTable = () => {
       {/* {isLoading ? (
         <LinearProgress sx={{ backgroundColor: "gold" }} />
       ) : ( */}
-      <TableContainer sx={{ position: "relative", overflowX: "auto" }}>
-        <Table>
-          <TableHead sx={{ backgroundColor: "rgba(255,215,0,1.0)" }}>
+      <TableContainer
+        component={Paper}
+        sx={{
+          maxHeight: "400px",
+          position: "relative",
+          overflowX: "auto",
+          overflowY: "auto",
+        }}
+      >
+        <Table stickyHeader>
+          <TableHead>
             <TableRow
               sx={{
+                "& th": { backgroundColor: "rgba(255,215,0,1.0)" },
+                zIndex: "20",
                 "& th:first-of-type": {
                   position: "sticky",
                   backgroundColor: "rgba(255,215,0,1.0)",
                   left: 0,
-                  zIndex: "10",
+                  zIndex: "20",
                 },
               }}
             >
