@@ -17,6 +17,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import Pagination from "@mui/material/Pagination";
+
 import { useQuery } from "@tanstack/react-query";
 
 import { Coin, Currencies } from "../context/types";
@@ -77,10 +78,19 @@ const CoinsTable = () => {
       {/* {isLoading ? (
         <LinearProgress sx={{ backgroundColor: "gold" }} />
       ) : ( */}
-      <TableContainer>
+      <TableContainer sx={{ position: "relative", overflowX: "auto" }}>
         <Table>
-          <TableHead sx={{ backgroundColor: "rgba(255,215,0,0.5)" }}>
-            <TableRow>
+          <TableHead sx={{ backgroundColor: "rgba(255,215,0,1.0)" }}>
+            <TableRow
+              sx={{
+                "& th:first-of-type": {
+                  position: "sticky",
+                  backgroundColor: "rgba(255,215,0,1.0)",
+                  left: 0,
+                  zIndex: "10",
+                },
+              }}
+            >
               {[
                 "Coin",
                 "Price",
@@ -115,6 +125,10 @@ const CoinsTable = () => {
                         component="th"
                         scope="row"
                         sx={{
+                          position: "sticky",
+                          left: 0,
+                          zIndex: "10",
+                          backgroundColor: "white",
                           transition: "background-color 0.5s ease",
                           "&:hover": {
                             backgroundColor: "rgba(192,192,192,0.5)",
