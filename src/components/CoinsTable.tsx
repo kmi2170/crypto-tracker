@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -17,7 +17,6 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import Pagination from "@mui/material/Pagination";
-import { makeStyles } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
 
 import { Coin, Currencies } from "../context/types";
@@ -29,22 +28,12 @@ import {
 import { getCurrencySymbol } from "../lib/getCurrencySymbol";
 import { formatNumber } from "../lib/formatNumber";
 
-const useStyles = makeStyles(() => ({
-  tableBodyRow: {
-    // backgroundColor: "#16171a",
-    cursor: "pointer",
-    "&:hover": {
-      // backgroundColor: "#131111",
-    },
-  },
-}));
-
 export const numberWithComma = (x: number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 const CoinsTable = () => {
-  const classes = useStyles();
+  const router = useRouter();
 
   const searchParams = useSearchParams();
   const currentSearchPrams = new URLSearchParams(searchParams).toString();
@@ -122,45 +111,57 @@ const CoinsTable = () => {
 
                   return (
                     <TableRow key={row.name}>
-                      <TableCell component="th" scope="row">
-                        <Link href={`/coins/${row.id}?${currentSearchPrams}`}>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{
+                          transition: "background-color 0.5s ease",
+                          "&:hover": {
+                            backgroundColor: "rgba(192,192,192,0.5)",
+                            borderRadius: "5px",
+                            cursor: "pointer",
+                          },
+                        }}
+                        onClick={() => {
+                          router.push(`/coins/${row.id}?${currentSearchPrams}`);
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Image
+                            src={row?.image}
+                            alt={row.name}
+                            width="30"
+                            height="30"
+                          />
                           <Box
                             sx={{
+                              ml: "0.5rem",
                               display: "flex",
-                              flexDirection: "row",
-                              alignItems: "center",
+                              flexDirection: "column",
+                              justifyContent: "center",
+                              alignItems: "flex-start",
                             }}
                           >
-                            <Image
-                              src={row?.image}
-                              alt={row.name}
-                              width="30"
-                              height="30"
-                            />
-                            <Box
-                              sx={{
-                                ml: "0.5rem",
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "center",
-                                alignItems: "flex-start",
-                              }}
+                            <Typography
+                              variant="body2"
+                              sx={{ color: "black", fontWeight: "bold" }}
                             >
-                              <Typography
-                                variant="body2"
-                                sx={{ color: "black", fontWeight: "bold" }}
-                              >
-                                {row.name}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                sx={{ color: "dodgerblue" }}
-                              >
-                                {row.symbol.toUpperCase()}
-                              </Typography>
-                            </Box>
+                              {row.name}
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              sx={{ color: "dodgerblue" }}
+                            >
+                              {row.symbol.toUpperCase()}
+                            </Typography>
                           </Box>
-                        </Link>
+                        </Box>
                       </TableCell>
                       <TableCell align="right">
                         <Typography

@@ -91,6 +91,7 @@ const ItemWrapper = styled("div")({
   cursor: "pointer",
   textTransform: "uppercase",
   color: "white",
+  transition: "background-color 0.5s ease",
   "&:hover": {
     backgroundColor: "rgba(192,192,192,0.5)",
     borderRadius: "5px",
