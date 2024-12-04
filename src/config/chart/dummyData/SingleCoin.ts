@@ -1661,5 +1661,5 @@ export const dummySingleCoinData = {
 
 export type SingleCoinDummy = typeof dummySingleCoinData;
 
-export type Currencies =
+export type CurrenciesDummy =
   keyof (typeof dummySingleCoinData)["market_data"]["current_price"];

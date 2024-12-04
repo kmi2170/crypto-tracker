@@ -1,9 +1,10 @@
 import axios from "axios";
 import { dummyHistoricalData } from "../config/chart/dummyData/Historical";
-import { Coin, Historical, SingleCoin } from "../context/types";
+import { Coin, Currencies, Historical, SingleCoin } from "../context/types";
 import { dummyTrendCoinsData } from "../config/chart/dummyData/TrendCoins";
 import { dummyCoinListData } from "../config/chart/dummyData/CoinList";
 import {
+  CurrenciesDummy,
   dummySingleCoinData,
   SingleCoinDummy,
 } from "../config/chart/dummyData/SingleCoin";
@@ -16,7 +17,7 @@ export const configForUseQuery = {
   refetchOnWindowFocus: false,
 };
 
-export const fetchCoinList = async (currency: string) => {
+export const fetchCoinList = async (currency: Currencies) => {
   try {
     const { data } = await axios.get<Coin[]>(
       `/api/coin-list?currency=${currency}`
@@ -28,7 +29,7 @@ export const fetchCoinList = async (currency: string) => {
   }
 };
 
-export const fetchSingleCoin = async (id: string, currency: string) => {
+export const fetchSingleCoin = async (id: string, currency: Currencies) => {
   try {
     const { data } = await axios.get<SingleCoin>(
       `/api/single-coin?id=${id}&currency=${currency}`
@@ -39,7 +40,7 @@ export const fetchSingleCoin = async (id: string, currency: string) => {
   }
 };
 
-export const fetchTrendCoins = async (currency: string) => {
+export const fetchTrendCoins = async (currency: Currencies) => {
   try {
     const { data } = await axios.get<Coin[]>(
       `/api/trend-list?currency=${currency}`
@@ -53,7 +54,7 @@ export const fetchTrendCoins = async (currency: string) => {
 
 export const fetchHistorical = async (
   id: string,
-  currency: string,
+  currency: Currencies,
   days: number
 ): Promise<Historical> => {
   const { data } = await axios.get<Historical>(
@@ -63,21 +64,24 @@ export const fetchHistorical = async (
 };
 
 // dummy data
-export const fetchCoinListDummy = async (currency: string) => {
+export const fetchCoinListDummy = async (currency: Currencies) => {
   return dummyCoinListData as Coin[];
 };
 
-export const fetchSingleCoinDummy = async (id: string, currency: string) => {
+export const fetchSingleCoinDummy = async (
+  id: string,
+  currency: CurrenciesDummy
+) => {
   return dummySingleCoinData as SingleCoinDummy;
 };
 
-export const fetchTrendCoinsDummy = async (currency: string) => {
+export const fetchTrendCoinsDummy = async (currency: Currencies) => {
   return dummyTrendCoinsData as Coin[];
 };
 
 export const fetchHistoricalDummy = async (
   id: string,
-  currency: string,
+  currency: Currencies,
   days: number
 ): Promise<Historical> => {
   return dummyHistoricalData as Historical;

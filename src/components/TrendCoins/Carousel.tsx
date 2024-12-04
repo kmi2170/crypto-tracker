@@ -18,21 +18,63 @@ import {
   fetchTrendCoins,
   fetchTrendCoinsDummy,
 } from "../../lib/fetchFunctions";
-import { Coin } from "../../context/types";
+import { Coin, Currencies } from "../../context/types";
 import { formatNumber } from "../../lib/formatNumber";
 import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
+import { CurrenciesDummy } from "../../config/chart/dummyData/SingleCoin";
 
-const CarouselWrapper = styled(Paper)({
-  height: "50%",
-  margin: "auto",
-  paddingTop: "2rem",
-  paddingBottom: "1rem",
-  maxWidth: "1000px",
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "center",
-  alignItems: "center",
-});
+const responsive = {
+  0: {
+    items: 3,
+  },
+  400: {
+    items: 4,
+  },
+  512: {
+    items: 6,
+  },
+  1080: {
+    items: 8,
+  },
+};
+
+const Carousel = () => {
+  const searchParams = useSearchParams();
+  const currentSearchParams = new URLSearchParams(searchParams).toString();
+  const currency = (searchParams.get("currency") || "usd") as Currencies;
+
+  const { data: trending } = useQuery({
+    queryKey: ["trending", currency],
+    queryFn: () => fetchTrendCoinsDummy(currency),
+    ...configForUseQuery,
+  });
+
+  const items = trending?.map((coin: Coin) => {
+    return (
+      <Link key={coin.id} href={`/coins/${coin.id}?${currentSearchParams}`}>
+        <DisplayItem coin={coin} currency={currency} />
+      </Link>
+    );
+  });
+
+  return (
+    <AliceCarousel
+      mouseTracking
+      infinite
+      autoPlayInterval={10000}
+      animationDuration={1500}
+      // disableDotsControls
+      disableButtonsControls
+      responsive={responsive}
+      autoPlay
+      items={items}
+      // autoHeight
+      // autoWidth
+    />
+  );
+};
+
+export default Carousel;
 
 const ItemWrapper = styled("div")({
   display: "flex",
@@ -44,90 +86,42 @@ const ItemWrapper = styled("div")({
   color: "white",
 });
 
-const Carousel = () => {
-  const searchParams = useSearchParams();
-  const currentSearchParams = new URLSearchParams(searchParams).toString();
-  const currency = searchParams.get("currency") || "usd";
-
-  const { data: trending } = useQuery({
-    queryKey: ["trending", currency],
-    queryFn: () => fetchTrendCoinsDummy(currency),
-    ...configForUseQuery,
-  });
-
-  // if (!trending) return;
-
-  const items = trending?.map((coin: Coin) => {
-    const isPriceUp = coin?.price_change_percentage_24h >= 0;
-    console.log(coin.symbol);
-
-    return (
-      <Link key={coin.id} href={`/coins/${coin.id}?${currentSearchParams}`}>
-        <ItemWrapper>
-          <Typography
-            variant="subtitle2"
-            align="center"
-            sx={{ color: "black", fontWeight: "bold" }}
-          >
-            {coin?.symbol}
-          </Typography>
-          <Image src={coin?.image} alt={coin.name} width="35" height="35" />
-          <Typography
-            variant="subtitle1"
-            align="center"
-            sx={{ color: "black", fontWeight: "bold" }}
-          >
-            {getCurrencySymbol(currency)}
-            {formatNumber(+coin?.current_price.toFixed(3))}
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            align="center"
-            sx={{
-              color: isPriceUp ? "rgb(14, 203, 129)" : "red",
-              fontWeight: "bold",
-            }}
-          >
-            {isPriceUp && "+"}
-            {coin?.price_change_percentage_24h?.toFixed(2)}%
-          </Typography>
-        </ItemWrapper>
-      </Link>
-    );
-  });
-
-  const responsive = {
-    0: {
-      items: 3,
-    },
-    400: {
-      items: 4,
-    },
-    512: {
-      items: 6,
-    },
-    1080: {
-      items: 8,
-    },
-  };
-
-  return (
-    <>
-      <AliceCarousel
-        mouseTracking
-        infinite
-        autoPlayInterval={10000}
-        animationDuration={1500}
-        // disableDotsControls
-        disableButtonsControls
-        responsive={responsive}
-        autoPlay
-        items={items}
-        // autoHeight
-        // autoWidth
-      />
-    </>
-  );
+type DisplayItemProps = {
+  coin: Coin;
+  currency: Currencies;
 };
 
-export default Carousel;
+const DisplayItem = ({ coin, currency }: DisplayItemProps) => {
+  const isPriceUp = coin?.price_change_percentage_24h >= 0;
+  return (
+    <ItemWrapper>
+      <Typography
+        variant="subtitle2"
+        align="center"
+        sx={{ color: "black", fontWeight: "bold" }}
+      >
+        {coin?.symbol}
+      </Typography>
+      <Image src={coin?.image} alt={coin.name} width="35" height="35" />
+      <Typography
+        variant="subtitle1"
+        align="center"
+        sx={{ color: "black", fontWeight: "bold" }}
+      >
+        {getCurrencySymbol(currency)}
+        {formatNumber(+coin?.current_price.toFixed(3))}
+      </Typography>
+      <Typography
+        variant="subtitle1"
+        align="center"
+        sx={{
+          color: isPriceUp ? "rgb(14, 203, 129)" : "red",
+          fontWeight: "bold",
+        }}
+      >
+        {isPriceUp && "+"}
+        {coin?.price_change_percentage_24h?.toFixed(2)}%
+      </Typography>
+    </ItemWrapper>
+  );
+};

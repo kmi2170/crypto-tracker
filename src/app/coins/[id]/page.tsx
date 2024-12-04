@@ -16,7 +16,8 @@ import {
 } from "../../../lib/fetchFunctions";
 import { getCurrencySymbol } from "../../../lib/getCurrencySymbol";
 import { formatNumber } from "../../../lib/formatNumber";
-import { Currencies } from "../../../config/chart/dummyData/SingleCoin";
+import { CurrenciesDummy } from "../../../config/chart/dummyData/SingleCoin";
+import { Currencies } from "../../../context/types";
 
 const TitleWrapper = styled("div")({
   display: "flex",

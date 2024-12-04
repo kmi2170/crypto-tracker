@@ -19,6 +19,7 @@ import { dataItems, DataItemsType } from "../../config/chart/chartButtons";
 import { verticalLineOnHover } from "../../config/chart/plugins";
 import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
 import { formatNumber } from "../../lib/formatNumber";
+import { Currencies } from "../../context/types";
 
 ChartJS.register(
   CategoryScale,
@@ -33,7 +34,7 @@ ChartJS.register(
 );
 
 type ChartMainProps = {
-  currency: string;
+  currency: Currencies;
   itemName: DataItemsType;
   labels: string[];
   values: number[];

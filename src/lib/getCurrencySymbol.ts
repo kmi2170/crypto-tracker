@@ -1,4 +1,6 @@
-export const getCurrencySymbol = (currency: string) => {
+import { Currencies } from "../context/types";
+
+export const getCurrencySymbol = (currency: Currencies) => {
   switch (currency) {
     case "usd":
       return "$";

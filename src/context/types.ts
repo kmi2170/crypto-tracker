@@ -51,3 +51,5 @@ export interface Historical {
   market_caps: [number, number][];
   total_volumes: [number, number][];
 }
+
+export type Currencies = "usd" | "eur" | "jpy";

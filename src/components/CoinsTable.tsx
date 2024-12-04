@@ -19,7 +19,7 @@ import Pagination from "@mui/material/Pagination";
 import { makeStyles } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
 
-import { Coin } from "../context/types";
+import { Coin, Currencies } from "../context/types";
 import {
   configForUseQuery,
   fetchCoinList,
@@ -28,10 +28,10 @@ import {
 
 const useStyles = makeStyles(() => ({
   tableBodyRow: {
-    backgroundColor: "#16171a",
+    // backgroundColor: "#16171a",
     cursor: "pointer",
     "&:hover": {
-      backgroundColor: "#131111",
+      // backgroundColor: "#131111",
     },
   },
 }));
@@ -45,7 +45,7 @@ const CoinsTable = () => {
 
   const searchParams = useSearchParams();
   const currentSearchPrams = new URLSearchParams(searchParams).toString();
-  const currency = searchParams.get("currency") || "usd";
+  const currency = (searchParams.get("currency") || "usd") as Currencies;
 
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
@@ -72,9 +72,9 @@ const CoinsTable = () => {
 
   return (
     <>
-      <Typography variant="h4" sx={{ m: 3 }}>
+      {/* <Typography variant="h4" sx={{ m: 3 }}>
         Cryptocurrency Prices by Market Cap
-      </Typography>
+      </Typography> */}
       <TextField
         label="Search for a Cryptocurrency"
         variant="outlined"
@@ -82,101 +82,101 @@ const CoinsTable = () => {
         onChange={handleChange}
       />
 
-      {isLoading ? (
+      {/* {isLoading ? (
         <LinearProgress sx={{ backgroundColor: "gold" }} />
-      ) : (
-        <TableContainer>
-          <Table>
-            <TableHead sx={{ backgroundColor: "#EEBC1D" }}>
-              <TableRow>
-                {["Coin", "Price", "24h Change", "Market Cap"].map((head) => (
-                  <TableCell
-                    sx={{ color: "black", fontWeight: "bold" }}
-                    key={head}
-                    align={head === "Coin" ? "left" : "right"}
-                  >
-                    {head}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
+      ) : ( */}
+      <TableContainer>
+        <Table>
+          <TableHead sx={{ backgroundColor: "#EEBC1D" }}>
+            <TableRow>
+              {["Coin", "Price", "24h Change", "Market Cap"].map((head) => (
+                <TableCell
+                  sx={{ color: "black", fontWeight: "bold" }}
+                  key={head}
+                  align={head === "Coin" ? "left" : "right"}
+                >
+                  {head}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
 
-            <TableBody>
-              {coins &&
-                handleSearch()
-                  .slice((page - 1) * 10, (page - 1) * 10 + 10)
-                  .map((row: Coin) => {
-                    const isProfit = row.price_change_percentage_24h > 0;
+          <TableBody>
+            {coins &&
+              handleSearch()
+                .slice((page - 1) * 10, (page - 1) * 10 + 10)
+                .map((row: Coin) => {
+                  const isProfit = row.price_change_percentage_24h > 0;
 
-                    return (
-                      <TableRow key={row.name} className={classes.tableBodyRow}>
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          sx={{ display: "flex", gap: 3 }}
-                        >
-                          <Link href={`/coins/${row.id}?${currentSearchPrams}`}>
-                            <Image
-                              src={row?.image}
-                              alt={row.name}
-                              width="50"
-                              height="50"
-                            />
-                            <div
+                  return (
+                    <TableRow key={row.name} className={classes.tableBodyRow}>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{ display: "flex", gap: 3 }}
+                      >
+                        <Link href={`/coins/${row.id}?${currentSearchPrams}`}>
+                          <Image
+                            src={row?.image}
+                            alt={row.name}
+                            width="50"
+                            height="50"
+                          />
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                            }}
+                          >
+                            <span
                               style={{
-                                display: "flex",
-                                flexDirection: "column",
+                                textTransform: "uppercase",
+                                fontSize: 22,
                               }}
                             >
-                              <span
-                                style={{
-                                  textTransform: "uppercase",
-                                  fontSize: 22,
-                                }}
-                              >
-                                {row.symbol}
-                              </span>
-                              <span style={{ color: "darkgrey" }}>
-                                {row.name}
-                              </span>
-                            </div>
-                          </Link>
-                        </TableCell>
-                        <TableCell
-                          align="right"
-                          sx={{ fontSize: 22, fontWeight: "bold" }}
-                        >
-                          {row.symbol}{" "}
-                          {numberWithComma(+row.current_price.toFixed(2))}
-                        </TableCell>
-                        <TableCell
-                          align="right"
-                          sx={{
-                            color: isProfit ? "rgb(14, 203, 129)" : "red",
-                            fontSize: 22,
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {isProfit && "+"}
-                          {row.price_change_percentage_24h.toFixed(2)}%
-                        </TableCell>
-                        <TableCell
-                          align="right"
-                          sx={{ fontSize: 22, fontWeight: "bold" }}
-                        >
-                          {row.symbol}{" "}
-                          {numberWithComma(
-                            +row.market_cap.toString().slice(0, -6)
-                          )}
-                          M
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
+                              {row.symbol}
+                            </span>
+                            <span style={{ color: "darkgrey" }}>
+                              {row.name}
+                            </span>
+                          </div>
+                        </Link>
+                      </TableCell>
+                      <TableCell
+                        align="right"
+                        sx={{ fontSize: 22, fontWeight: "bold" }}
+                      >
+                        {row.symbol}{" "}
+                        {numberWithComma(+row.current_price.toFixed(2))}
+                      </TableCell>
+                      <TableCell
+                        align="right"
+                        sx={{
+                          color: isProfit ? "rgb(14, 203, 129)" : "red",
+                          fontSize: 22,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {isProfit && "+"}
+                        {row.price_change_percentage_24h.toFixed(2)}%
+                      </TableCell>
+                      <TableCell
+                        align="right"
+                        sx={{ fontSize: 22, fontWeight: "bold" }}
+                      >
+                        {row.symbol}{" "}
+                        {numberWithComma(
+                          +row.market_cap.toString().slice(0, -6)
+                        )}
+                        M
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {/* )} */}
       {isLoading && (
         <Pagination
           count={handleSearch() ? +(handleSearch()?.length / 10).toFixed(0) : 1}
