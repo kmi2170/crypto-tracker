@@ -23,6 +23,11 @@ import { formatNumber } from "../../lib/formatNumber";
 import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
 import { CurrenciesDummy } from "../../config/chart/dummyData/SingleCoin";
 
+const CarouselWrapper = styled("div")({
+  marginLeft: "0.5rem",
+  marginRight: "0.5rem",
+});
+
 const responsive = {
   0: {
     items: 3,
@@ -58,19 +63,21 @@ const Carousel = () => {
   });
 
   return (
-    <AliceCarousel
-      mouseTracking
-      infinite
-      autoPlayInterval={10000}
-      animationDuration={1500}
-      // disableDotsControls
-      disableButtonsControls
-      responsive={responsive}
-      autoPlay
-      items={items}
-      // autoHeight
-      // autoWidth
-    />
+    <CarouselWrapper>
+      <AliceCarousel
+        mouseTracking
+        infinite
+        autoPlayInterval={10000}
+        animationDuration={1500}
+        // disableDotsControls
+        disableButtonsControls
+        responsive={responsive}
+        autoPlay
+        items={items}
+        // autoHeight
+        // autoWidth
+      />
+    </CarouselWrapper>
   );
 };
 
@@ -84,6 +91,10 @@ const ItemWrapper = styled("div")({
   cursor: "pointer",
   textTransform: "uppercase",
   color: "white",
+  "&:hover": {
+    backgroundColor: "rgba(192,192,192,0.5)",
+    borderRadius: "5px",
+  },
 });
 
 type DisplayItemProps = {
