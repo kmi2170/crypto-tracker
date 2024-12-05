@@ -157,7 +157,7 @@ const CoinsTable = () => {
                       <TableCell
                         component="th"
                         scope="row"
-                        align="center"
+                        align="left"
                         sx={{
                           width: "6rem",
                           position: "sticky",
