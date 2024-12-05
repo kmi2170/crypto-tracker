@@ -178,8 +178,12 @@ const CoinsTable = () => {
                         {headRow(row)}
                       </TableCell>
 
-                      {bodyRow(row, currency).map((data) => (
-                        <TableCell align="right" sx={{ fontWeight: "bold" }}>
+                      {bodyRow(row, currency).map((data, index) => (
+                        <TableCell
+                          key={index}
+                          align="right"
+                          sx={{ fontWeight: "bold" }}
+                        >
                           {data}
                         </TableCell>
                       ))}

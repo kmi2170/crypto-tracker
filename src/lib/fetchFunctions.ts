@@ -17,10 +17,10 @@ export const configForUseQuery = {
   refetchOnWindowFocus: false,
 };
 
-export const fetchCoinList = async (currency: Currencies) => {
+export const fetchCoinList = async (currency: Currencies, page?: number) => {
   try {
     const { data } = await axios.get<Coin[]>(
-      `/api/coin-list?currency=${currency}`
+      `/api/coin-list?currency=${currency}&page=${page}`
     );
 
     return data;
