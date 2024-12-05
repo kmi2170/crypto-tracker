@@ -11,15 +11,13 @@ const Footer = () => {
       sx={{ mt: "2rem", mb: "1rem" }}
     >
       &copy; {year} Kemmei H. | Powered by{" "}
-      {
-        <a
-          href="https://www.coingecko.com/en/api"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          CoinGecko
-        </a>
-      }
+      <a
+        href="https://www.coingecko.com/en/api"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        CoinGecko
+      </a>
       .
     </Typography>
   );
