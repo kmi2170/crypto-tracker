@@ -29,10 +29,21 @@ import {
 } from "../lib/fetchFunctions";
 import { getCurrencySymbol } from "../lib/getCurrencySymbol";
 import { formatNumber } from "../lib/formatNumber";
+import { styled } from "@mui/material/styles";
 
 export const numberWithComma = (x: number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
+
+const Low = styled("span")({
+  color: "slateblue",
+  fontWeight: "bold",
+});
+
+const High = styled("span")({
+  color: "indianred",
+  fontWeight: "bold",
+});
 
 const CoinsTable = () => {
   const router = useRouter();
@@ -63,6 +74,15 @@ const CoinsTable = () => {
         coin.symbol.toLowerCase().includes(search)
     );
   };
+
+  const headRows = [
+    "Coin",
+    "Price",
+    "High/Low (24h)",
+    "Change (24h)",
+    "Market Cap",
+    "Total Volume",
+  ];
 
   return (
     <>
@@ -114,21 +134,13 @@ const CoinsTable = () => {
                 },
               }}
             >
-              {[
-                "Coin",
-                "Price",
-                "High/Low (24h)",
-                "Change (24h)",
-                "Market Cap",
-                "Total Volume",
-              ].map((head, index) => (
-                <TableCell key={head} align={index === 0 ? "center" : "right"}>
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ color: "black", fontWeight: "bold" }}
-                  >
-                    {head}
-                  </Typography>
+              {headRows.map((head, index) => (
+                <TableCell
+                  key={head}
+                  align={index === 0 ? "center" : "right"}
+                  sx={{ color: "black", fontWeight: "bold" }}
+                >
+                  {head}
                 </TableCell>
               ))}
             </TableRow>
@@ -201,14 +213,9 @@ const CoinsTable = () => {
                           </Box>
                         </Box>
                       </TableCell>
-                      <TableCell align="right">
-                        <Typography
-                          variant="subtitle1"
-                          sx={{ color: "black", fontWeight: "bold" }}
-                        >
-                          {getCurrencySymbol(currency)}
-                          {formatNumber(row.current_price, 3)}
-                        </Typography>
+                      <TableCell align="right" sx={{ fontWeight: "bold" }}>
+                        {getCurrencySymbol(currency)}
+                        {formatNumber(row.current_price, 3)}
                       </TableCell>
                       <TableCell align="right">
                         <Box
@@ -218,20 +225,14 @@ const CoinsTable = () => {
                             justifyContent: "center",
                           }}
                         >
-                          <Typography
-                            variant="subtitle2"
-                            sx={{ color: "slateblue", fontWeight: "bold" }}
-                          >
+                          <High>
                             {getCurrencySymbol(currency)}
                             {formatNumber(row.high_24h, 3)}
-                          </Typography>
-                          <Typography
-                            variant="subtitle2"
-                            sx={{ color: "indianred", fontWeight: "bold" }}
-                          >
+                          </High>
+                          <Low>
                             {getCurrencySymbol(currency)}
                             {formatNumber(row.low_24h, 3)}
-                          </Typography>
+                          </Low>
                         </Box>
                       </TableCell>
                       <TableCell align="right">
@@ -246,23 +247,13 @@ const CoinsTable = () => {
                           {row.price_change_percentage_24h.toFixed(2)}%
                         </Typography>
                       </TableCell>
-                      <TableCell align="right">
-                        <Typography
-                          variant="subtitle1"
-                          sx={{ color: "black", fontWeight: "bold" }}
-                        >
-                          {getCurrencySymbol(currency)}
-                          {formatNumber(row.market_cap, 2)}
-                        </Typography>
+                      <TableCell align="right" sx={{ fontWeight: "bold" }}>
+                        {getCurrencySymbol(currency)}
+                        {formatNumber(row.market_cap, 2)}
                       </TableCell>
-                      <TableCell align="right">
-                        <Typography
-                          variant="subtitle1"
-                          sx={{ color: "black", fontWeight: "bold" }}
-                        >
-                          {getCurrencySymbol(currency)}
-                          {formatNumber(row.total_volume, 2)}
-                        </Typography>
+                      <TableCell align="right" sx={{ fontWeight: "bold" }}>
+                        {getCurrencySymbol(currency)}
+                        {formatNumber(row.total_volume, 2)}
                       </TableCell>
                     </TableRow>
                   );
