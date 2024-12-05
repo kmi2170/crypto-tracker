@@ -88,15 +88,15 @@ const CoinsTable = () => {
           overflowY: "auto",
         }}
       >
-        <Table stickyHeader>
+        <Table stickyHeader size="small">
           <TableHead>
             <TableRow
               sx={{
-                "& th": { backgroundColor: "rgba(255,215,0,1.0)" },
+                "& th": { backgroundColor: "rgba(238,232,170,1.0)" },
                 zIndex: "20",
                 "& th:first-of-type": {
                   position: "sticky",
-                  backgroundColor: "rgba(255,215,0,1.0)",
+                  backgroundColor: "rgba(238,232,170,1.0)",
                   left: 0,
                   zIndex: "20",
                 },
@@ -105,7 +105,7 @@ const CoinsTable = () => {
               {[
                 "Coin",
                 "Price",
-                "High / Low (24h)",
+                "High/Low (24h)",
                 "Change (24h)",
                 "Market Cap",
                 "Total Volume",
@@ -208,14 +208,14 @@ const CoinsTable = () => {
                         >
                           <Typography
                             variant="subtitle2"
-                            sx={{ color: "black", fontWeight: "bold" }}
+                            sx={{ color: "slateblue", fontWeight: "bold" }}
                           >
                             {getCurrencySymbol(currency)}
-                            {formatNumber(row.high_24h, 3)} /
+                            {formatNumber(row.high_24h, 3)}
                           </Typography>
                           <Typography
                             variant="subtitle2"
-                            sx={{ color: "black", fontWeight: "bold" }}
+                            sx={{ color: "indianred", fontWeight: "bold" }}
                           >
                             {getCurrencySymbol(currency)}
                             {formatNumber(row.low_24h, 3)}
