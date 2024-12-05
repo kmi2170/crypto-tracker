@@ -66,15 +66,27 @@ const CoinsTable = () => {
 
   return (
     <>
-      {/* <Typography variant="h4" sx={{ m: 3 }}>
+      <Typography
+        component="h2"
+        variant="h5"
+        align="center"
+        sx={{ mt: "2rem", mb: "1rem", fontWeight: "bold" }}
+      >
         Cryptocurrency Prices by Market Cap
-      </Typography> */}
-      <TextField
-        label="Search for a Cryptocurrency"
-        variant="outlined"
-        sx={{ mb: 5, width: "80%" }}
-        onChange={handleChange}
-      />
+      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <TextField
+          label="Search for a Cryptocurrency"
+          variant="outlined"
+          sx={{ mb: "0.75rem", width: "80%" }}
+          onChange={handleChange}
+        />
+      </Box>
 
       {/* {isLoading ? (
         <LinearProgress sx={{ backgroundColor: "gold" }} />
@@ -82,7 +94,7 @@ const CoinsTable = () => {
       <TableContainer
         component={Paper}
         sx={{
-          maxHeight: "400px",
+          maxHeight: "500px",
           position: "relative",
           overflowX: "auto",
           overflowY: "auto",
@@ -109,11 +121,10 @@ const CoinsTable = () => {
                 "Change (24h)",
                 "Market Cap",
                 "Total Volume",
-              ].map((head) => (
-                <TableCell key={head}>
+              ].map((head, index) => (
+                <TableCell key={head} align={index === 0 ? "center" : "right"}>
                   <Typography
                     variant="subtitle2"
-                    align="center"
                     sx={{ color: "black", fontWeight: "bold" }}
                   >
                     {head}
@@ -135,6 +146,7 @@ const CoinsTable = () => {
                       <TableCell
                         component="th"
                         scope="row"
+                        align="center"
                         sx={{
                           position: "sticky",
                           left: 0,
@@ -155,6 +167,7 @@ const CoinsTable = () => {
                           sx={{
                             display: "flex",
                             flexDirection: "row",
+                            justifyContent: "flex-start",
                             alignItems: "center",
                           }}
                         >
@@ -166,7 +179,7 @@ const CoinsTable = () => {
                           />
                           <Box
                             sx={{
-                              ml: "0.5rem",
+                              ml: "0.75rem",
                               display: "flex",
                               flexDirection: "column",
                               justifyContent: "center",
@@ -203,7 +216,6 @@ const CoinsTable = () => {
                             display: "flex",
                             flexDirection: "column",
                             justifyContent: "center",
-                            alignItems: "flex-start",
                           }}
                         >
                           <Typography

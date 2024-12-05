@@ -108,13 +108,13 @@ const DisplayItem = ({ coin, currency }: DisplayItemProps) => {
   return (
     <ItemWrapper>
       <Typography
-        variant="subtitle2"
+        variant="subtitle1"
         align="center"
-        sx={{ color: "black", fontWeight: "bold" }}
+        sx={{ color: "dodgerblue", fontWeight: "bold" }}
       >
         {coin?.symbol}
       </Typography>
-      <Image src={coin?.image} alt={coin.name} width="35" height="35" />
+      <Image src={coin?.image} alt={coin.name} width="30" height="30" />
       <Typography
         variant="subtitle1"
         align="center"
@@ -124,7 +124,7 @@ const DisplayItem = ({ coin, currency }: DisplayItemProps) => {
         {formatNumber(coin?.current_price, 3)}
       </Typography>
       <Typography
-        variant="subtitle1"
+        variant="subtitle2"
         align="center"
         sx={{
           color: isPriceUp ? "rgb(14, 203, 129)" : "red",

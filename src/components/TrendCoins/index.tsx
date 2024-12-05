@@ -22,9 +22,9 @@ const TrendCoins = () => {
     <TrendWrapper elevation={5}>
       <Typography
         component="h2"
-        variant="h4"
+        variant="h5"
         align="center"
-        sx={{ fontWeight: "bold", mb: "1.5rem" }}
+        sx={{ fontWeight: "bold", mb: "1.0rem" }}
       >
         Trend
       </Typography>
