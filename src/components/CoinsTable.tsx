@@ -36,12 +36,16 @@ export const numberWithComma = (x: number) => {
 };
 
 const Low = styled("span")({
-  color: "slateblue",
+  color: "indianred",
   fontWeight: "bold",
 });
 
 const High = styled("span")({
-  color: "indianred",
+  color: "slateblue",
+  fontWeight: "bold",
+});
+
+const Change24h = styled("span")({
   fontWeight: "bold",
 });
 
@@ -75,7 +79,7 @@ const CoinsTable = () => {
     );
   };
 
-  const headRows = [
+  const headerRow = [
     "Coin",
     "Price",
     "High/Low (24h)",
@@ -108,9 +112,6 @@ const CoinsTable = () => {
         />
       </Box>
 
-      {/* {isLoading ? (
-        <LinearProgress sx={{ backgroundColor: "gold" }} />
-      ) : ( */}
       <TableContainer
         component={Paper}
         sx={{
@@ -134,13 +135,11 @@ const CoinsTable = () => {
                 },
               }}
             >
-              {headRows.map((head, index) => (
+              {headerRow.map((head, index) => (
                 <TableCell
                   key={head}
                   align={index === 0 ? "center" : "right"}
-                  sx={{
-                    fontWeight: "bold",
-                  }}
+                  sx={{ fontWeight: "bold" }}
                 >
                   {head}
                 </TableCell>
@@ -153,8 +152,6 @@ const CoinsTable = () => {
               handleSearch()
                 .slice((page - 1) * 10, (page - 1) * 10 + 10)
                 .map((row: Coin) => {
-                  const isProfit = row.price_change_percentage_24h > 0;
-
                   return (
                     <TableRow key={row.name}>
                       <TableCell
@@ -162,11 +159,11 @@ const CoinsTable = () => {
                         scope="row"
                         align="center"
                         sx={{
-                          maxWidth: "5rem",
+                          width: "6rem",
                           position: "sticky",
+                          backgroundColor: "white",
                           left: 0,
                           zIndex: "10",
-                          backgroundColor: "white",
                           transition: "background-color 0.5s ease",
                           "&:hover": {
                             backgroundColor: "rgba(192,192,192,0.5)",
@@ -178,93 +175,21 @@ const CoinsTable = () => {
                           router.push(`/coins/${row.id}?${currentSearchPrams}`);
                         }}
                       >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "flex-start",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Image
-                            src={row?.image}
-                            alt={row.name}
-                            width="30"
-                            height="30"
-                          />
-                          <Box
-                            sx={{
-                              ml: "0.75rem",
-                              display: "flex",
-                              flexDirection: "column",
-                              justifyContent: "center",
-                              alignItems: "flex-start",
-                            }}
-                          >
-                            <Typography
-                              variant="body2"
-                              sx={{ color: "black", fontWeight: "bold" }}
-                            >
-                              {row.name}
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              sx={{ color: "dodgerblue" }}
-                            >
-                              {row.symbol.toUpperCase()}
-                            </Typography>
-                          </Box>
-                        </Box>
+                        {headRow(row)}
                       </TableCell>
-                      <TableCell align="right" sx={{ fontWeight: "bold" }}>
-                        {getCurrencySymbol(currency)}
-                        {formatNumber(row.current_price, 3)}
-                      </TableCell>
-                      <TableCell align="right">
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <High>
-                            {getCurrencySymbol(currency)}
-                            {formatNumber(row.high_24h, 3)}
-                          </High>
-                          <Low>
-                            {getCurrencySymbol(currency)}
-                            {formatNumber(row.low_24h, 3)}
-                          </Low>
-                        </Box>
-                      </TableCell>
-                      <TableCell align="right">
-                        <Typography
-                          variant="subtitle1"
-                          sx={{
-                            color: isProfit ? "rgb(14, 203, 129)" : "red",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {isProfit && "+"}
-                          {row.price_change_percentage_24h.toFixed(2)}%
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="right" sx={{ fontWeight: "bold" }}>
-                        {getCurrencySymbol(currency)}
-                        {formatNumber(row.market_cap, 2)}
-                      </TableCell>
-                      <TableCell align="right" sx={{ fontWeight: "bold" }}>
-                        {getCurrencySymbol(currency)}
-                        {formatNumber(row.total_volume, 2)}
-                      </TableCell>
+
+                      {bodyRow(row, currency).map((data) => (
+                        <TableCell align="right" sx={{ fontWeight: "bold" }}>
+                          {data}
+                        </TableCell>
+                      ))}
                     </TableRow>
                   );
                 })}
           </TableBody>
         </Table>
       </TableContainer>
-      {/* )} */}
+
       {isLoading && (
         <Pagination
           count={handleSearch() ? +(handleSearch()?.length / 10).toFixed(0) : 1}
@@ -285,3 +210,73 @@ const CoinsTable = () => {
   );
 };
 export default CoinsTable;
+
+const headRow = (row: Coin) => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+      }}
+    >
+      <Image src={row?.image} alt={row.name} width="30" height="30" />
+      <Box
+        sx={{
+          ml: "0.75rem",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "flex-start",
+        }}
+      >
+        <Typography variant="body2" sx={{ color: "black", fontWeight: "bold" }}>
+          {row.name}
+        </Typography>
+        <Typography variant="body2" sx={{ color: "dodgerblue" }}>
+          {row.symbol.toUpperCase()}
+        </Typography>
+      </Box>
+    </Box>
+  );
+};
+
+const bodyRow = (row: Coin, currency: Currencies) => {
+  const isProfit = row.price_change_percentage_24h > 0;
+
+  return [
+    <>
+      {getCurrencySymbol(currency)}
+      {formatNumber(row.current_price, 3)}
+    </>,
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
+      <High>
+        {getCurrencySymbol(currency)}
+        {formatNumber(row.high_24h, 3)}
+      </High>
+      <Low>
+        {getCurrencySymbol(currency)}
+        {formatNumber(row.low_24h, 3)}
+      </Low>
+    </Box>,
+    <Change24h sx={{ color: isProfit ? "rgb(14, 203, 129)" : "red" }}>
+      {isProfit && "+"}
+      {row.price_change_percentage_24h.toFixed(2)}%
+    </Change24h>,
+    <>
+      {getCurrencySymbol(currency)}
+      {formatNumber(row.market_cap, 2)}
+    </>,
+    <>
+      {getCurrencySymbol(currency)}
+      {formatNumber(row.total_volume, 2)}
+    </>,
+  ];
+};
