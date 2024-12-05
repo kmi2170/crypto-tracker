@@ -190,7 +190,7 @@ const CoinsTable = () => {
         </Table>
       </TableContainer>
 
-      {isLoading && (
+      {!isLoading && (
         <Pagination
           count={handleSearch() ? +(handleSearch()?.length / 10).toFixed(0) : 1}
           sx={{
@@ -198,7 +198,6 @@ const CoinsTable = () => {
             width: "100%",
             display: "flex",
             justifyContent: "center",
-            "& .MuiPaginationItem-root": { color: "gold" },
           }}
           onChange={(_, value: number) => {
             setPage(value);
