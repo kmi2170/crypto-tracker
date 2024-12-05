@@ -138,7 +138,9 @@ const CoinsTable = () => {
                 <TableCell
                   key={head}
                   align={index === 0 ? "center" : "right"}
-                  sx={{ color: "black", fontWeight: "bold" }}
+                  sx={{
+                    fontWeight: "bold",
+                  }}
                 >
                   {head}
                 </TableCell>
@@ -160,6 +162,7 @@ const CoinsTable = () => {
                         scope="row"
                         align="center"
                         sx={{
+                          maxWidth: "5rem",
                           position: "sticky",
                           left: 0,
                           zIndex: "10",
