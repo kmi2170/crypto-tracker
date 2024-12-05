@@ -28,6 +28,7 @@ const TrendCoins = () => {
       >
         Trend
       </Typography>
+
       <Carousel />
     </TrendWrapper>
   );

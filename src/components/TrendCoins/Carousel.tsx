@@ -2,12 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import Container from "@mui/material/Container";
 import { styled } from "@mui/material/styles";
 
 import AliceCarousel from "react-alice-carousel";
@@ -19,26 +15,27 @@ import {
   fetchTrendCoinsDummy,
 } from "../../lib/fetchFunctions";
 import { Coin, Currencies } from "../../context/types";
-import { formatNumber } from "../../lib/formatNumber";
-import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
 import { CurrenciesDummy } from "../../config/chart/dummyData/SingleCoin";
+import CarouselItem from "./CarouselItem";
+import CarouselItemSkeletons from "./CarouselItemSkeletons";
 
 const CarouselWrapper = styled("div")({
   marginLeft: "0.5rem",
   marginRight: "0.5rem",
+  height: "11rem",
 });
 
 const responsive = {
   0: {
     items: 3,
   },
-  400: {
-    items: 4,
+  600: {
+    items: 5,
   },
-  512: {
-    items: 6,
+  900: {
+    items: 8,
   },
-  1080: {
+  1200: {
     items: 8,
   },
 };
@@ -48,7 +45,7 @@ const Carousel = () => {
   const currentSearchParams = new URLSearchParams(searchParams).toString();
   const currency = (searchParams.get("currency") || "usd") as Currencies;
 
-  const { data: trending } = useQuery({
+  const { data: trending, isLoading } = useQuery({
     queryKey: ["trending", currency],
     queryFn: () => fetchTrendCoinsDummy(currency),
     ...configForUseQuery,
@@ -57,83 +54,32 @@ const Carousel = () => {
   const items = trending?.map((coin: Coin) => {
     return (
       <Link key={coin.id} href={`/coins/${coin.id}?${currentSearchParams}`}>
-        <DisplayItem coin={coin} currency={currency} />
+        <CarouselItem coin={coin} currency={currency} />
       </Link>
     );
   });
 
   return (
     <CarouselWrapper>
-      <AliceCarousel
-        mouseTracking
-        infinite
-        autoPlayInterval={10000}
-        animationDuration={1500}
-        // disableDotsControls
-        disableButtonsControls
-        responsive={responsive}
-        autoPlay
-        items={items}
-        // autoHeight
-        // autoWidth
-      />
+      {isLoading ? (
+        <CarouselItemSkeletons />
+      ) : (
+        <AliceCarousel
+          mouseTracking
+          infinite
+          autoPlayInterval={10000}
+          animationDuration={1500}
+          // disableDotsControls
+          disableButtonsControls
+          responsive={responsive}
+          autoPlay
+          items={items}
+          // autoHeight
+          // autoWidth
+        />
+      )}
     </CarouselWrapper>
   );
 };
 
 export default Carousel;
-
-const ItemWrapper = styled("div")({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  cursor: "pointer",
-  textTransform: "uppercase",
-  color: "white",
-  transition: "background-color 0.5s ease",
-  "&:hover": {
-    backgroundColor: "rgba(192,192,192,0.5)",
-    borderRadius: "5px",
-  },
-});
-
-type DisplayItemProps = {
-  coin: Coin;
-  currency: Currencies;
-};
-
-const DisplayItem = ({ coin, currency }: DisplayItemProps) => {
-  const isPriceUp = coin?.price_change_percentage_24h >= 0;
-  return (
-    <ItemWrapper>
-      <Typography
-        variant="subtitle1"
-        align="center"
-        sx={{ color: "dodgerblue", fontWeight: "bold" }}
-      >
-        {coin?.symbol}
-      </Typography>
-      <Image src={coin?.image} alt={coin.name} width="30" height="30" />
-      <Typography
-        variant="subtitle1"
-        align="center"
-        sx={{ color: "black", fontWeight: "bold" }}
-      >
-        {getCurrencySymbol(currency)}
-        {formatNumber(coin?.current_price, 3)}
-      </Typography>
-      <Typography
-        variant="subtitle2"
-        align="center"
-        sx={{
-          color: isPriceUp ? "rgb(14, 203, 129)" : "red",
-          fontWeight: "bold",
-        }}
-      >
-        {isPriceUp && "+"}
-        {coin?.price_change_percentage_24h?.toFixed(2)}%
-      </Typography>
-    </ItemWrapper>
-  );
-};
