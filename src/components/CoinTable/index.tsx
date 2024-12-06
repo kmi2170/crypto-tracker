@@ -116,6 +116,9 @@ const CoinsTable = () => {
           position: "relative",
           overflowX: "auto",
           overflowY: "auto",
+          "&::-webkit-scrollbar": { width: "0px" },
+          "-ms-overflow-style": "none" /* Internet Explorer and Edge */,
+          "scrollbar-width": "none" /* Firefox */,
         }}
       >
         <Table stickyHeader size="small">
@@ -136,7 +139,10 @@ const CoinsTable = () => {
                 <TableCell
                   key={head}
                   align={index === 0 ? "center" : "right"}
-                  sx={{ fontWeight: "bold" }}
+                  sx={{
+                    width: index === 0 ? "10rem" : "auto",
+                    fontWeight: "bold",
+                  }}
                 >
                   {head}
                 </TableCell>
@@ -158,7 +164,7 @@ const CoinsTable = () => {
                         scope="row"
                         align="left"
                         sx={{
-                          width: "6rem",
+                          width: "10rem",
                           position: "sticky",
                           backgroundColor: "white",
                           left: 0,
@@ -181,7 +187,10 @@ const CoinsTable = () => {
                         <TableCell
                           key={index}
                           align="right"
-                          sx={{ fontWeight: "bold" }}
+                          sx={{
+                            width: index === 0 ? "10rem" : "auto",
+                            fontWeight: "bold",
+                          }}
                         >
                           {data}
                         </TableCell>

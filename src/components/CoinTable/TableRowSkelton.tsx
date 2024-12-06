@@ -10,7 +10,17 @@ const BodyRowSkeletons = ({ numOfRows }: { numOfRows: number }) => {
       return (
         <TableRow key={i}>
           {bodyRowSkelton.map((data, j) => {
-            return <TableCell key={j}>{data}</TableCell>;
+            return (
+              <TableCell
+                align={j === 0 ? "center" : "right"}
+                key={j}
+                sx={{
+                  width: j === 0 ? "10rem" : "auto",
+                }}
+              >
+                {data}
+              </TableCell>
+            );
           })}
         </TableRow>
       );
@@ -18,6 +28,9 @@ const BodyRowSkeletons = ({ numOfRows }: { numOfRows: number }) => {
 };
 
 export default BodyRowSkeletons;
+
+const width = 60;
+const height = 15;
 
 const bodyRowSkelton = [
   <Box
@@ -39,11 +52,11 @@ const bodyRowSkelton = [
         gap: "0.25rem",
       }}
     >
-      <Skeleton width={50} height={10} />
-      <Skeleton width={50} height={10} />
+      <Skeleton width={width} height={height} />
+      <Skeleton width={width} height={height} />
     </Box>
   </Box>,
-  <Skeleton width={50} height={10} />,
+  <Skeleton width={width} height={height} />,
   <Box
     sx={{
       display: "flex",
@@ -51,10 +64,10 @@ const bodyRowSkelton = [
       justifyContent: "center",
     }}
   >
-    <Skeleton width={50} height={10} />
-    <Skeleton width={50} height={10} />
+    <Skeleton width={width} height={height} />
+    <Skeleton width={width} height={height} />
   </Box>,
-  <Skeleton width={50} height={10} />,
-  <Skeleton width={50} height={10} />,
-  <Skeleton width={50} height={10} />,
+  <Skeleton width={width} height={height} />,
+  <Skeleton width={width} height={height} />,
+  <Skeleton width={width} height={height} />,
 ];
