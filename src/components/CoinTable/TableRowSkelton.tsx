@@ -25,12 +25,11 @@ const BodyRowSkeletons = ({ numOfRows }: { numOfRows: number }) => {
                     alignItems: "center",
                   }}
                 >
-                  {" "}
-                  {data}{" "}
-                </Box>{" "}
+                  {data}
+                </Box>
               </TableCell>
             );
-          })}{" "}
+          })}
         </TableRow>
       );
     });
