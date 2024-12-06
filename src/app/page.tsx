@@ -1,7 +1,7 @@
 import Container from "@mui/material/Container";
 
 import TrendCoins from "../components/TrendCoins";
-import CoinsTable from "../components/CoinsTable";
+import CoinsTable from "../components/CoinTable";
 
 const Home = () => {
   return (

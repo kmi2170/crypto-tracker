@@ -2,15 +2,12 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
 
-import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import LinearProgress from "@mui/material/LinearProgress";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
@@ -18,18 +15,19 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import Pagination from "@mui/material/Pagination";
+import { styled } from "@mui/material/styles";
 
 import { useQuery } from "@tanstack/react-query";
 
-import { Coin, Currencies } from "../context/types";
+import { Coin, Currencies } from "../../context/types";
 import {
   configForUseQuery,
   fetchCoinList,
   fetchCoinListDummy,
-} from "../lib/fetchFunctions";
-import { getCurrencySymbol } from "../lib/getCurrencySymbol";
-import { formatNumber } from "../lib/formatNumber";
-import { styled } from "@mui/material/styles";
+} from "../../lib/fetchFunctions";
+import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
+import { formatNumber } from "../../lib/formatNumber";
+import BodyRowSkeletons from "./TableRowSkelton";
 
 export const numberWithComma = (x: number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -64,8 +62,6 @@ const CoinsTable = () => {
     queryFn: () => fetchCoinListDummy(currency),
     ...configForUseQuery,
   });
-
-  if (!currency) return;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -115,7 +111,8 @@ const CoinsTable = () => {
       <TableContainer
         component={Paper}
         sx={{
-          maxHeight: "500px",
+          height: "500px",
+          // maxHeight: "500px",
           position: "relative",
           overflowX: "auto",
           overflowY: "auto",
@@ -148,7 +145,9 @@ const CoinsTable = () => {
           </TableHead>
 
           <TableBody>
-            {coins &&
+            {isLoading ? (
+              <BodyRowSkeletons numOfRows={10} />
+            ) : (
               handleSearch()
                 .slice((page - 1) * 10, (page - 1) * 10 + 10)
                 .map((row: Coin) => {
@@ -189,7 +188,8 @@ const CoinsTable = () => {
                       ))}
                     </TableRow>
                   );
-                })}
+                })
+            )}
           </TableBody>
         </Table>
       </TableContainer>
