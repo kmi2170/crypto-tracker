@@ -90,7 +90,15 @@ const CoinsTable = () => {
         component="h2"
         variant="h5"
         align="center"
-        sx={{ mt: "2rem", mb: "1rem", fontWeight: "bold" }}
+        sx={(theme) => ({
+          mt: "3rem",
+          mb: "0.5rem",
+          fontWeight: "bold",
+          [theme.breakpoints.down("sm")]: {
+            mt: "1.5rem",
+            fontSize: "16px",
+          },
+        })}
       >
         Cryptocurrency Prices by Market Cap
       </Typography>
@@ -103,23 +111,26 @@ const CoinsTable = () => {
         <TextField
           label="Search for a Cryptocurrency"
           variant="outlined"
-          sx={{ mb: "0.75rem", width: "80%" }}
+          size="small"
+          sx={{ mb: "0.5rem", width: "80%" }}
           onChange={handleChange}
         />
       </Box>
 
       <TableContainer
         component={Paper}
-        sx={{
+        sx={(theme) => ({
           height: "500px",
-          // maxHeight: "500px",
+          [theme.breakpoints.down("sm")]: {
+            maxHeight: "350px",
+          },
           position: "relative",
           overflowX: "auto",
           overflowY: "auto",
           "&::-webkit-scrollbar": { width: "0px" },
           MsOverflowStyle: "none" /* Internet Explorer and Edge */,
           scrollbarWidth: "none" /* Firefox */,
-        }}
+        })}
       >
         <Table stickyHeader size="small">
           <TableHead>

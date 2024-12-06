@@ -19,11 +19,11 @@ import { CurrenciesDummy } from "../../config/chart/dummyData/SingleCoin";
 import CarouselItem from "./CarouselItem";
 import CarouselItemSkeletons from "./CarouselItemSkeletons";
 
-const CarouselWrapper = styled("div")(({ theme }) => ({
+const CarouselWrapper = styled("div")({
   marginLeft: "0.5rem",
   marginRight: "0.5rem",
   height: "11rem",
-}));
+});
 
 const responsive = {
   0: {

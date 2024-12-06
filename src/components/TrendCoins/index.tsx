@@ -8,7 +8,12 @@ import Carousel from "./Carousel";
 
 const TrendWrapper = styled(Paper)(({ theme }) => ({
   margin: "auto",
-  marginTop: "3rem",
+  [theme.breakpoints.down("sm")]: {
+    marginTop: "1rem",
+  },
+  [theme.breakpoints.up("sm")]: {
+    marginTop: "3rem",
+  },
   [theme.breakpoints.down("md")]: {
     maxWidth: "600px",
   },
@@ -18,8 +23,7 @@ const TrendWrapper = styled(Paper)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
-  paddingTop: "1rem",
-  paddingBottom: "1rem",
+  paddingTop: "0.75rem",
 }));
 
 const TrendCoins = () => {
