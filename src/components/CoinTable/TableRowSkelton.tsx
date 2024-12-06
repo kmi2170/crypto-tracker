@@ -18,10 +18,19 @@ const BodyRowSkeletons = ({ numOfRows }: { numOfRows: number }) => {
                   width: j === 0 ? "10rem" : "auto",
                 }}
               >
-                {data}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                  }}
+                >
+                  {" "}
+                  {data}{" "}
+                </Box>{" "}
               </TableCell>
             );
-          })}
+          })}{" "}
         </TableRow>
       );
     });
