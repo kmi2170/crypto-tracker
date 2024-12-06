@@ -15,7 +15,7 @@ const CarouselItemSkeletons = () => {
   switch (true) {
     case isXs:
     case isSm:
-      numOfSkeletons = 3;
+      numOfSkeletons = 4;
       break;
     case isMd:
       numOfSkeletons = 5;

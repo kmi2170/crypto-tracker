@@ -6,16 +6,21 @@ import { styled } from "@mui/material/styles";
 
 import Carousel from "./Carousel";
 
-const TrendWrapper = styled(Paper)({
+const TrendWrapper = styled(Paper)(({ theme }) => ({
   margin: "auto",
   marginTop: "3rem",
-  maxWidth: "1000px",
+  [theme.breakpoints.down("md")]: {
+    maxWidth: "600px",
+  },
+  [theme.breakpoints.up("md")]: {
+    width: "800px",
+  },
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
   paddingTop: "1rem",
   paddingBottom: "1rem",
-});
+}));
 
 const TrendCoins = () => {
   return (
