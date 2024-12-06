@@ -117,8 +117,8 @@ const CoinsTable = () => {
           overflowX: "auto",
           overflowY: "auto",
           "&::-webkit-scrollbar": { width: "0px" },
-          "-ms-overflow-style": "none" /* Internet Explorer and Edge */,
-          "scrollbar-width": "none" /* Firefox */,
+          MsOverflowStyle: "none" /* Internet Explorer and Edge */,
+          scrollbarWidth: "none" /* Firefox */,
         }}
       >
         <Table stickyHeader size="small">
