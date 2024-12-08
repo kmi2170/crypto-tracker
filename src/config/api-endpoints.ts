@@ -1,13 +1,43 @@
+import { log } from "console";
+
 const baseUrl = "https://api.coingecko.com/api/v3";
 
 export const CoinList = (currency: string, page: number = 1) =>
   `${baseUrl}/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=30&page=${page}&sparkline=false`;
 
-export const SingleCoin = (id: string, currency: string) =>
-  `${baseUrl}/coins/${id}?vs_currency=${currency}&community_data=false&developer_data=false&tickers=false`;
+export const SingleCoin = (id: string, currency: string) => {
+  const searchParamsObj = {
+    x_cg_demo_api_key: process.env.NEXT_COIN_GECKO_DEMO_API_KEY as string,
+  };
+  const searchParams = new URLSearchParams(searchParamsObj).toString();
+  const subUrl = `coins/${id}?${searchParams}`;
+  const url = `${baseUrl}/${subUrl}`;
 
-export const HistoricalChart = (id: string, currency: string, days: string) =>
-  `${baseUrl}/coins/${id}/market_chart?vs_currency=${currency}&days=${days}`;
+  return url;
+};
 
-export const TrendingCoins = (currency: string) =>
-  `${baseUrl}/coins/markets?vs_currency=${currency}&order=gecko_desc&per_page=10&page=1&sparkline=false&price_change_percentage=24h`;
+export const HistoricalChart = (id: string, currency: string, days: string) => {
+  const searchParamsObj = {
+    x_cg_demo_api_key: process.env.NEXT_COIN_GECKO_DEMO_API_KEY as string,
+    currency,
+    days,
+    precision: "full",
+  };
+  const searchParams = new URLSearchParams(searchParamsObj).toString();
+  const subUrl = `coins/${id}/market_chart?${searchParams}`;
+  const url = `${baseUrl}/${subUrl}`;
+  console.log(url);
+
+  return url;
+};
+
+export const TrendingCoins = (currency: string) => {
+  const searchParamsObj = {
+    x_cg_demo_api_key: process.env.NEXT_COIN_GECKO_DEMO_API_KEY as string,
+  };
+  const searchParams = new URLSearchParams(searchParamsObj).toString();
+  const subUrl = `search/trending?${searchParams}`;
+  const url = `${baseUrl}/${subUrl}`;
+
+  return url;
+};

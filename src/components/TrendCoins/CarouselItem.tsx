@@ -3,12 +3,12 @@ import Image from "next/image";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 
-import { Coin, Currencies } from "../../context/types";
+import { Coin, Currencies, TrendCoin } from "../../context/types";
 import { formatNumber } from "../../lib/formatNumber";
 import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
 
 type CarouselItemProps = {
-  coin: Coin;
+  coin: TrendCoin;
   currency: Currencies;
 };
 
@@ -28,7 +28,10 @@ const ItemWrapper = styled("div")({
 });
 
 const CarouselItem = ({ coin, currency }: CarouselItemProps) => {
-  const isPriceUp = coin?.price_change_percentage_24h >= 0;
+  const { name, symbol, small: imgUrl } = coin;
+  const { price, price_change_percentage_24h } = coin?.data;
+  const isPriceUp = price_change_percentage_24h?.[currency] >= 0;
+
   return (
     <ItemWrapper>
       <Typography
@@ -36,16 +39,16 @@ const CarouselItem = ({ coin, currency }: CarouselItemProps) => {
         align="center"
         sx={{ color: "dodgerblue", fontWeight: "bold" }}
       >
-        {coin?.symbol}
+        {symbol}
       </Typography>
-      <Image src={coin?.image} alt={coin.name} width="30" height="30" />
+      <Image src={imgUrl} alt={name} width="30" height="30" />
       <Typography
         variant="subtitle1"
         align="center"
         sx={{ color: "black", fontWeight: "bold" }}
       >
         {getCurrencySymbol(currency)}
-        {formatNumber(coin?.current_price, 3)}
+        {formatNumber(price, 3)}
       </Typography>
       <Typography
         variant="subtitle2"
@@ -56,7 +59,7 @@ const CarouselItem = ({ coin, currency }: CarouselItemProps) => {
         }}
       >
         {isPriceUp && "+"}
-        {coin?.price_change_percentage_24h?.toFixed(2)}%
+        {price_change_percentage_24h?.[currency]?.toFixed(2)}%
       </Typography>
     </ItemWrapper>
   );

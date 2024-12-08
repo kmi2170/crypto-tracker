@@ -33,6 +33,33 @@ export interface Coin {
   low_24h: number;
 }
 
+export interface Trends {
+  coins: { item: TrendCoin }[];
+}
+
+export interface TrendCoin {
+  id: string;
+  coin_id: string;
+  name: string;
+  symbol: string;
+  market_cap_rank: number;
+  thumb: string;
+  small: string;
+  large: string;
+  slug: string;
+  price_btc: number;
+  score: number;
+  data: {
+    price: number;
+    price_btc: string;
+    price_change_percentage_24h: Record<string, number>;
+    market_cap: number;
+    total_volume: number;
+    total_volume_btc: number;
+    sparkline: string;
+    content: string;
+  };
+}
 export interface SingleCoin {
   id: string;
   symbol: string;

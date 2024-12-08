@@ -7,14 +7,14 @@ import {
   fetchHistorical,
   fetchHistoricalDummy,
 } from "../../lib/fetchFunctions";
-import { Historical } from "../../context/types";
+import { Currencies, Historical } from "../../context/types";
 import { getDate, getTime } from "../../lib/dateTime";
 import ChartMain from "./ChartMain";
 import SelectButtons from "./SelectButtons";
 
 type CoinChartProps = {
   id: string;
-  currency: string;
+  currency: Currencies;
 };
 
 const CoinChart = (props: CoinChartProps) => {
@@ -26,7 +26,7 @@ const CoinChart = (props: CoinChartProps) => {
   const { data: historical, isLoading } = useQuery({
     queryKey: ["history", { id, currency, days }],
     // queryFn: () => fetchHistorical(id, currency, days),
-    queryFn: () => fetchHistoricalDummy(id, currency, days),
+    queryFn: () => fetchHistorical(id, currency, days),
     ...configForUseQuery,
   });
 

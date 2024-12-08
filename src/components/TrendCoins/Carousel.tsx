@@ -14,7 +14,7 @@ import {
   fetchTrendCoins,
   fetchTrendCoinsDummy,
 } from "../../lib/fetchFunctions";
-import { Coin, Currencies } from "../../context/types";
+import { Currencies, TrendCoin } from "../../context/types";
 import { CurrenciesDummy } from "../../config/chart/dummyData/SingleCoin";
 import CarouselItem from "./CarouselItem";
 import CarouselItemSkeletons from "./CarouselItemSkeletons";
@@ -46,15 +46,16 @@ const Carousel = () => {
   const currency = (searchParams.get("currency") || "usd") as Currencies;
 
   const { data: trending, isLoading } = useQuery({
-    queryKey: ["trending", currency],
-    queryFn: () => fetchTrendCoinsDummy(currency),
+    queryKey: ["trending"],
+    queryFn: () => fetchTrendCoins(),
+    // queryFn: () => fetchTrendCoinsDummy(currency),
     ...configForUseQuery,
   });
 
-  const items = trending?.map((coin: Coin) => {
+  const items = trending?.coins?.map(({ item }: { item: TrendCoin }) => {
     return (
-      <Link key={coin.id} href={`/coins/${coin.id}?${currentSearchParams}`}>
-        <CarouselItem coin={coin} currency={currency} />
+      <Link key={item.id} href={`/coins/${item.id}?${currentSearchParams}`}>
+        <CarouselItem coin={item} currency={currency} />
       </Link>
     );
   });

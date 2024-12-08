@@ -1,6 +1,12 @@
 import axios from "axios";
 import { dummyHistoricalData } from "../config/chart/dummyData/Historical";
-import { Coin, Currencies, Historical, SingleCoin } from "../context/types";
+import {
+  Coin,
+  Currencies,
+  Historical,
+  SingleCoin,
+  Trends,
+} from "../context/types";
 import { dummyTrendCoinsData } from "../config/chart/dummyData/TrendCoins";
 import { dummyCoinListData } from "../config/chart/dummyData/CoinList";
 import {
@@ -34,17 +40,16 @@ export const fetchSingleCoin = async (id: string, currency: Currencies) => {
     const { data } = await axios.get<SingleCoin>(
       `/api/single-coin?id=${id}&currency=${currency}`
     );
+    console.log(data);
     return data;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const fetchTrendCoins = async (currency: Currencies) => {
+export const fetchTrendCoins = async () => {
   try {
-    const { data } = await axios.get<Coin[]>(
-      `/api/trend-list?currency=${currency}`
-    );
+    const { data } = await axios.get<Trends>(`/api/trend-list`);
 
     return data;
   } catch (error) {

@@ -41,7 +41,7 @@ const Coin = () => {
 
   const { data: coin, isLoading } = useQuery({
     queryKey: ["single-coin", { id, currency }],
-    queryFn: () => fetchSingleCoinDummy(id, currency),
+    queryFn: () => fetchSingleCoin(id, currency),
     ...configForUseQuery,
   });
 
