@@ -11,13 +11,7 @@ const BodyRowSkeletons = ({ numOfRows }: { numOfRows: number }) => {
         <TableRow key={i}>
           {bodyRowSkelton.map((data, j) => {
             return (
-              <TableCell
-                align={j === 0 ? "left" : "right"}
-                key={j}
-                sx={{
-                  width: j === 0 ? "10rem" : "auto",
-                }}
-              >
+              <TableCell key={j} align={j > 1 ? "right" : "center"}>
                 <Box
                   sx={{
                     display: "flex",
@@ -41,8 +35,10 @@ const width = 60;
 const height = 15;
 
 const bodyRowSkelton = [
+  <Skeleton width={15} height={height} />,
   <Box
     sx={{
+      width: "10rem",
       display: "flex",
       flexDirection: "row",
       justifyContent: "flex-start",
@@ -60,8 +56,8 @@ const bodyRowSkelton = [
         gap: "0.25rem",
       }}
     >
-      <Skeleton width={90} height={height} />
-      <Skeleton width={90} height={height} />
+      <Skeleton width={60} height={height} />
+      <Skeleton width={60} height={height} />
     </Box>
   </Box>,
   <Skeleton width={width} height={height} />,

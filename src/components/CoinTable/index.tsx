@@ -59,8 +59,10 @@ const CoinsTable = () => {
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
+  console.log(page);
+
   const { data: coins, isLoading } = useQuery({
-    queryKey: ["coins", currency],
+    queryKey: ["coins", currency, page],
     queryFn: () => fetchCoinList(currency, page, per_page),
     ...configForUseQuery,
   });
@@ -78,6 +80,7 @@ const CoinsTable = () => {
   };
 
   const headerRow = [
+    "Rank",
     "Coin",
     "Price",
     "High/Low (24h)",
@@ -144,17 +147,18 @@ const CoinsTable = () => {
                   position: "sticky",
                   backgroundColor: "rgba(238,232,170,1.0)",
                   left: 0,
-                  zIndex: "20",
                 },
               }}
             >
               {headerRow.map((head, index) => (
                 <TableCell
                   key={head}
-                  align={index === 0 ? "center" : "right"}
+                  align={index === 0 || index === 1 ? "center" : "right"}
                   sx={{
-                    width: index === 0 ? "10rem" : "auto",
+                    width:
+                      index === 0 ? "3rem" : index === 1 ? "10rem" : "auto",
                     fontWeight: "bold",
+                    zIndex: "20",
                   }}
                 >
                   {head}
@@ -171,15 +175,24 @@ const CoinsTable = () => {
                 return (
                   <TableRow key={row.name}>
                     <TableCell
+                      align="center"
+                      sx={{
+                        width: "3rem",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {row.market_cap_rank}
+                    </TableCell>
+
+                    <TableCell
                       component="th"
-                      scope="row"
+                      // scope="row"
                       align="left"
                       sx={{
                         width: "10rem",
                         position: "sticky",
                         backgroundColor: "white",
                         left: 0,
-                        zIndex: "10",
                         transition: "background-color 0.5s ease",
                         "&:hover": {
                           backgroundColor: "rgba(192,192,192,0.5)",
@@ -199,7 +212,6 @@ const CoinsTable = () => {
                         key={index}
                         align="right"
                         sx={{
-                          // width: index === 0 ? "10rem" : "auto",
                           fontWeight: "bold",
                         }}
                       >
@@ -216,7 +228,8 @@ const CoinsTable = () => {
 
       {!isLoading && (
         <Pagination
-          count={coins ? +(coins.length / per_page).toFixed(0) : 1}
+          count={coins ? +(300 / per_page).toFixed(0) : 1}
+          // count={coins ? +(coins.length / per_page).toFixed(0) : 1}
           // count={handleSearch() ? +(handleSearch()?.length / 30).toFixed(0) : 1}
           sx={{
             p: 3,
