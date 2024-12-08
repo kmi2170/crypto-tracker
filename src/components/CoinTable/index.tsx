@@ -199,7 +199,7 @@ const CoinsTable = () => {
                           key={index}
                           align="right"
                           sx={{
-                            width: index === 0 ? "10rem" : "auto",
+                            // width: index === 0 ? "10rem" : "auto",
                             fontWeight: "bold",
                           }}
                         >
