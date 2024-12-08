@@ -59,7 +59,7 @@ const CoinsTable = () => {
 
   const { data: coins, isLoading } = useQuery({
     queryKey: ["coins", currency],
-    queryFn: () => fetchCoinListDummy(currency),
+    queryFn: () => fetchCoinList(currency),
     ...configForUseQuery,
   });
 
@@ -92,7 +92,7 @@ const CoinsTable = () => {
         align="center"
         sx={(theme) => ({
           mt: "3rem",
-          mb: "0.5rem",
+          mb: "1.0rem",
           fontWeight: "bold",
           [theme.breakpoints.down("sm")]: {
             mt: "1.5rem",
@@ -102,7 +102,7 @@ const CoinsTable = () => {
       >
         Cryptocurrency Prices by Market Cap
       </Typography>
-      <Box
+      {/* <Box
         sx={{
           display: "flex",
           justifyContent: "center",
@@ -115,7 +115,7 @@ const CoinsTable = () => {
           sx={{ mb: "0.5rem", width: "80%" }}
           onChange={handleChange}
         />
-      </Box>
+      </Box> */}
 
       <TableContainer
         component={Paper}

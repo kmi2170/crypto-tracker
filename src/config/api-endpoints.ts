@@ -1,13 +1,31 @@
-import { log } from "console";
-
 const baseUrl = "https://api.coingecko.com/api/v3";
 
-export const CoinList = (currency: string, page: number = 1) =>
-  `${baseUrl}/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=30&page=${page}&sparkline=false`;
+const api_key = process.env.NEXT_COIN_GECKO_DEMO_API_KEY as string;
+
+export const CoinList = (
+  currency: string,
+  page: string = "1",
+  per_page: string = "30"
+) => {
+  const searchParamsObj = {
+    vs_currency: currency,
+    order: "market_cap_desc",
+    page,
+    per_page,
+    x_cg_demo_api_key: api_key,
+  };
+  const searchParams = new URLSearchParams(searchParamsObj).toString();
+  const subUrl = `coins/markets?${searchParams}`;
+  const url = `${baseUrl}/${subUrl}`;
+
+  console.log(url);
+
+  return url;
+};
 
 export const SingleCoin = (id: string) => {
   const searchParamsObj = {
-    x_cg_demo_api_key: process.env.NEXT_COIN_GECKO_DEMO_API_KEY as string,
+    x_cg_demo_api_key: api_key,
   };
   const searchParams = new URLSearchParams(searchParamsObj).toString();
   const subUrl = `coins/${id}?${searchParams}`;
@@ -18,10 +36,10 @@ export const SingleCoin = (id: string) => {
 
 export const HistoricalChart = (id: string, currency: string, days: string) => {
   const searchParamsObj = {
-    x_cg_demo_api_key: process.env.NEXT_COIN_GECKO_DEMO_API_KEY as string,
     vs_currency: currency,
     days,
     precision: "full",
+    x_cg_demo_api_key: api_key,
   };
   const searchParams = new URLSearchParams(searchParamsObj).toString();
   const subUrl = `coins/${id}/market_chart?${searchParams}`;
@@ -31,9 +49,9 @@ export const HistoricalChart = (id: string, currency: string, days: string) => {
   return url;
 };
 
-export const TrendingCoins = (currency: string) => {
+export const TrendingCoins = () => {
   const searchParamsObj = {
-    x_cg_demo_api_key: process.env.NEXT_COIN_GECKO_DEMO_API_KEY as string,
+    x_cg_demo_api_key: api_key,
   };
   const searchParams = new URLSearchParams(searchParamsObj).toString();
   const subUrl = `search/trending?${searchParams}`;
