@@ -45,6 +45,7 @@ const CarouselItem = ({ coin, currency }: CarouselItemProps) => {
       <Typography
         variant="subtitle1"
         align="center"
+        noWrap={false}
         sx={{ color: "black", fontWeight: "bold" }}
       >
         {getCurrencySymbol(currency)}
