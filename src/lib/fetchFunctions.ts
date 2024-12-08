@@ -14,6 +14,7 @@ import {
   dummySingleCoinData,
   SingleCoinDummy,
 } from "../config/chart/dummyData/SingleCoin";
+import { DaysValue } from "../config/chart/chartButtons";
 
 export const configForUseQuery = {
   refetchInterval: 300000,
@@ -35,11 +36,9 @@ export const fetchCoinList = async (currency: Currencies, page?: number) => {
   }
 };
 
-export const fetchSingleCoin = async (id: string, currency: Currencies) => {
+export const fetchSingleCoin = async (id: string) => {
   try {
-    const { data } = await axios.get<SingleCoin>(
-      `/api/single-coin?id=${id}&currency=${currency}`
-    );
+    const { data } = await axios.get<SingleCoin>(`/api/single-coin?id=${id}`);
     console.log(data);
     return data;
   } catch (error) {
@@ -60,7 +59,7 @@ export const fetchTrendCoins = async () => {
 export const fetchHistorical = async (
   id: string,
   currency: Currencies,
-  days: number
+  days: DaysValue
 ): Promise<Historical> => {
   const { data } = await axios.get<Historical>(
     `/api/historical?id=${id}&currency=${currency}&days=${days}`

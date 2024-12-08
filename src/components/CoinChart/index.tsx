@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-import { DataItemsType } from "../../config/chart/chartButtons";
+import { DataItemValue, DaysValue } from "../../config/chart/chartButtons";
 import {
   configForUseQuery,
   fetchHistorical,
@@ -20,8 +20,8 @@ type CoinChartProps = {
 const CoinChart = (props: CoinChartProps) => {
   const { id, currency } = props;
 
-  const [days, setDays] = useState<number>(1);
-  const [itemName, setItemName] = useState<DataItemsType>("prices");
+  const [days, setDays] = useState<DaysValue>(1);
+  const [itemName, setItemName] = useState<DataItemValue>("prices");
 
   const { data: historical, isLoading } = useQuery({
     queryKey: ["history", { id, currency, days }],
@@ -36,9 +36,12 @@ const CoinChart = (props: CoinChartProps) => {
   }) as string[];
   const chartValues = historical?.[itemName].map((data) => data[1]) as number[];
 
-  const handleSelectDays = useCallback((value: number) => setDays(value), []);
+  const handleSelectDays = useCallback(
+    (value: DaysValue) => setDays(value),
+    []
+  );
   const handleSelectItemName = useCallback(
-    (value: DataItemsType) => setItemName(value),
+    (value: DataItemValue) => setItemName(value),
     []
   );
 

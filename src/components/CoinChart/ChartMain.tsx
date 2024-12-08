@@ -15,7 +15,7 @@ import {
 } from "chart.js";
 import zoomPlugin from "chartjs-plugin-zoom";
 
-import { dataItems, DataItemsType } from "../../config/chart/chartButtons";
+import { dataItems, DataItemValue } from "../../config/chart/chartButtons";
 import { verticalLineOnHover } from "../../config/chart/plugins";
 import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
 import { formatNumber } from "../../lib/formatNumber";
@@ -35,7 +35,7 @@ ChartJS.register(
 
 type ChartMainProps = {
   currency: Currencies;
-  itemName: DataItemsType;
+  itemName: DataItemValue;
   labels: string[];
   values: number[];
 };

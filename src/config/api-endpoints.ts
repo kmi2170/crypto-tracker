@@ -5,7 +5,7 @@ const baseUrl = "https://api.coingecko.com/api/v3";
 export const CoinList = (currency: string, page: number = 1) =>
   `${baseUrl}/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=30&page=${page}&sparkline=false`;
 
-export const SingleCoin = (id: string, currency: string) => {
+export const SingleCoin = (id: string) => {
   const searchParamsObj = {
     x_cg_demo_api_key: process.env.NEXT_COIN_GECKO_DEMO_API_KEY as string,
   };
@@ -19,7 +19,7 @@ export const SingleCoin = (id: string, currency: string) => {
 export const HistoricalChart = (id: string, currency: string, days: string) => {
   const searchParamsObj = {
     x_cg_demo_api_key: process.env.NEXT_COIN_GECKO_DEMO_API_KEY as string,
-    currency,
+    vs_currency: currency,
     days,
     precision: "full",
   };

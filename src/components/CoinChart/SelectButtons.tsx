@@ -4,7 +4,8 @@ import SelectButton from "./SelectButton";
 import {
   chartDays,
   dataItems,
-  DataItemsType,
+  DataItemValue,
+  DaysValue,
 } from "../../config/chart/chartButtons";
 
 const ButtonsWrapper = styled("div")(({ theme }) => ({
@@ -30,10 +31,10 @@ const ButtonsSubWrapper = styled("div")({
 });
 
 type CoinChartProps = {
-  itemName: DataItemsType;
-  handleSelectItemName: (name: DataItemsType) => void;
-  days: number;
-  handleSelectDays: (days: number) => void;
+  itemName: DataItemValue;
+  handleSelectItemName: (name: DataItemValue) => void;
+  days: DaysValue;
+  handleSelectDays: (days: DaysValue) => void;
 };
 
 const SelectButtons = (props: CoinChartProps) => {
@@ -58,7 +59,7 @@ const SelectButtons = (props: CoinChartProps) => {
           <SelectButton
             key={day.value}
             name={day.label}
-            value={days}
+            value={day.value}
             selected={day.value === days}
             colorRGB="155,221,255"
             handleValueSelect={handleSelectDays}

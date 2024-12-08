@@ -1,5 +1,3 @@
-import { ValueOf } from "next/dist/shared/lib/constants";
-
 export const chartDays = [
   {
     label: "24 H",
@@ -21,7 +19,10 @@ export const chartDays = [
     label: "1 Y",
     value: 365,
   },
-];
+] as const;
+
+export type Days = (typeof chartDays)[number];
+export type DaysValue = Days["value"];
 
 export const dataItems = [
   { label: "Price", value: "prices", colorRGB: "218,165,32" },
@@ -29,5 +30,5 @@ export const dataItems = [
   { label: "Total Volume", value: "total_volumes", colorRGB: "178,34,34" },
 ] as const;
 
-export type ItemType = (typeof dataItems)[number];
-export type DataItemsType = ItemType["value"];
+export type DataItems = (typeof dataItems)[number];
+export type DataItemValue = DataItems["value"];
