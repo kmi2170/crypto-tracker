@@ -9,12 +9,11 @@ export const CoinList = (currency: string, page: string, per_page: string) => {
     page,
     per_page,
     x_cg_demo_api_key: api_key,
+    sparkline: "true",
   };
   const searchParams = new URLSearchParams(searchParamsObj).toString();
   const subUrl = `coins/markets?${searchParams}`;
   const url = `${baseUrl}/${subUrl}`;
-
-  console.log(url);
 
   return url;
 };
@@ -40,7 +39,6 @@ export const HistoricalChart = (id: string, currency: string, days: string) => {
   const searchParams = new URLSearchParams(searchParamsObj).toString();
   const subUrl = `coins/${id}/market_chart?${searchParams}`;
   const url = `${baseUrl}/${subUrl}`;
-  console.log(url);
 
   return url;
 };

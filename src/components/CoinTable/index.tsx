@@ -28,6 +28,7 @@ import {
 import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
 import { formatNumber } from "../../lib/formatNumber";
 import BodyRowSkeletons from "./TableRowSkelton";
+import LastSevenDays from "./LastSevenDays";
 
 export const numberWithComma = (x: number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -59,8 +60,6 @@ const CoinsTable = () => {
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
-  console.log(page);
-
   const { data: coins, isLoading } = useQuery({
     queryKey: ["coins", currency, page],
     queryFn: () => fetchCoinList(currency, page, per_page),
@@ -78,16 +77,6 @@ const CoinsTable = () => {
         coin.symbol.toLowerCase().includes(search)
     );
   };
-
-  const headerRow = [
-    "Rank",
-    "Coin",
-    "Price",
-    "High/Low (24h)",
-    "Change (24h)",
-    "Market Cap",
-    "Total Volume",
-  ];
 
   return (
     <>
@@ -218,6 +207,9 @@ const CoinsTable = () => {
                         {data}
                       </TableCell>
                     ))}
+                    <TableCell align="center" sx={{}}>
+                      <LastSevenDays price={row.sparkline_in_7d?.price} />
+                    </TableCell>
                   </TableRow>
                 );
               })
@@ -247,6 +239,17 @@ const CoinsTable = () => {
   );
 };
 export default CoinsTable;
+
+const headerRow = [
+  "Rank",
+  "Coin",
+  "Price",
+  "High/Low (24h)",
+  "Change (24h)",
+  "Market Cap",
+  "Total Volume",
+  "Last 7days",
+];
 
 const headRow = (row: Coin) => {
   return (

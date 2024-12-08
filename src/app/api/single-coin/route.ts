@@ -8,9 +8,8 @@ export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
     const id = searchParams.get("id") as string;
-    const currency = searchParams.get("currency") as string;
 
-    const { data } = await axios.get(SingleCoin(id, currency));
+    const { data } = await axios.get(SingleCoin(id));
 
     return NextResponse.json(data, { status: 200 });
   } catch (error) {

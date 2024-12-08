@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
     const currency = searchParams.get("currency") as string;
-    const { data } = await axios.get(TrendingCoins(currency));
+    const { data } = await axios.get(TrendingCoins());
 
     return NextResponse.json(data, { status: 200 });
   } catch (error) {

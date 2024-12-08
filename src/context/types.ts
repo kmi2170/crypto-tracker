@@ -32,6 +32,7 @@ export interface Coin {
   total_volume: number;
   high_24h: number;
   low_24h: number;
+  sparkline_in_7d: { price: number[] };
 }
 
 export interface Trends {
