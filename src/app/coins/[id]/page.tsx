@@ -40,8 +40,8 @@ const Coin = () => {
   const currency = (searchParams.get("currency") || "usd") as Currencies;
 
   const { data: coin, isLoading } = useQuery({
-    queryKey: ["single-coin", { id, currency }],
-    queryFn: () => fetchSingleCoin(id, currency),
+    queryKey: ["single-coin", { id }],
+    queryFn: () => fetchSingleCoin(id),
     ...configForUseQuery,
   });
 
@@ -80,7 +80,7 @@ const Coin = () => {
           Market Cap: {getCurrencySymbol(currency)}
           {formatNumber(coin?.market_data.market_cap[currency], 2)}
         </Typography>
-        <Typography variant="subtitle1">
+        <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
           Rank: {coin?.market_cap_rank}
         </Typography>
         {/* {user && (
