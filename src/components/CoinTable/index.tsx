@@ -114,13 +114,12 @@ const CoinsTable = () => {
       <TableContainer
         component={Paper}
         sx={(theme) => ({
-          height: "500px",
+          height: "600px",
           [theme.breakpoints.down("sm")]: {
             maxHeight: "350px",
           },
           position: "relative",
-          overflowX: "auto",
-          overflowY: "auto",
+          overflow: "auto",
           "&::-webkit-scrollbar": { width: "0px" },
           MsOverflowStyle: "none" /* Internet Explorer and Edge */,
           scrollbarWidth: "none" /* Firefox */,
@@ -142,12 +141,18 @@ const CoinsTable = () => {
               {headerRow.map((head, index) => (
                 <TableCell
                   key={head}
-                  align={index === 0 || index === 1 ? "center" : "right"}
+                  align={
+                    index === 0 || index === 1 || index === headerRow.length - 1
+                      ? "center"
+                      : "right"
+                  }
                   sx={{
                     width:
                       index === 0 ? "3rem" : index === 1 ? "10rem" : "auto",
                     fontWeight: "bold",
-                    zIndex: "20",
+                    zIndex: index === 1 ? "30" : "20",
+                    position: index === 1 ? "sticky" : null,
+                    left: index === 1 ? 0 : null,
                   }}
                 >
                   {head}
@@ -158,42 +163,37 @@ const CoinsTable = () => {
 
           <TableBody>
             {isLoading ? (
-              <BodyRowSkeletons numOfRows={10} />
+              <BodyRowSkeletons numOfRows={15} />
             ) : (
               coins?.map((row: Coin) => {
                 return (
-                  <TableRow key={row.name}>
-                    <TableCell
-                      align="center"
-                      sx={{
-                        width: "3rem",
-                        fontWeight: "bold",
-                      }}
-                    >
+                  <TableRow
+                    key={row.name}
+                    // onClick={() => {
+                    //   router.push(`/coins/${row.id}?${currentSearchPrams}`);
+                    // }}
+                    sx={{
+                      transition: "background-color 0.5s ease",
+                      "&:hover": {
+                        backgroundColor: "rgba(192,192,192,0.25)",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      },
+                    }}
+                  >
+                    <TableCell align="center" sx={{ fontWeight: "bold" }}>
                       {row.market_cap_rank}
                     </TableCell>
 
                     <TableCell
-                      component="th"
-                      // scope="row"
                       align="left"
                       sx={{
-                        width: "10rem",
                         position: "sticky",
-                        backgroundColor: "white",
                         left: 0,
-                        transition: "background-color 0.5s ease",
-                        "&:hover": {
-                          backgroundColor: "rgba(192,192,192,0.5)",
-                          borderRadius: "5px",
-                          cursor: "pointer",
-                        },
-                      }}
-                      onClick={() => {
-                        router.push(`/coins/${row.id}?${currentSearchPrams}`);
+                        backgroundColor: "white",
                       }}
                     >
-                      {headRow(row)}
+                      {bodyRowCoinName(row)}
                     </TableCell>
 
                     {bodyRow(row, currency).map((data, index) => (
@@ -207,9 +207,6 @@ const CoinsTable = () => {
                         {data}
                       </TableCell>
                     ))}
-                    <TableCell align="center" sx={{}}>
-                      <LastSevenDays price={row.sparkline_in_7d?.price} />
-                    </TableCell>
                   </TableRow>
                 );
               })
@@ -244,14 +241,14 @@ const headerRow = [
   "Rank",
   "Coin",
   "Price",
-  "High/Low (24h)",
-  "Change (24h)",
+  "H/L (24H)",
+  "24H (%)",
   "Market Cap",
   "Total Volume",
   "Last 7days",
 ];
 
-const headRow = (row: Coin) => {
+const bodyRowCoinName = (row: Coin) => {
   return (
     <Box
       sx={{
@@ -318,5 +315,6 @@ const bodyRow = (row: Coin, currency: Currencies) => {
       {getCurrencySymbol(currency)}
       {formatNumber(row.total_volume, 2)}
     </>,
+    <LastSevenDays price={row.sparkline_in_7d?.price} />,
   ];
 };

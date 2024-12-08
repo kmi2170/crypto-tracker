@@ -12,19 +12,19 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
-const LastSevenDays = ({ price }: { price: number[] }) => {
-  const options: ChartOptions = {
-    responsive: true,
-    maintainAspectRatio: true,
-    scales: {
-      x: { display: false },
-      y: { display: false },
-    },
-    plugins: {
-      legend: { display: false },
-    },
-  };
+const options: ChartOptions = {
+  responsive: true,
+  maintainAspectRatio: true,
+  scales: {
+    x: { display: false },
+    y: { display: false },
+  },
+  plugins: {
+    legend: { display: false },
+  },
+};
 
+const LastSevenDays = ({ price }: { price: number[] }) => {
   const labels = Array.from({ length: price.length }, (_, i) => i + 1);
 
   const chartData: ChartData<"line"> = {
@@ -40,7 +40,7 @@ const LastSevenDays = ({ price }: { price: number[] }) => {
   };
 
   return (
-    <Box sx={{ height: "40px" }}>
+    <Box sx={{ margin: "auto", height: "40px", width: "80px" }}>
       <Chart type="line" data={chartData} options={options} />
     </Box>
   );
