@@ -2,11 +2,7 @@ const baseUrl = "https://api.coingecko.com/api/v3";
 
 const api_key = process.env.NEXT_COIN_GECKO_DEMO_API_KEY as string;
 
-export const CoinList = (
-  currency: string,
-  page: string = "1",
-  per_page: string = "30"
-) => {
+export const CoinList = (currency: string, page: string, per_page: string) => {
   const searchParamsObj = {
     vs_currency: currency,
     order: "market_cap_desc",
@@ -17,8 +13,6 @@ export const CoinList = (
   const searchParams = new URLSearchParams(searchParamsObj).toString();
   const subUrl = `coins/markets?${searchParams}`;
   const url = `${baseUrl}/${subUrl}`;
-
-  console.log(url);
 
   return url;
 };

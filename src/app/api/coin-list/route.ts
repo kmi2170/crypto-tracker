@@ -7,9 +7,11 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
-    const currency = searchParams.get("currency");
+    const currency = searchParams.get("currency") as string;
+    const page = searchParams.get("page") as string;
+    const per_page = searchParams.get("per_page") as string;
 
-    const { data } = await axios.get(CoinList(currency as string));
+    const { data } = await axios.get(CoinList(currency, page, per_page));
 
     return NextResponse.json(data, { status: 200 });
   } catch (error) {

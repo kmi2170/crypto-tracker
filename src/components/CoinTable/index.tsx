@@ -216,7 +216,7 @@ const CoinsTable = () => {
 
       {!isLoading && (
         <Pagination
-          count={handleSearch() ? +(handleSearch()?.length / 10).toFixed(0) : 1}
+          count={handleSearch() ? +(handleSearch()?.length / 30).toFixed(0) : 1}
           sx={{
             p: 3,
             width: "100%",

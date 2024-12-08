@@ -24,10 +24,14 @@ export const configForUseQuery = {
   refetchOnWindowFocus: false,
 };
 
-export const fetchCoinList = async (currency: Currencies, page?: number) => {
+export const fetchCoinList = async (
+  currency: Currencies,
+  page: number = 1,
+  per_page: number = 100
+) => {
   try {
     const { data } = await axios.get<Coin[]>(
-      `/api/coin-list?currency=${currency}&page=${page}`
+      `/api/coin-list?currency=${currency}&page=${page}&per_page=${per_page}`
     );
 
     return data;
