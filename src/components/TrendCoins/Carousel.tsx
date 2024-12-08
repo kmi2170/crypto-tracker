@@ -22,7 +22,7 @@ import CarouselItemSkeletons from "./CarouselItemSkeletons";
 const CarouselWrapper = styled("div")({
   marginLeft: "0.5rem",
   marginRight: "0.5rem",
-  height: "11rem",
+  height: "11.5rem",
 });
 
 const responsive = {
@@ -75,8 +75,6 @@ const Carousel = () => {
           responsive={responsive}
           autoPlay
           items={items}
-          // autoHeight
-          // autoWidth
         />
       )}
     </CarouselWrapper>
