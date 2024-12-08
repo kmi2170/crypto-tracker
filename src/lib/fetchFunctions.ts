@@ -27,7 +27,7 @@ export const configForUseQuery = {
 export const fetchCoinList = async (
   currency: Currencies,
   page: number = 1,
-  per_page: number = 100
+  per_page: number = 50
 ) => {
   try {
     const { data } = await axios.get<Coin[]>(

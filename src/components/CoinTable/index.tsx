@@ -47,6 +47,8 @@ const Change24h = styled("span")({
   fontWeight: "bold",
 });
 
+const per_page = 50;
+
 const CoinsTable = () => {
   const router = useRouter();
 
@@ -59,13 +61,13 @@ const CoinsTable = () => {
 
   const { data: coins, isLoading } = useQuery({
     queryKey: ["coins", currency],
-    queryFn: () => fetchCoinList(currency),
+    queryFn: () => fetchCoinList(currency, page, per_page),
     ...configForUseQuery,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-  };
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSearch(e.target.value);
+  // };
 
   const handleSearch = () => {
     return (coins as Coin[])?.filter(
@@ -165,50 +167,48 @@ const CoinsTable = () => {
             {isLoading ? (
               <BodyRowSkeletons numOfRows={10} />
             ) : (
-              handleSearch()
-                .slice((page - 1) * 10, (page - 1) * 10 + 10)
-                .map((row: Coin) => {
-                  return (
-                    <TableRow key={row.name}>
+              coins?.map((row: Coin) => {
+                return (
+                  <TableRow key={row.name}>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      align="left"
+                      sx={{
+                        width: "10rem",
+                        position: "sticky",
+                        backgroundColor: "white",
+                        left: 0,
+                        zIndex: "10",
+                        transition: "background-color 0.5s ease",
+                        "&:hover": {
+                          backgroundColor: "rgba(192,192,192,0.5)",
+                          borderRadius: "5px",
+                          cursor: "pointer",
+                        },
+                      }}
+                      onClick={() => {
+                        router.push(`/coins/${row.id}?${currentSearchPrams}`);
+                      }}
+                    >
+                      {headRow(row)}
+                    </TableCell>
+
+                    {bodyRow(row, currency).map((data, index) => (
                       <TableCell
-                        component="th"
-                        scope="row"
-                        align="left"
+                        key={index}
+                        align="right"
                         sx={{
-                          width: "10rem",
-                          position: "sticky",
-                          backgroundColor: "white",
-                          left: 0,
-                          zIndex: "10",
-                          transition: "background-color 0.5s ease",
-                          "&:hover": {
-                            backgroundColor: "rgba(192,192,192,0.5)",
-                            borderRadius: "5px",
-                            cursor: "pointer",
-                          },
-                        }}
-                        onClick={() => {
-                          router.push(`/coins/${row.id}?${currentSearchPrams}`);
+                          // width: index === 0 ? "10rem" : "auto",
+                          fontWeight: "bold",
                         }}
                       >
-                        {headRow(row)}
+                        {data}
                       </TableCell>
-
-                      {bodyRow(row, currency).map((data, index) => (
-                        <TableCell
-                          key={index}
-                          align="right"
-                          sx={{
-                            // width: index === 0 ? "10rem" : "auto",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {data}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  );
-                })
+                    ))}
+                  </TableRow>
+                );
+              })
             )}
           </TableBody>
         </Table>
@@ -216,7 +216,8 @@ const CoinsTable = () => {
 
       {!isLoading && (
         <Pagination
-          count={handleSearch() ? +(handleSearch()?.length / 30).toFixed(0) : 1}
+          count={coins ? +(coins.length / per_page).toFixed(0) : 1}
+          // count={handleSearch() ? +(handleSearch()?.length / 30).toFixed(0) : 1}
           sx={{
             p: 3,
             width: "100%",

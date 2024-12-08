@@ -14,6 +14,8 @@ export const CoinList = (currency: string, page: string, per_page: string) => {
   const subUrl = `coins/markets?${searchParams}`;
   const url = `${baseUrl}/${subUrl}`;
 
+  console.log(url);
+
   return url;
 };
 
