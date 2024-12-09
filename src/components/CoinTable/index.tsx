@@ -119,7 +119,7 @@ const CoinsTable = () => {
             maxHeight: "350px",
           },
           position: "relative",
-          overflow: "auto",
+          overflow: "auto !important",
           "&::-webkit-scrollbar": { width: "0px" },
           MsOverflowStyle: "none" /* Internet Explorer and Edge */,
           scrollbarWidth: "none" /* Firefox */,
