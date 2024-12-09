@@ -1,42 +1,14 @@
 import { useState } from "react";
+import Link from "next/link";
+
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { AiFillDelete } from "react-icons/ai/index";
 
-import { Coin } from "../../context/types";
 import useLocalStorage from "../../hooks/useLocalStorage";
 
 export default function WatchListSidebar() {
-  // const removeFromWatchlist = async (coin: Coin) => {
-  //   if (user) {
-  //     const coinRef = doc(db, "watchlist", user.uid);
-
-  //     try {
-  //       await setDoc(
-  //         coinRef,
-  //         {
-  //           coins: watchlist.filter((watch) => watch !== coin?.id),
-  //         },
-  //         { merge: true }
-  //       );
-
-  //       setAlert({
-  //         open: true,
-  //         message: `${coin.name} Removed from the Watchlist`,
-  //         type: "success",
-  //       });
-  //     } catch (error: any) {
-  //       setAlert({
-  //         open: true,
-  //         message: error.message,
-  //         type: "error",
-  //       });
-  //     }
-  //   }
-  // };
-
   const [open, setOpen] = useState(false);
 
   const { value: watchList, setValueToLocalStorage } = useLocalStorage(
@@ -44,8 +16,15 @@ export default function WatchListSidebar() {
     []
   );
 
+  console.log(watchList);
+
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
+  };
+
+  const removeFromWatchList = (id: string) => {
+    const newWatchList = watchList.filter((_id) => id !== _id);
+    setValueToLocalStorage("crypto-tracker-watch-list", newWatchList);
   };
 
   return (
@@ -84,44 +63,50 @@ export default function WatchListSidebar() {
           <Box
             sx={{
               flex: 1,
-              width: "100%",
+              p: "1rem",
               backgroundColor: "white",
               borderRadius: "10px",
-              flexDirection: "column",
-              alignItems: "center",
-              // gap: 12,
               overflowY: "scroll",
             }}
           >
-            {[]?.map((coin: Coin) => {
-              if ([].length) {
-                return (
-                  <div
-                    key={coin.name}
-                    style={{
-                      padding: 10,
-                      borderRadius: 5,
-                      color: "black",
-                      width: "100%",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      backgroundColor: "#EEBC1D",
-                      boxShadow: "0 0 3px black",
+            {watchList.map((coin) => {
+              return (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    key={coin}
+                    variant="h6"
+                    sx={{
+                      fontWeight: "bold",
+                      mb: "0.75rem",
+                      background: "green",
+                      flex: 1,
                     }}
                   >
-                    <span>{coin.name}</span>
-                    <span style={{ display: "flex", gap: 8 }}>
-                      {/* {symbol} */}
-                      {/* {numberWithComma(+coin.current_price.toFixed(2))} */}
-                      <AiFillDelete
-                        style={{ cursor: "pointer" }}
-                        // onClick={() => removeFromWatchlist(coin)}
-                      />
-                    </span>
-                  </div>
-                );
-              }
+                    <Link href={`/coins/${coin}`}>{coin}</Link>
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    sx={{
+                      color: "black",
+                      fontWeight: "bold",
+                      border: "none",
+                      borderRadius: "20px",
+                      backgroundColor: "pink",
+                    }}
+                    onClick={() => removeFromWatchList(coin)}
+                  >
+                    Remove
+                  </Button>
+                </Box>
+              );
             })}
           </Box>
         </Box>

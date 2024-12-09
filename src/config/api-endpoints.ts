@@ -53,3 +53,15 @@ export const TrendingCoins = () => {
 
   return url;
 };
+
+export const Search = (query: string) => {
+  const searchParamsObj = {
+    query,
+    x_cg_demo_api_key: api_key,
+  };
+  const searchParams = new URLSearchParams(searchParamsObj).toString();
+  const subUrl = `search/?${searchParams}`;
+  const url = `${baseUrl}/${subUrl}`;
+
+  return url;
+};
