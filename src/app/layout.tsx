@@ -27,6 +27,7 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
+
             <Navbar />
             <TanstackQueryClientProvider>
               {children}

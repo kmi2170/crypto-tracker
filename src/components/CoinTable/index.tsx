@@ -169,9 +169,9 @@ const CoinsTable = () => {
                 return (
                   <TableRow
                     key={row.name}
-                    // onClick={() => {
-                    //   router.push(`/coins/${row.id}?${currentSearchPrams}`);
-                    // }}
+                    onClick={() => {
+                      router.push(`/coins/${row.id}?${currentSearchPrams}`);
+                    }}
                     sx={{
                       // transition: "background-color 0.05s ease",
                       "&:hover": {
