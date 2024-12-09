@@ -173,11 +173,15 @@ const CoinsTable = () => {
                     //   router.push(`/coins/${row.id}?${currentSearchPrams}`);
                     // }}
                     sx={{
-                      transition: "background-color 0.5s ease",
+                      // transition: "background-color 0.05s ease",
                       "&:hover": {
-                        backgroundColor: "rgba(192,192,192,0.25)",
+                        backgroundColor: "rgba(239, 234, 234,1.0)",
                         borderRadius: "5px",
                         cursor: "pointer",
+                        "& td:nth-of-type(2)": {
+                          // transition: "background-color 0.05s ease",
+                          backgroundColor: "inherit",
+                        },
                       },
                     }}
                   >
