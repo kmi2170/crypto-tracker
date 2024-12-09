@@ -6,10 +6,12 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 
-import { MGlassIcon } from "../../assets/icons";
 import useIsMobile from "../../hooks/useIsMobile";
 import useKeysToOpenModal from "../../hooks/useKeysToOpenModal";
 import SearchModalContent from "./SearchModalContent";
+import { MagnifyGlass } from "./SearchModalContent/buttons";
+
+const lineColor = "rgba(0,65,106,0.8)";
 
 const SearchBar = () => {
   const [open, setOpen] = useState(false);
@@ -24,7 +26,7 @@ const SearchBar = () => {
   useKeysToOpenModal({ isMobile, handleOpen });
 
   return (
-    <Box sx={{ mt: "1.0rem" }}>
+    <Box sx={{ mt: "1.5rem" }}>
       <Modal
         open={open}
         aria-labelledby="modal-modal-title"
@@ -56,7 +58,7 @@ const SearchBar = () => {
                 paddingLeft: 50,
                 height: "2.5rem",
                 width: "100%",
-                border: "1px solid grey",
+                border: `1px solid ${lineColor}`,
                 borderRadius: "10px",
                 outline: "none",
                 caretColor: "transparent",
@@ -64,20 +66,18 @@ const SearchBar = () => {
             />
           </Box>
           <Box
-            sx={(theme) => ({
+            sx={() => ({
               position: "absolute",
-              top: 5,
-              left: 10,
-              color: theme.palette.primary.main,
+              top: -5,
             })}
           >
-            <MGlassIcon />
+            <MagnifyGlass />
           </Box>
           {isMobile && (
             <Box
               sx={(theme) => ({
                 position: "absolute",
-                top: 4,
+                top: 7,
                 right: 10,
                 display: "flex",
                 flexDirection: "row",
@@ -88,11 +88,11 @@ const SearchBar = () => {
             >
               <Typography
                 variant="subtitle2"
-                sx={(theme) => ({
+                sx={() => ({
                   marginRight: "3px",
                   padding: "0 2px",
-                  color: theme.palette.primary.main,
-                  borderColor: theme.palette.primary.main,
+                  color: lineColor,
+                  borderColor: lineColor,
                   borderWidth: "2px",
                   borderStyle: "solid",
                   borderRadius: "5px",
@@ -102,10 +102,10 @@ const SearchBar = () => {
               </Typography>
               <Typography
                 variant="subtitle2"
-                sx={(theme) => ({
+                sx={() => ({
                   padding: "0 5px",
-                  color: theme.palette.primary.main,
-                  borderColor: theme.palette.primary.main,
+                  color: lineColor,
+                  borderColor: lineColor,
                   borderWidth: "2px",
                   borderStyle: "solid",
                   borderRadius: "5px",

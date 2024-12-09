@@ -54,7 +54,7 @@ const Dot = styled("div")({
   width: "1.0rem",
   height: "1.0rem",
   borderRadius: "50%",
-  backgroundColor: "purple",
+  backgroundColor: "rgba(0,65,106,0.8)",
 });
 
 const period = 0.75;

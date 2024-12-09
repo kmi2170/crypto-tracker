@@ -7,8 +7,9 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
 import useLocalStorage from "../../hooks/useLocalStorage";
+import { CloseButton } from "../SearchBar/SearchModalContent/buttons";
 
-export default function WatchListSidebar() {
+const WatchListSidebar = () => {
   const [open, setOpen] = useState(false);
 
   const { value: watchList, setValueToLocalStorage } = useLocalStorage(
@@ -16,10 +17,12 @@ export default function WatchListSidebar() {
     []
   );
 
-  console.log(watchList);
+  const openDrawer = () => {
+    setOpen(true);
+  };
 
-  const toggleDrawer = (newOpen: boolean) => () => {
-    setOpen(newOpen);
+  const closeDrawer = () => {
+    setOpen(false);
   };
 
   const removeFromWatchList = (id: string) => {
@@ -30,7 +33,7 @@ export default function WatchListSidebar() {
   return (
     <>
       <Button
-        onClick={toggleDrawer(true)}
+        onClick={openDrawer}
         sx={{
           height: "40px",
           fontWeight: "bold",
@@ -40,7 +43,7 @@ export default function WatchListSidebar() {
       >
         Watch List
       </Button>
-      <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
+      <Drawer anchor="right" open={open} onClose={closeDrawer}>
         <Box
           sx={{
             width: 350,
@@ -53,13 +56,15 @@ export default function WatchListSidebar() {
           }}
         >
           <Typography
-            variant="h5"
+            variant="h4"
             align="center"
-            gutterBottom
-            sx={{ color: "gold", fontWeight: "bold" }}
+            sx={{ mb: "1rem", color: "gold", fontWeight: "bold" }}
           >
             Watch List
           </Typography>
+          <Box>
+            <CloseButton color="white" onClick={closeDrawer} />
+          </Box>
           <Box
             sx={{
               flex: 1,
@@ -72,6 +77,7 @@ export default function WatchListSidebar() {
             {watchList.map((coin) => {
               return (
                 <Box
+                  key={coin}
                   sx={{
                     display: "flex",
                     flexDirection: "row",
@@ -80,7 +86,6 @@ export default function WatchListSidebar() {
                   }}
                 >
                   <Typography
-                    key={coin}
                     variant="h6"
                     sx={{
                       fontWeight: "bold",
@@ -113,4 +118,6 @@ export default function WatchListSidebar() {
       </Drawer>
     </>
   );
-}
+};
+
+export default WatchListSidebar;

@@ -9,17 +9,10 @@ import {
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { purple } from "@mui/material/colors";
 import { styled, useTheme } from "@mui/material/styles";
 
-// import { asyncThunkFindLocations } from "../../../slice/locationsAsyncThunk";
-// import { LocationType } from "../../../api/types/weather";
-// import { setLocations } from "../../../slice/locationsSlice";
-// import { setLocation } from "../../../slice/weatherSlice";
-// import { Location } from "../../../store/initialState";
-
-import { CandidateListItem } from "./locationListItem";
-import { ClearButton, CloseButton, MGlassButton } from "./buttons";
+import { CandidateListItem } from "./CandidateListItem";
+import { ClearButton, CloseButton, MagnifyGlass } from "./buttons";
 import LoadingIndicator from "./loadingIndicator";
 
 const InputWrapper = styled("div")({
@@ -50,6 +43,8 @@ type SearchModalContentProps = {
   closeModal(): void;
 };
 
+const lineColor = "rgba(0,65,106,0.8)";
+
 const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
   const theme = useTheme();
 
@@ -67,7 +62,9 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
     [candidates]
   );
 
-  const handleGetCandidate = (query: string) => {};
+  const handleGetCandidate = (query: string) => {
+    console.log(query);
+  };
 
   useEffect(() => {
     if (inputRef.current) {
@@ -153,7 +150,6 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
     <Box
       sx={(theme) => ({
         ...style,
-        border: `2px solid ${theme.palette.primary.light}`,
         [theme.breakpoints.down("md")]: {
           width: "600px",
         },
@@ -178,12 +174,12 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
             paddingLeft: 50,
             height: "3rem",
             width: "100%",
-            border: `2px solid ${purple[200]}`,
+            border: `1px solid ${lineColor}`,
             borderRadius: "10px",
             outline: "none",
           }}
         />
-        <MGlassButton />
+        <MagnifyGlass />
         <ClearButton onClick={clearText} />
       </InputWrapper>
 

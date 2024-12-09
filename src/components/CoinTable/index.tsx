@@ -85,7 +85,7 @@ const CoinsTable = () => {
         variant="h5"
         align="center"
         sx={(theme) => ({
-          mt: "3rem",
+          mt: "1rem",
           mb: "1.0rem",
           fontWeight: "bold",
           [theme.breakpoints.down("sm")]: {
