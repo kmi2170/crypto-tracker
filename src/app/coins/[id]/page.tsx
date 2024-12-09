@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 
 import CoinChart from "../../../components/CoinChart";
@@ -14,6 +15,7 @@ import {
   fetchSingleCoin,
   fetchSingleCoinDummy,
 } from "../../../lib/fetchFunctions";
+import useLocalStorage from "../../../hooks/useLocalStorage";
 import { getCurrencySymbol } from "../../../lib/getCurrencySymbol";
 import { formatNumber } from "../../../lib/formatNumber";
 import { CurrenciesDummy } from "../../../config/chart/dummyData/SingleCoin";
@@ -39,13 +41,30 @@ const Coin = () => {
   const searchParams = useSearchParams();
   const currency = (searchParams.get("currency") || "usd") as Currencies;
 
-  const { data: coin, isLoading } = useQuery({
+  const { data: coin } = useQuery({
     queryKey: ["single-coin", { id }],
     queryFn: () => fetchSingleCoin(id),
     ...configForUseQuery,
   });
 
+  const { value: watchList, setValueToLocalStorage } = useLocalStorage(
+    "crypto-tracker-watch-list",
+    [] as string[]
+  );
+
   if (!coin) return;
+
+  const inWatchList = watchList.some((id) => id === coin?.id);
+
+  const addToWatchList = (id: string) => {
+    const newWatchList = [id, ...watchList];
+    setValueToLocalStorage("crypto-tracker-watch-list", newWatchList);
+  };
+
+  const removeFromWatchList = (id: string) => {
+    const newWatchList = watchList.filter((_id) => id !== _id);
+    setValueToLocalStorage("crypto-tracker-watch-list", newWatchList);
+  };
 
   return (
     <Box
@@ -83,21 +102,25 @@ const Coin = () => {
         <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
           Rank: {coin?.market_cap_rank}
         </Typography>
-        {/* {user && (
-            <Button
-              variant="outlined"
-              sx={{
-                width: "100%",
-                height: 40,
-                color: "black",
-                backgroundColor: inWatchlist ? "#aa0000" : "#EEBC1D",
-              }}
-              onClick={inWatchlist ? removeFromWatchlist : addToWatchlist}
-            >
-              {inWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
-            </Button>
-          )} */}
       </PricesWrapper>
+
+      <Button
+        variant="outlined"
+        sx={{
+          mb: "0.25rem",
+          width: "16rem",
+          color: "black",
+          fontWeight: "bold",
+          border: "none",
+          borderRadius: "20px",
+          backgroundColor: inWatchList ? "pink" : "gold",
+        }}
+        onClick={() =>
+          inWatchList ? removeFromWatchList(id) : addToWatchList(id)
+        }
+      >
+        {inWatchList ? "Remove from Watchlist" : "Add to Watchlist"}
+      </Button>
 
       <CoinChart id={id} currency={currency} />
     </Box>
@@ -105,61 +128,3 @@ const Coin = () => {
 };
 
 export default Coin;
-
-// const inWatchlist = watchlist?.includes(coin?.id);
-
-// const addToWatchlist = async () => {
-//   if (user) {
-//     console.log("click");
-
-//     const coinRef = doc(db, "watchlist", user.uid);
-
-//     try {
-//       await setDoc(coinRef, {
-//         coins: watchlist ? [...watchlist, coin?.id] : [coin?.id],
-//       });
-
-//       setAlert({
-//         open: true,
-//         message: `${coin.name} Added to the Watchlist`,
-//         type: "success",
-//       });
-//     } catch (error: any) {
-//       setAlert({
-//         open: true,
-//         message: error.message,
-//         type: "error",
-//       });
-//     }
-//   }
-// };
-
-// const removeFromWatchlist = async () => {
-//   if (user) {
-//     console.log("click");
-
-//     const coinRef = doc(db, "watchlist", user.uid);
-
-//     try {
-//       await setDoc(
-//         coinRef,
-//         {
-//           coins: watchlist.filter((watch) => watch !== coin?.id),
-//         },
-//         { merge: true }
-//       );
-
-//       setAlert({
-//         open: true,
-//         message: `${coin.name} Removed from the Watchlist`,
-//         type: "success",
-//       });
-//     } catch (error: any) {
-//       setAlert({
-//         open: true,
-//         message: error.message,
-//         type: "error",
-//       });
-//     }
-//   }
-// };
