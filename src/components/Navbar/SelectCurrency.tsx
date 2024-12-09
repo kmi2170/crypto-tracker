@@ -13,7 +13,7 @@ const SelectCurrency = () => {
   const searchParams = useSearchParams();
 
   const { value: storedCurrency, setValueToLocalStorage } = useLocalStorage(
-    "currency",
+    "crypto-tracker-currency",
     initStorage
   );
 

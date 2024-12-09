@@ -8,7 +8,7 @@ import Typography, { TypographyProps } from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 
 import SelectCurrency from "./SelectCurrency";
-import WatchListSidebar from "../Authentication/WatchListSidebar";
+import WatchListSidebar from "./WatchListSidebar";
 
 const Wrapper = styled(Container)({
   display: "flex",
@@ -24,7 +24,7 @@ const Title = styled(Typography)<TypographyProps>({
   },
 });
 
-const CurrencyAndWatchListWrapper = styled(Typography)<TypographyProps>({
+const CurrencyAndWatchListWrapper = styled("div")<TypographyProps>({
   display: "flex",
   flexDirection: "row",
   justifyContent: "center",
