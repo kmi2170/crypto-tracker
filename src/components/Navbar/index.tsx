@@ -8,6 +8,7 @@ import Typography, { TypographyProps } from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 
 import SelectCurrency from "./SelectCurrency";
+import WatchListSidebar from "../Authentication/WatchListSidebar";
 
 const Wrapper = styled(Container)({
   display: "flex",
@@ -23,6 +24,14 @@ const Title = styled(Typography)<TypographyProps>({
   },
 });
 
+const CurrencyAndWatchListWrapper = styled(Typography)<TypographyProps>({
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "1.0rem",
+});
+
 const Navbar = () => {
   return (
     <AppBar position="sticky" sx={{ backgroundColor: "rgba(0,65,106,0.8)" }}>
@@ -31,8 +40,10 @@ const Navbar = () => {
           <Title variant="h4" component="h1">
             <Link href="/">Crypto Tracker</Link>
           </Title>
-          <SelectCurrency />
-          {/* {user ? <UserSidebar /> : <AuthModal />} */}
+          <CurrencyAndWatchListWrapper>
+            <SelectCurrency />
+            <WatchListSidebar />
+          </CurrencyAndWatchListWrapper>
         </Wrapper>
       </Toolbar>
     </AppBar>

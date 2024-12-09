@@ -1,39 +1,17 @@
 import * as React from "react";
-// import Box from '@mui/material/Box';
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import { signOut } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
 import { AiFillDelete } from "react-icons/ai/index";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
-import { CryptoState } from "../../context/CryptoContext";
-import { numberWithComma } from "../TrendCoins/Carousel";
-import { auth, db } from "../../lib/firebase";
-import { configForUseQuery } from "../../lib/fetchFunctions";
 import { Coin } from "../../context/types";
 
 type Anchor = "right";
 
-const fetchFn = async (currency: string) => {
-  const { data } = await axios.get(`/api/coin-list?currency=${currency}`);
-  return data;
-};
-
-export default function UserSidebar() {
+export default function WatchListSidebar() {
   const [state, setState] = React.useState({
     right: false,
-  });
-
-  const { user, setAlert, watchlist, symbol, currency } = CryptoState();
-
-  const { data: coins } = useQuery<Coin[]>({
-    queryKey: ["coins", currency],
-    queryFn: () => fetchFn(currency),
-    ...configForUseQuery,
   });
 
   const toggleDrawer =
@@ -50,61 +28,49 @@ export default function UserSidebar() {
       setState({ ...state, [anchor]: open });
     };
 
-  const logOut = () => {
-    signOut(auth);
+  // const removeFromWatchlist = async (coin: Coin) => {
+  //   if (user) {
+  //     const coinRef = doc(db, "watchlist", user.uid);
 
-    setAlert({
-      open: true,
-      type: "success",
-      message: "Logout Successful!",
-    });
+  //     try {
+  //       await setDoc(
+  //         coinRef,
+  //         {
+  //           coins: watchlist.filter((watch) => watch !== coin?.id),
+  //         },
+  //         { merge: true }
+  //       );
 
-    toggleDrawer("right", false);
-  };
-
-  const removeFromWatchlist = async (coin: Coin) => {
-    if (user) {
-      const coinRef = doc(db, "watchlist", user.uid);
-
-      try {
-        await setDoc(
-          coinRef,
-          {
-            coins: watchlist.filter((watch) => watch !== coin?.id),
-          },
-          { merge: true }
-        );
-
-        setAlert({
-          open: true,
-          message: `${coin.name} Removed from the Watchlist`,
-          type: "success",
-        });
-      } catch (error: any) {
-        setAlert({
-          open: true,
-          message: error.message,
-          type: "error",
-        });
-      }
-    }
-  };
+  //       setAlert({
+  //         open: true,
+  //         message: `${coin.name} Removed from the Watchlist`,
+  //         type: "success",
+  //       });
+  //     } catch (error: any) {
+  //       setAlert({
+  //         open: true,
+  //         message: error.message,
+  //         type: "error",
+  //       });
+  //     }
+  //   }
+  // };
 
   return (
     <>
       {(["right"] as const).map((anchor) => (
         <React.Fragment key={anchor}>
-          <Avatar
+          <Button
             onClick={toggleDrawer(anchor, true)}
             sx={{
-              height: 38,
-              width: 38,
-              cursor: "pointer",
+              height: "40px",
+              fontWeight: "bold",
               backgroundColor: "#EEBC1D",
             }}
-            src={user?.photoURL || ""}
-            alt={user?.displayName || user?.email || "userName"}
-          />
+            aria-label="watch-list"
+          >
+            Watch List
+          </Button>
           <Drawer
             anchor={anchor}
             open={state[anchor]}
@@ -138,10 +104,10 @@ export default function UserSidebar() {
                     backgroundColor: "#EEBC1D",
                     objectFit: "contain",
                   }}
-                  src={user?.photoURL || ""}
-                  alt={user?.displayName || user?.email || "userName"}
+                  // src={user?.photoURL || ""}
+                  // alt={user?.displayName || user?.email || "userName"}
                 />
-                <span
+                {/* <span
                   style={{
                     width: "100%",
                     fontSize: 25,
@@ -153,7 +119,7 @@ export default function UserSidebar() {
                   }}
                 >
                   {user?.displayName || user?.email}
-                </span>
+                </span> */}
                 <Box
                   sx={{
                     flex: 1,
@@ -172,8 +138,8 @@ export default function UserSidebar() {
                     Watchlist
                   </span>
 
-                  {coins?.map((coin: Coin) => {
-                    if (watchlist.includes(coin.id)) {
+                  {[]?.map((coin: Coin) => {
+                    if ([].length) {
                       return (
                         <div
                           key={coin.name}
@@ -191,11 +157,11 @@ export default function UserSidebar() {
                         >
                           <span>{coin.name}</span>
                           <span style={{ display: "flex", gap: 8 }}>
-                            {symbol}
-                            {numberWithComma(+coin.current_price.toFixed(2))}
+                            {/* {symbol} */}
+                            {/* {numberWithComma(+coin.current_price.toFixed(2))} */}
                             <AiFillDelete
                               style={{ cursor: "pointer" }}
-                              onClick={() => removeFromWatchlist(coin)}
+                              // onClick={() => removeFromWatchlist(coin)}
                             />
                           </span>
                         </div>
@@ -206,7 +172,7 @@ export default function UserSidebar() {
               </Box>
               <Button
                 variant="contained"
-                onClick={logOut}
+                // onClick={logOut}
                 sx={{
                   height: "8%",
                   width: "100%",
