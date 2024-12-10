@@ -23,7 +23,7 @@ const InputWrapper = styled("div")({
 });
 
 const ListWrapper = styled("div")(({ theme }) => ({
-  marginTop: "1.5rem",
+  marginTop: "0.5rem",
   height: "650px",
   overflowY: "auto",
   [theme.breakpoints.down("md")]: {
@@ -76,8 +76,6 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
 
   const handleGetCandidate = useCallback(async () => {
     const query = inputRef?.current?.value as string;
-    if (!query) return;
-
     try {
       const data = await fetchCandidateCoins(query);
       const { coins } = data;
@@ -133,13 +131,17 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
   }, [selectedCandidateId, candidates]);
 
   function onTypeWithDebounce(e: ChangeEvent) {
-    if (!inputRef.current?.value) return;
+    const query = inputRef.current?.value;
 
-    if (inputRef.current.value.length <= 1) {
-      if (candidates.length !== 0) setCandidates([]);
+    if (!query) return;
+
+    if (query.length <= 1) {
+      if (candidates.length > 0) setCandidates([]);
       if (!isShortCharacter) setIsShortCharacter(true);
       return;
     }
+
+    setIsLoading(true);
 
     if (timerRef.current) {
       clearTimeout(timerRef.current);
@@ -149,7 +151,6 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
     timerRef.current = setTimeout(async () => {
       const query = inputRef.current?.value as string;
       if (!query) return;
-      setIsLoading(true);
 
       try {
         handleGetCandidate();
@@ -220,27 +221,36 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
         <ClearButton onClick={clearText} />
       </InputWrapper>
 
-      <ListWrapper>
-        {candidates?.map((candidate, i) => {
-          return (
-            <CandidateListItem
-              key={candidate.id}
-              index={i}
-              candidate={candidate}
-              isSelected={selectedCandidateId === i}
-              handleClickCandidate={handleClickCandidate}
-              handleHoverCandidate={handleHoverCandidate}
-            />
-          );
-        })}
-      </ListWrapper>
+      <Typography
+        variant="h6"
+        sx={{ mt: "0.5rem", ml: "1rem", fontWeight: "bold" }}
+      >
+        {candidates.length} Candidates Found
+      </Typography>
 
-      <Message
-        isShortCharacter={isShortCharacter}
-        listLength={candidates.length}
-        isLoading={isLoading}
-        isError={isError}
-      />
+      <ListWrapper>
+        <>
+          {candidates?.map((candidate, i) => {
+            return (
+              <CandidateListItem
+                key={candidate.id}
+                index={i}
+                candidate={candidate}
+                isSelected={selectedCandidateId === i}
+                handleClickCandidate={handleClickCandidate}
+                handleHoverCandidate={handleHoverCandidate}
+              />
+            );
+          })}
+
+          <Message
+            isShortCharacter={isShortCharacter}
+            // listLength={candidates.length}
+            isLoading={isLoading}
+            isError={isError}
+          />
+        </>
+      </ListWrapper>
     </Box>
   );
 });
@@ -248,14 +258,14 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
 export default SearchModalContent;
 
 type MessageProps = {
-  isShortCharacter: boolean;
-  listLength: number;
+  isShortCharacter?: boolean;
+  listLength?: number;
   isLoading: boolean;
   isError: boolean;
 };
 
 function Message(props: MessageProps) {
-  const { isShortCharacter, listLength, isLoading, isError } = props;
+  const { isShortCharacter, isLoading, isError } = props;
 
   let message = "";
 
@@ -264,8 +274,8 @@ function Message(props: MessageProps) {
       message = "Type more than one character";
     } else if (isError) {
       message = "Something went wrong. Please try again later";
-    } else if (listLength === 0) {
-      message = "No Place was Found";
+      // } else if (listLength === 0) {
+      //   message = "No Candidate was Found";
     }
   }
 
