@@ -6,23 +6,33 @@ import {
   useRef,
   useState,
 } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 
 import { CandidateListItem } from "./CandidateListItem";
 import { ClearButton, CloseButton, MagnifyGlass } from "./buttons";
 import LoadingIndicator from "./loadingIndicator";
+import { fetchCandidateCoins } from "../../../lib/fetchFunctions";
+import { CoinSearch } from "../../../context/types";
 
 const InputWrapper = styled("div")({
   position: "relative",
-  marginTop: 50,
 });
 
-const ListWrapper = styled("div")({
+const ListWrapper = styled("div")(({ theme }) => ({
   marginTop: "1.5rem",
-});
+  height: "650px",
+  overflowY: "auto",
+  [theme.breakpoints.down("md")]: {
+    height: "450px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    height: "450px",
+  },
+}));
 
 const style = {
   position: "absolute" as "absolute",
@@ -32,10 +42,11 @@ const style = {
   bgcolor: "background.paper",
   width: "800px",
   height: "800px",
-  maxHeight: "100vh",
-  overflowY: "auto",
   boxShadow: 24,
-  padding: 4,
+  paddingTop: "2.5rem",
+  paddingBottom: "1rem",
+  paddingLeft: "1rem",
+  paddingRight: "1rem",
   borderRadius: "10px",
 };
 
@@ -46,25 +57,47 @@ type SearchModalContentProps = {
 const lineColor = "rgba(0,65,106,0.8)";
 
 const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
-  const theme = useTheme();
-
   const { closeModal } = props;
 
-  const [selectedCandidateIndex, setSelectedCandidateIndex] = useState(0);
+  const searchParams = useSearchParams();
+  const currentSearchPrams = new URLSearchParams(searchParams).toString();
+  const router = useRouter();
+
+  const [selectedCandidateId, setSelectedCandidateId] = useState(0);
   const [isShortCharacter, setIsShortCharacter] = useState(true);
-  const [candidates, setCandidates] = useState<any[]>([]);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [candidates, setCandidates] = useState<CoinSearch[]>([]);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  console.log({ isLoading });
+
+  const handleGetCandidate = useCallback(async () => {
+    const query = inputRef?.current?.value as string;
+    if (!query) return;
+
+    try {
+      const data = await fetchCandidateCoins(query);
+      const { coins } = data;
+      setCandidates(coins);
+    } catch (error) {
+      setIsError(true);
+      console.error(error);
+    }
+  }, []);
+
   const handleClickCandidate = useCallback(
-    (candidate: any) => {},
+    (selectedId: number) => {
+      const id = candidates[selectedId].id;
+      router.push(`/coins/${id}?${currentSearchPrams}`);
+      setSelectedCandidateId(0);
+      setCandidates([]);
+      closeModal();
+    },
     [candidates]
   );
-
-  const handleGetCandidate = (query: string) => {
-    console.log(query);
-  };
 
   useEffect(() => {
     if (inputRef.current) {
@@ -76,19 +109,17 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
     function handleKeyPress(e: KeyboardEvent) {
       switch (e.key) {
         case "ArrowUp":
-          setSelectedCandidateIndex((prev) => {
+          setSelectedCandidateId((prev) => {
             return prev > 0 ? prev - 1 : prev;
           });
           break;
         case "ArrowDown":
-          setSelectedCandidateIndex((prev) => {
+          setSelectedCandidateId((prev) => {
             return prev < candidates.length - 1 ? prev + 1 : prev;
           });
           break;
         case "Enter":
-          const candidate = candidates[selectedCandidateIndex];
-          handleClickCandidate(candidate);
-          closeModal();
+          handleClickCandidate(selectedCandidateId);
           break;
         default:
           break;
@@ -99,7 +130,7 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, [selectedCandidateIndex, candidates]);
+  }, [selectedCandidateId, candidates]);
 
   function onTypeWithDebounce(e: ChangeEvent) {
     if (!inputRef.current?.value) return;
@@ -117,19 +148,25 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
 
     timerRef.current = setTimeout(async () => {
       const query = inputRef.current?.value as string;
+      if (!query) return;
+      setIsLoading(true);
+
       try {
-        handleGetCandidate(query);
+        handleGetCandidate();
       } catch (error) {
+        setIsError(true);
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
 
       if (isShortCharacter) setIsShortCharacter(false);
       timerRef.current = null;
-    }, 500);
+    }, 600);
   }
 
   const handleHoverCandidate = useCallback((selectedIdx: number) => {
-    setSelectedCandidateIndex(selectedIdx);
+    setSelectedCandidateId(selectedIdx);
   }, []);
 
   const clearText = useCallback(() => {
@@ -159,7 +196,7 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
         },
       })}
     >
-      <CloseButton onClick={closeModal} />
+      {/* <CloseButton onClick={closeModal} /> */}
 
       <InputWrapper>
         <input
@@ -187,10 +224,10 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
         {candidates?.map((candidate, i) => {
           return (
             <CandidateListItem
-              key={candidate}
+              key={candidate.id}
               index={i}
               candidate={candidate}
-              isSelected={selectedCandidateIndex === i}
+              isSelected={selectedCandidateId === i}
               handleClickCandidate={handleClickCandidate}
               handleHoverCandidate={handleHoverCandidate}
             />
@@ -198,12 +235,12 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
         })}
       </ListWrapper>
 
-      {/* <Message
+      <Message
         isShortCharacter={isShortCharacter}
-        listLength={locations.length}
+        listLength={candidates.length}
         isLoading={isLoading}
         isError={isError}
-      /> */}
+      />
     </Box>
   );
 });

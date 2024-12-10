@@ -35,6 +35,20 @@ export interface Coin {
   sparkline_in_7d: { price: number[] };
 }
 
+export interface Search {
+  coins: CoinSearch[];
+}
+
+export interface CoinSearch {
+  id: string;
+  name: string;
+  api_symbol: string;
+  symbol: string;
+  market_cap_rank: number;
+  thumb: string;
+  large: string;
+}
+
 export interface Trends {
   coins: { item: TrendCoin }[];
 }
