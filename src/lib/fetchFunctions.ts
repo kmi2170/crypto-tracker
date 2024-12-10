@@ -4,6 +4,7 @@ import {
   Coin,
   Currencies,
   Historical,
+  Search,
   SingleCoin,
   Trends,
 } from "../context/types";
@@ -71,26 +72,31 @@ export const fetchHistorical = async (
   return data;
 };
 
+export const fetchCandidateCoins = async (query: string): Promise<Search> => {
+  const { data } = await axios.get<Search>(`/api/search?query=${query}`);
+  return data;
+};
+
 // dummy data
-export const fetchCoinListDummy = async (currency: Currencies) => {
-  return dummyCoinListData as Coin[];
-};
+// export const fetchCoinListDummy = async (currency: Currencies) => {
+//   return dummyCoinListData as Coin[];
+// };
 
-export const fetchSingleCoinDummy = async (
-  id: string,
-  currency: CurrenciesDummy
-) => {
-  return dummySingleCoinData as SingleCoinDummy;
-};
+// export const fetchSingleCoinDummy = async (
+//   id: string,
+//   currency: CurrenciesDummy
+// ) => {
+//   return dummySingleCoinData as SingleCoinDummy;
+// };
 
-export const fetchTrendCoinsDummy = async (currency: Currencies) => {
-  return dummyTrendCoinsData as Coin[];
-};
+// export const fetchTrendCoinsDummy = async (currency: Currencies) => {
+//   return dummyTrendCoinsData as Coin[];
+// };
 
-export const fetchHistoricalDummy = async (
-  id: string,
-  currency: Currencies,
-  days: number
-): Promise<Historical> => {
-  return dummyHistoricalData as Historical;
-};
+// export const fetchHistoricalDummy = async (
+//   id: string,
+//   currency: Currencies,
+//   days: number
+// ): Promise<Historical> => {
+//   return dummyHistoricalData as Historical;
+// };
