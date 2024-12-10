@@ -20,11 +20,7 @@ import { styled } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
 
 import { Coin, Currencies } from "../../context/types";
-import {
-  configForUseQuery,
-  fetchCoinList,
-  fetchCoinListDummy,
-} from "../../lib/fetchFunctions";
+import { configForUseQuery, fetchCoinList } from "../../lib/fetchFunctions";
 import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
 import { formatNumber } from "../../lib/formatNumber";
 import BodyRowSkeletons from "./TableRowSkelton";
@@ -52,9 +48,9 @@ const per_page = 50;
 
 const CoinsTable = () => {
   const router = useRouter();
-
   const searchParams = useSearchParams();
   const currentSearchPrams = new URLSearchParams(searchParams).toString();
+
   const currency = (searchParams.get("currency") || "usd") as Currencies;
 
   const [search, setSearch] = useState<string>("");
