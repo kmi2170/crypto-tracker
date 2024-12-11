@@ -72,31 +72,6 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  console.log({ isLoading });
-
-  const handleGetCandidate = useCallback(async () => {
-    const query = inputRef?.current?.value as string;
-    try {
-      const data = await fetchCandidateCoins(query);
-      const { coins } = data;
-      setCandidates(coins);
-    } catch (error) {
-      setIsError(true);
-      console.error(error);
-    }
-  }, []);
-
-  const handleClickCandidate = useCallback(
-    (selectedId: number) => {
-      const id = candidates[selectedId].id;
-      router.push(`/coins/${id}?${currentSearchPrams}`);
-      setSelectedCandidateId(0);
-      setCandidates([]);
-      closeModal();
-    },
-    [candidates]
-  );
-
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current?.focus();
@@ -104,7 +79,7 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
   }, []);
 
   useEffect(() => {
-    function handleKeyPress(e: KeyboardEvent) {
+    const handleKeyPress = (e: KeyboardEvent) => {
       switch (e.key) {
         case "ArrowUp":
           setSelectedCandidateId((prev) => {
@@ -122,7 +97,7 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
         default:
           break;
       }
-    }
+    };
 
     window.addEventListener("keydown", handleKeyPress);
     return () => {
@@ -130,7 +105,7 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
     };
   }, [selectedCandidateId, candidates]);
 
-  function onTypeWithDebounce(e: ChangeEvent) {
+  const onTypeWithDebounce = (e: ChangeEvent) => {
     const query = inputRef.current?.value;
 
     if (!query) return;
@@ -153,7 +128,7 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
       if (!query) return;
 
       try {
-        handleGetCandidate();
+        getCandidate();
       } catch (error) {
         setIsError(true);
         console.error(error);
@@ -164,11 +139,34 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
       if (isShortCharacter) setIsShortCharacter(false);
       timerRef.current = null;
     }, 600);
-  }
+  };
+
+  const getCandidate = useCallback(async () => {
+    const query = inputRef?.current?.value as string;
+    try {
+      const data = await fetchCandidateCoins(query);
+      const { coins } = data;
+      setCandidates(coins);
+    } catch (error) {
+      setIsError(true);
+      console.error(error);
+    }
+  }, []);
 
   const handleHoverCandidate = useCallback((selectedIdx: number) => {
     setSelectedCandidateId(selectedIdx);
   }, []);
+
+  const handleClickCandidate = useCallback(
+    (selectedId: number) => {
+      const id = candidates[selectedId].id;
+      router.push(`/coins/${id}?${currentSearchPrams}`);
+      setSelectedCandidateId(0);
+      setCandidates([]);
+      closeModal();
+    },
+    [candidates]
+  );
 
   const clearText = useCallback(() => {
     if (inputRef.current) {
@@ -203,7 +201,7 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
         <input
           ref={inputRef}
           type="text"
-          placeholder="Enter City Name"
+          placeholder="Search Coin"
           onChange={onTypeWithDebounce}
           onKeyDown={() => {}}
           spellCheck="false"
@@ -231,24 +229,41 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
       <ListWrapper>
         <>
           {candidates?.map((candidate, i) => {
+            const { name, symbol, thumb } = candidate;
+            const itemName = `(${symbol}) ${name}`;
+
             return (
               <CandidateListItem
                 key={candidate.id}
                 index={i}
-                candidate={candidate}
+                itemName={itemName}
+                itemImgUrl={thumb}
                 isSelected={selectedCandidateId === i}
+                oddLineBgColor="rgba(0,65,106,0.15)"
+                selectedBgColor="rgba(0,65,106,0.8)"
                 handleClickCandidate={handleClickCandidate}
                 handleHoverCandidate={handleHoverCandidate}
               />
             );
           })}
 
-          <Message
-            isShortCharacter={isShortCharacter}
-            // listLength={candidates.length}
-            isLoading={isLoading}
-            isError={isError}
-          />
+          {isLoading ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "6rem",
+              }}
+            >
+              <LoadingIndicator />
+            </Box>
+          ) : (
+            <Message
+              isShortCharacter={isShortCharacter}
+              isError={isError}
+              // listLength={candidates.length}
+            />
+          )}
         </>
       </ListWrapper>
     </Box>
@@ -260,39 +275,25 @@ export default SearchModalContent;
 type MessageProps = {
   isShortCharacter?: boolean;
   listLength?: number;
-  isLoading: boolean;
   isError: boolean;
 };
 
-function Message(props: MessageProps) {
-  const { isShortCharacter, isLoading, isError } = props;
+const Message = (props: MessageProps) => {
+  const { isShortCharacter, isError } = props;
 
   let message = "";
 
-  if (!isLoading) {
-    if (isShortCharacter) {
-      message = "Type more than one character";
-    } else if (isError) {
-      message = "Something went wrong. Please try again later";
-      // } else if (listLength === 0) {
-      //   message = "No Candidate was Found";
-    }
+  if (isShortCharacter) {
+    message = "Type more than one character";
+  } else if (isError) {
+    message = "Something went wrong. Please try again later";
   }
 
+  if (!message) return;
+
   return (
-    <>
-      {isLoading && (
-        <Box
-          sx={{ display: "flex", justifyContent: "center", marginTop: "6rem" }}
-        >
-          <LoadingIndicator />
-        </Box>
-      )}
-      {message && (
-        <Typography variant="h6" align="center" sx={{ marginTop: "1rem" }}>
-          {message}
-        </Typography>
-      )}
-    </>
+    <Typography variant="h6" align="center" sx={{ marginTop: "1rem" }}>
+      {message}
+    </Typography>
   );
-}
+};
