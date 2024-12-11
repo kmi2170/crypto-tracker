@@ -37,7 +37,15 @@ const Navbar = () => {
     <AppBar position="sticky" sx={{ backgroundColor: "rgba(0,65,106,0.8)" }}>
       <Toolbar>
         <Wrapper maxWidth="lg">
-          <Title variant="h4" component="h1">
+          <Title
+            variant="h4"
+            component="h1"
+            sx={(theme) => ({
+              [theme.breakpoints.down("sm")]: {
+                fontSize: "1.25rem",
+              },
+            })}
+          >
             <Link href="/">Crypto Tracker</Link>
           </Title>
           <CurrencyAndWatchListWrapper>

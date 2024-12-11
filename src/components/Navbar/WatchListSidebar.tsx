@@ -36,12 +36,13 @@ const WatchListSidebar = () => {
         onClick={openDrawer}
         sx={{
           height: "40px",
+          lineHeight: "1rem",
           fontWeight: "bold",
           backgroundColor: "#EEBC1D",
         }}
         aria-label="watch-list"
       >
-        Watch List
+        Watch List {watchList.length}
       </Button>
       <Drawer anchor="right" open={open} onClose={closeDrawer}>
         <Box
