@@ -18,23 +18,26 @@ const WatchListSidebar = () => {
   const [watchList, setWatchList] = useState<WatchList[]>([]);
 
   const { getItemFromLocalStorage, setItemToLocalStorage } = useLocalStorage(
+    key,
     [] as WatchList[]
   );
 
+  const getWatchList = () => {
+    const storedValue = getItemFromLocalStorage();
+    setWatchList(storedValue);
+  };
+
   useEffect(() => {
-    const value = getItemFromLocalStorage(key);
-    if (value != null) setWatchList(value);
-  }, [open]);
+    getWatchList();
+  }, []);
 
   useEffect(() => {
     const handleStorage = () => {
-      const value = getItemFromLocalStorage(key);
-      if (value != null) setWatchList(value);
-      setWatchList(getItemFromLocalStorage(key));
+      getWatchList();
     };
     window.addEventListener("storage", handleStorage);
     return () => window.removeEventListener("storage", handleStorage);
-  }, [watchList]);
+  }, []);
 
   const openDrawer = () => {
     setOpen(true);
@@ -46,7 +49,7 @@ const WatchListSidebar = () => {
 
   const removeFromWatchList = (_id: string) => {
     const newWatchList = watchList.filter(({ id }) => id !== _id);
-    setItemToLocalStorage(key, newWatchList);
+    setItemToLocalStorage(newWatchList);
   };
 
   return (

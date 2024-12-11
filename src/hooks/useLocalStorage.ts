@@ -1,17 +1,16 @@
+"use client";
+
 import { useCallback } from "react";
 
-export default function useLocalStorage<T>(initValue: T) {
-  const getItemFromLocalStorage = useCallback((key: string) => {
+export default function useLocalStorage<T>(key: string, initValue: T) {
+  const getItemFromLocalStorage = () => {
     const storedValue = localStorage.getItem(key);
-    if (storedValue) {
-      return JSON.parse(storedValue);
-    } else {
-      return initValue;
-    }
-  }, []);
+    return storedValue ? JSON.parse(storedValue) : initValue;
+  };
 
-  const setItemToLocalStorage = useCallback((key: string, value: T) => {
-    localStorage.setItem(key, JSON.stringify(value));
+  const setItemToLocalStorage = useCallback((value: T) => {
+    const valueToStore = JSON.stringify(value);
+    localStorage.setItem(key, valueToStore);
     window.dispatchEvent(new Event("storage"));
   }, []);
 

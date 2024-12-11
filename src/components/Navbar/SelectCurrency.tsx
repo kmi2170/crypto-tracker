@@ -3,28 +3,39 @@ import MenuItem from "@mui/material/MenuItem";
 
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import useLocalStorage from "../../hooks/useLocalStorage";
 
-const initStorage = "";
+const key = process.env.NEXT_PUBLIC_LOCAL_STORAGE_CURRENCY_KEY as string;
 
 const SelectCurrency = () => {
   const router = useRouter();
   const pathName = usePathname();
   const searchParams = useSearchParams();
 
-  const { value: storedCurrency, setValueToLocalStorage } = useLocalStorage(
-    "crypto-tracker-currency",
-    initStorage
+  const { getItemFromLocalStorage, setItemToLocalStorage } = useLocalStorage(
+    key,
+    ""
   );
 
-  const currency = storedCurrency || searchParams.get("currency") || "usd";
+  useEffect(() => {
+    const storedValue = getItemFromLocalStorage();
+    if (storedValue) {
+      const params = new URLSearchParams(searchParams);
+      params.set("currency", storedValue);
+      const newUrl = `${pathName}?${params.toString()}`;
+      router.push(newUrl);
+    }
+  }, []);
+
+  const currency = searchParams.get("currency") || "usd";
 
   const handleChange = (e: SelectChangeEvent) => {
     const params = new URLSearchParams(searchParams);
     const newCurrency = e.target.value;
     params.set("currency", newCurrency);
     const newUrl = `${pathName}?${params.toString()}`;
-    setValueToLocalStorage("currency", newCurrency);
+    setItemToLocalStorage(newCurrency);
     router.push(newUrl);
   };
 

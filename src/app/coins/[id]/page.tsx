@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
@@ -115,18 +114,22 @@ const AddToAndRemoveFromWatchList = (
   const { id, name, imgUrl, market_cap_rank } = props;
   const [watchList, setWatchList] = useState<WatchList[]>([]);
   const { getItemFromLocalStorage, setItemToLocalStorage } = useLocalStorage(
+    key,
     [] as WatchList[]
   );
 
+  const getWatchList = () => {
+    const storedValue = getItemFromLocalStorage();
+    setWatchList(storedValue);
+  };
+
   useEffect(() => {
-    const value = getItemFromLocalStorage(key);
-    if (value != null) setWatchList(value);
+    getWatchList();
   }, []);
 
   useEffect(() => {
     const handleStorage = () => {
-      const value = getItemFromLocalStorage(key);
-      if (value != null) setWatchList(value);
+      getWatchList();
     };
     window.addEventListener("storage", handleStorage);
     return () => window.removeEventListener("storage", handleStorage);
@@ -143,12 +146,12 @@ const AddToAndRemoveFromWatchList = (
     const existInList = watchList?.some(({ id: _id }) => id === _id);
     if (existInList) return;
     const newWatchList = [{ id, name, imgUrl, market_cap_rank }, ...watchList];
-    setItemToLocalStorage(key, newWatchList);
+    setItemToLocalStorage(newWatchList);
   };
 
   const removeFromWatchList = (_id: string) => {
     const newWatchList = watchList.filter(({ id }) => id !== _id);
-    setItemToLocalStorage(key, newWatchList);
+    setItemToLocalStorage(newWatchList);
   };
 
   return (

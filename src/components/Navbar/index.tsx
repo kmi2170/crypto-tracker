@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
@@ -9,19 +11,12 @@ import { styled } from "@mui/material/styles";
 
 import SelectCurrency from "./SelectCurrency";
 import WatchListSidebar from "./WatchListSidebar";
+import { memo } from "react";
 
 const Wrapper = styled(Container)({
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
-});
-
-const Title = styled(Typography)<TypographyProps>({
-  "& a": {
-    color: "gold",
-    fontWeight: "bold",
-    cursor: "pointer",
-  },
 });
 
 const CurrencyAndWatchListWrapper = styled("div")<TypographyProps>({
@@ -37,17 +32,7 @@ const Navbar = () => {
     <AppBar position="sticky" sx={{ backgroundColor: "rgba(0,65,106,0.8)" }}>
       <Toolbar>
         <Wrapper maxWidth="lg">
-          <Title
-            variant="h4"
-            component="h1"
-            sx={(theme) => ({
-              [theme.breakpoints.down("sm")]: {
-                fontSize: "1.25rem",
-              },
-            })}
-          >
-            <Link href="/">Crypto Tracker</Link>
-          </Title>
+          <Title />
           <CurrencyAndWatchListWrapper>
             <SelectCurrency />
             <WatchListSidebar />
@@ -59,3 +44,30 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+const TitleWrapper = styled(Typography)<TypographyProps>({
+  "& a": {
+    color: "gold",
+    fontWeight: "bold",
+    cursor: "pointer",
+  },
+});
+
+const Title = memo(() => {
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);
+
+  return (
+    <TitleWrapper
+      variant="h4"
+      component="h1"
+      sx={(theme) => ({
+        [theme.breakpoints.down("sm")]: {
+          fontSize: "1.25rem",
+        },
+      })}
+    >
+      <Link href={`/?${params.toString()}`}>Crypto Tracker</Link>
+    </TitleWrapper>
+  );
+});
