@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
@@ -13,13 +14,11 @@ import CoinChart from "../../../components/CoinChart";
 import {
   configForUseQuery,
   fetchSingleCoin,
-  fetchSingleCoinDummy,
 } from "../../../lib/fetchFunctions";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { getCurrencySymbol } from "../../../lib/getCurrencySymbol";
 import { formatNumber } from "../../../lib/formatNumber";
-import { CurrenciesDummy } from "../../../config/chart/dummyData/SingleCoin";
-import { Currencies } from "../../../context/types";
+import { Currencies, WatchList } from "../../../context/types";
 
 const TitleWrapper = styled("div")({
   display: "flex",
@@ -47,24 +46,7 @@ const Coin = () => {
     ...configForUseQuery,
   });
 
-  const { value: watchList, setValueToLocalStorage } = useLocalStorage(
-    "crypto-tracker-watch-list",
-    [] as string[]
-  );
-
   if (!coin) return;
-
-  const inWatchList = watchList.some((id) => id === coin?.id);
-
-  const addToWatchList = (id: string) => {
-    const newWatchList = [id, ...watchList];
-    setValueToLocalStorage("crypto-tracker-watch-list", newWatchList);
-  };
-
-  const removeFromWatchList = (id: string) => {
-    const newWatchList = watchList.filter((_id) => id !== _id);
-    setValueToLocalStorage("crypto-tracker-watch-list", newWatchList);
-  };
 
   return (
     <Box
@@ -104,23 +86,12 @@ const Coin = () => {
         </Typography>
       </PricesWrapper>
 
-      <Button
-        variant="outlined"
-        sx={{
-          mb: "0.25rem",
-          width: "16rem",
-          color: "black",
-          fontWeight: "bold",
-          border: "none",
-          borderRadius: "20px",
-          backgroundColor: inWatchList ? "pink" : "gold",
-        }}
-        onClick={() =>
-          inWatchList ? removeFromWatchList(id) : addToWatchList(id)
-        }
-      >
-        {inWatchList ? "Remove from Watchlist" : "Add to Watchlist"}
-      </Button>
+      <AddToAndRemoveFromWatchList
+        id={id}
+        name={coin?.name}
+        imgUrl={coin?.image.thumb}
+        market_cap_rank={coin?.market_cap_rank}
+      />
 
       <CoinChart id={id} currency={currency} />
     </Box>
@@ -128,3 +99,77 @@ const Coin = () => {
 };
 
 export default Coin;
+
+type AddToAndRemoveFromWatchListProps = {
+  id: string;
+  name: string;
+  imgUrl: string;
+  market_cap_rank: number;
+};
+
+const key = process.env.NEXT_PUBLIC_LOCAL_STORAGE_WATCH_LIST_KEY as string;
+
+const AddToAndRemoveFromWatchList = (
+  props: AddToAndRemoveFromWatchListProps
+) => {
+  const { id, name, imgUrl, market_cap_rank } = props;
+  const [watchList, setWatchList] = useState<WatchList[]>([]);
+  const { getItemFromLocalStorage, setItemToLocalStorage } = useLocalStorage(
+    [] as WatchList[]
+  );
+
+  useEffect(() => {
+    const value = getItemFromLocalStorage(key);
+    if (value != null) setWatchList(value);
+  }, []);
+
+  useEffect(() => {
+    const handleStorage = () => {
+      const value = getItemFromLocalStorage(key);
+      if (value != null) setWatchList(value);
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
+  const inWatchList = watchList?.some(({ id: _id }) => id === _id);
+
+  const addToWatchList = (
+    id: string,
+    name: string,
+    imgUrl: string,
+    market_cap_rank: number
+  ) => {
+    const existInList = watchList?.some(({ id: _id }) => id === _id);
+    if (existInList) return;
+    const newWatchList = [{ id, name, imgUrl, market_cap_rank }, ...watchList];
+    setItemToLocalStorage(key, newWatchList);
+  };
+
+  const removeFromWatchList = (_id: string) => {
+    const newWatchList = watchList.filter(({ id }) => id !== _id);
+    setItemToLocalStorage(key, newWatchList);
+  };
+
+  return (
+    <Button
+      variant="outlined"
+      sx={{
+        mb: "0.25rem",
+        width: "16rem",
+        color: "black",
+        fontWeight: "bold",
+        border: "none",
+        borderRadius: "20px",
+        backgroundColor: inWatchList ? "pink" : "gold",
+      }}
+      onClick={() =>
+        inWatchList
+          ? removeFromWatchList(id)
+          : addToWatchList(id, name, imgUrl, market_cap_rank)
+      }
+    >
+      {inWatchList ? "Remove from Watch List" : "Add to Watch List"}
+    </Button>
+  );
+};

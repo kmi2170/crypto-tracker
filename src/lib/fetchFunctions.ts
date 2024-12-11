@@ -44,7 +44,6 @@ export const fetchCoinList = async (
 export const fetchSingleCoin = async (id: string) => {
   try {
     const { data } = await axios.get<SingleCoin>(`/api/single-coin?id=${id}`);
-    console.log(data);
     return data;
   } catch (error) {
     console.error(error);

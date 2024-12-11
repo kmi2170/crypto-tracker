@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 import Drawer from "@mui/material/Drawer";
@@ -8,14 +9,32 @@ import Button from "@mui/material/Button";
 
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { CloseButton } from "../SearchBar/SearchModalContent/buttons";
+import { WatchList } from "../../context/types";
+
+const key = process.env.NEXT_PUBLIC_LOCAL_STORAGE_WATCH_LIST_KEY as string;
 
 const WatchListSidebar = () => {
   const [open, setOpen] = useState(false);
+  const [watchList, setWatchList] = useState<WatchList[]>([]);
 
-  const { value: watchList, setValueToLocalStorage } = useLocalStorage(
-    "crypto-tracker-watch-list",
-    []
+  const { getItemFromLocalStorage, setItemToLocalStorage } = useLocalStorage(
+    [] as WatchList[]
   );
+
+  useEffect(() => {
+    const value = getItemFromLocalStorage(key);
+    if (value != null) setWatchList(value);
+  }, [open]);
+
+  useEffect(() => {
+    const handleStorage = () => {
+      const value = getItemFromLocalStorage(key);
+      if (value != null) setWatchList(value);
+      setWatchList(getItemFromLocalStorage(key));
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, [watchList]);
 
   const openDrawer = () => {
     setOpen(true);
@@ -25,9 +44,9 @@ const WatchListSidebar = () => {
     setOpen(false);
   };
 
-  const removeFromWatchList = (id: string) => {
-    const newWatchList = watchList.filter((_id) => id !== _id);
-    setValueToLocalStorage("crypto-tracker-watch-list", newWatchList);
+  const removeFromWatchList = (_id: string) => {
+    const newWatchList = watchList.filter(({ id }) => id !== _id);
+    setItemToLocalStorage(key, newWatchList);
   };
 
   return (
@@ -42,7 +61,7 @@ const WatchListSidebar = () => {
         }}
         aria-label="watch-list"
       >
-        Watch List {watchList.length}
+        Watch List {watchList?.length}
       </Button>
       <Drawer anchor="right" open={open} onClose={closeDrawer}>
         <Box
@@ -63,9 +82,9 @@ const WatchListSidebar = () => {
           >
             Watch List
           </Typography>
-          <Box>
+          {/* <Box>
             <CloseButton color="white" onClick={closeDrawer} />
-          </Box>
+          </Box> */}
           <Box
             sx={{
               flex: 1,
@@ -75,45 +94,48 @@ const WatchListSidebar = () => {
               overflowY: "scroll",
             }}
           >
-            {watchList.map((coin) => {
-              return (
-                <Box
-                  key={coin}
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography
-                    variant="h6"
+            {watchList
+              ?.sort((a, b) => a.market_cap_rank - b.market_cap_rank)
+              .map(({ id, name, imgUrl }) => {
+                return (
+                  <Box
+                    key={id}
                     sx={{
-                      fontWeight: "bold",
-                      mb: "0.75rem",
-                      background: "green",
-                      flex: 1,
+                      mb: "0.5rem",
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
                     }}
                   >
-                    <Link href={`/coins/${coin}`}>{coin}</Link>
-                  </Typography>
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    sx={{
-                      color: "black",
-                      fontWeight: "bold",
-                      border: "none",
-                      borderRadius: "20px",
-                      backgroundColor: "pink",
-                    }}
-                    onClick={() => removeFromWatchList(coin)}
-                  >
-                    Remove
-                  </Button>
-                </Box>
-              );
-            })}
+                    <Image src={imgUrl} width={30} height={30} alt={name} />
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        ml: "0.5rem",
+                        flex: 1,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      <Link href={`/coins/${id}`}>{name}</Link>
+                    </Typography>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      sx={{
+                        color: "black",
+                        fontWeight: "bold",
+                        border: "none",
+                        borderRadius: "20px",
+                        backgroundColor: "pink",
+                      }}
+                      onClick={() => removeFromWatchList(id)}
+                    >
+                      Remove
+                    </Button>
+                  </Box>
+                );
+              })}
           </Box>
         </Box>
       </Drawer>
