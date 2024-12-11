@@ -82,7 +82,7 @@ const CoinsTable = () => {
         align="center"
         sx={(theme) => ({
           mt: "1rem",
-          mb: "1.0rem",
+          mb: "1rem",
           fontWeight: "bold",
           [theme.breakpoints.down("sm")]: {
             mt: "1.5rem",
