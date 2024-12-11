@@ -1,3 +1,4 @@
+import exp from "constants";
 import { User } from "firebase/auth";
 
 export interface ContextProps {
@@ -33,6 +34,13 @@ export interface Coin {
   high_24h: number;
   low_24h: number;
   sparkline_in_7d: { price: number[] };
+}
+
+export interface WatchList {
+  id: string;
+  name: string;
+  market_cap_rank: number;
+  imgUrl: string;
 }
 
 export interface Search {
