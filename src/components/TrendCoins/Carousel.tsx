@@ -9,20 +9,15 @@ import { styled } from "@mui/material/styles";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 
-import {
-  configForUseQuery,
-  fetchTrendCoins,
-  fetchTrendCoinsDummy,
-} from "../../lib/fetchFunctions";
+import { configForUseQuery, fetchTrendCoins } from "../../lib/fetchFunctions";
 import { Currencies, TrendCoin } from "../../context/types";
-import { CurrenciesDummy } from "../../config/chart/dummyData/SingleCoin";
 import CarouselItem from "./CarouselItem";
 import CarouselItemSkeletons from "./CarouselItemSkeletons";
 
 const CarouselWrapper = styled("div")({
   marginLeft: "0.5rem",
   marginRight: "0.5rem",
-  height: "11.5rem",
+  height: "11.25rem",
 });
 
 const responsive = {
@@ -48,7 +43,6 @@ const Carousel = () => {
   const { data: trending, isLoading } = useQuery({
     queryKey: ["trending"],
     queryFn: () => fetchTrendCoins(),
-    // queryFn: () => fetchTrendCoinsDummy(currency),
     ...configForUseQuery,
   });
 
