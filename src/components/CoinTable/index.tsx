@@ -7,7 +7,6 @@ import Image from "next/image";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
@@ -44,7 +43,7 @@ const Change24h = styled("span")({
   fontWeight: "bold",
 });
 
-const per_page = 50;
+const per_page = Number(process.env.NEXT_PUBLIC_PAGINATION_NUM_PER_PAGE) || 50;
 
 const CoinsTable = () => {
   const router = useRouter();
@@ -53,7 +52,6 @@ const CoinsTable = () => {
 
   const currency = (searchParams.get("currency") || "usd") as Currencies;
 
-  const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
   const { data: coins, isLoading } = useQuery({
@@ -61,18 +59,6 @@ const CoinsTable = () => {
     queryFn: () => fetchCoinList(currency, page, per_page),
     ...configForUseQuery,
   });
-
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSearch(e.target.value);
-  // };
-
-  const handleSearch = () => {
-    return (coins as Coin[])?.filter(
-      (coin: Coin) =>
-        coin.name.toLowerCase().includes(search) ||
-        coin.symbol.toLowerCase().includes(search)
-    );
-  };
 
   return (
     <>
@@ -92,20 +78,6 @@ const CoinsTable = () => {
       >
         Cryptocurrency Prices by Market Cap
       </Typography>
-      {/* <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <TextField
-          label="Search for a Cryptocurrency"
-          variant="outlined"
-          size="small"
-          sx={{ mb: "0.5rem", width: "80%" }}
-          onChange={handleChange}
-        />
-      </Box> */}
 
       <TableContainer
         component={Paper}

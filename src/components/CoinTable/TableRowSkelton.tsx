@@ -38,7 +38,6 @@ const bodyRowSkelton = [
   <Skeleton width={15} height={height} />,
   <Box
     sx={{
-      // width: "10rem",
       display: "flex",
       flexDirection: "row",
       justifyContent: "flex-start",
