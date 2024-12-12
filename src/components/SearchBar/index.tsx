@@ -9,7 +9,7 @@ import Modal from "@mui/material/Modal";
 import useIsMobile from "../../hooks/useIsMobile";
 import useKeysToOpenModal from "../../hooks/useKeysToOpenModal";
 import SearchModalContent from "./SearchModalContent";
-import { MagnifyGlass } from "./SearchModalContent/buttons";
+import { MagnifyGlass } from "./SearchModalContent/Buttons";
 
 const lineColor = "rgba(0,65,106,0.8)";
 

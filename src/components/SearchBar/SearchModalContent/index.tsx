@@ -10,13 +10,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 
 import { CandidateListItem } from "./CandidateListItem";
-import { ClearButton, CloseButton, MagnifyGlass } from "./buttons";
+import { ClearButton, CloseButton, MagnifyGlass } from "./Buttons";
 import LoadingIndicator from "./loadingIndicator";
 import { fetchCandidateCoins } from "../../../lib/fetchFunctions";
 import { CoinSearch } from "../../../context/types";
+import Message from "./Message";
 
 const InputWrapper = styled("div")({
   position: "relative",
@@ -58,6 +59,8 @@ const lineColor = "rgba(0,65,106,0.8)";
 
 const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
   const { closeModal } = props;
+
+  const theme = useTheme();
 
   const searchParams = useSearchParams();
   const currentSearchPrams = new URLSearchParams(searchParams).toString();
@@ -239,8 +242,8 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
                 itemName={itemName}
                 itemImgUrl={thumb}
                 isSelected={selectedCandidateId === i}
-                oddLineBgColor="rgba(0,65,106,0.15)"
-                selectedBgColor="rgba(0,65,106,0.8)"
+                oddLineBgColor={theme.palette.primary.light}
+                selectedBgColor={theme.palette.primary.main}
                 handleClickCandidate={handleClickCandidate}
                 handleHoverCandidate={handleHoverCandidate}
               />
@@ -271,29 +274,3 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
 });
 
 export default SearchModalContent;
-
-type MessageProps = {
-  isShortCharacter?: boolean;
-  listLength?: number;
-  isError: boolean;
-};
-
-const Message = (props: MessageProps) => {
-  const { isShortCharacter, isError } = props;
-
-  let message = "";
-
-  if (isShortCharacter) {
-    message = "Type more than one character";
-  } else if (isError) {
-    message = "Something went wrong. Please try again later";
-  }
-
-  if (!message) return;
-
-  return (
-    <Typography variant="h6" align="center" sx={{ marginTop: "1rem" }}>
-      {message}
-    </Typography>
-  );
-};
