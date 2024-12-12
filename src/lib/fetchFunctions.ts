@@ -1,5 +1,4 @@
 import axios from "axios";
-import { dummyHistoricalData } from "../config/chart/dummyData/Historical";
 import {
   Coin,
   Currencies,
@@ -8,13 +7,6 @@ import {
   SingleCoin,
   Trends,
 } from "../context/types";
-import { dummyTrendCoinsData } from "../config/chart/dummyData/TrendCoins";
-import { dummyCoinListData } from "../config/chart/dummyData/CoinList";
-import {
-  CurrenciesDummy,
-  dummySingleCoinData,
-  SingleCoinDummy,
-} from "../config/chart/dummyData/SingleCoin";
 import { DaysValue } from "../config/chart/chartButtons";
 
 export const configForUseQuery = {

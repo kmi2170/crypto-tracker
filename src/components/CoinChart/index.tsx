@@ -2,11 +2,7 @@ import { useCallback, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { DataItemValue, DaysValue } from "../../config/chart/chartButtons";
-import {
-  configForUseQuery,
-  fetchHistorical,
-  fetchHistoricalDummy,
-} from "../../lib/fetchFunctions";
+import { configForUseQuery, fetchHistorical } from "../../lib/fetchFunctions";
 import { Currencies, Historical } from "../../context/types";
 import { getDate, getTime } from "../../lib/dateTime";
 import ChartMain from "./ChartMain";
