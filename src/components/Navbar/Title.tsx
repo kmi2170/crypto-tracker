@@ -15,7 +15,7 @@ const TitleWrapper = styled(Typography)<TypographyProps>(({ theme }) => ({
   },
 }));
 
-const Title = memo(() => {
+const Title = memo(function Title() {
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
 

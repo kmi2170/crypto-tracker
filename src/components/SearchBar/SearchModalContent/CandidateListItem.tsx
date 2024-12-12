@@ -16,7 +16,9 @@ type CandidateListItemProps = {
   handleHoverCandidate(selectedIdx: number): void;
 };
 
-export const CandidateListItem = memo((props: CandidateListItemProps) => {
+const CandidateListItem = memo(function CandidateListItem(
+  props: CandidateListItemProps
+) {
   const {
     index,
     itemName,
@@ -65,3 +67,5 @@ export const CandidateListItem = memo((props: CandidateListItemProps) => {
     </Box>
   );
 });
+
+export default CandidateListItem;

@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { styled, useTheme } from "@mui/material/styles";
 
-import { CandidateListItem } from "./CandidateListItem";
+import CandidateListItem from "./CandidateListItem";
 import { ClearButton, CloseButton, MagnifyGlass } from "./Buttons";
 import LoadingIndicator from "./loadingIndicator";
 import { fetchCandidateCoins } from "../../../lib/fetchFunctions";
@@ -55,7 +55,10 @@ type SearchModalContentProps = {
   closeModal(): void;
 };
 
-const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
+const SearchModalContent = forwardRef(function SearchModalContent(
+  props: SearchModalContentProps,
+  ref
+) {
   const { closeModal } = props;
 
   const theme = useTheme();

@@ -9,7 +9,7 @@ type SelectButtonPros<T> = {
   handleValueSelect: (value: T) => void;
 };
 
-const SelectButton = memo((props) => {
+const SelectButton = memo(function SelectButton(props) {
   const { name, value, selected, colorRGB, handleValueSelect } = props;
   const color = `rgba(${colorRGB},1.0)`;
   const colorTransparent = `rgba(${colorRGB},0.5)`;
