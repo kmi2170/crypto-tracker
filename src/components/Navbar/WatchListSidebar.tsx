@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -60,7 +62,7 @@ const WatchListSidebar = () => {
           height: "40px",
           lineHeight: "1rem",
           fontWeight: "bold",
-          backgroundColor: "#EEBC1D",
+          backgroundColor: "gold",
         }}
         aria-label="watch-list"
       >
