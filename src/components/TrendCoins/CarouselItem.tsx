@@ -3,7 +3,7 @@ import Image from "next/image";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 
-import { Coin, Currencies, TrendCoin } from "../../context/types";
+import { Currencies, TrendCoin } from "../../context/types";
 import { formatNumber } from "../../lib/formatNumber";
 import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
 

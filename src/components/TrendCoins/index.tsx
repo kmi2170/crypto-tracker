@@ -1,34 +1,33 @@
-"use client";
-
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
 
 import Carousel from "./Carousel";
 
-const TrendWrapper = styled(Paper)(({ theme }) => ({
-  margin: "auto",
-  [theme.breakpoints.down("sm")]: {
-    marginTop: "1rem",
-  },
-  [theme.breakpoints.up("sm")]: {
-    marginTop: "3rem",
-  },
-  [theme.breakpoints.down("md")]: {
-    maxWidth: "600px",
-  },
-  [theme.breakpoints.up("md")]: {
-    width: "800px",
-  },
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  paddingTop: "0.75rem",
-}));
-
 const TrendCoins = () => {
   return (
-    <TrendWrapper elevation={5}>
+    <Paper
+      elevation={5}
+      sx={{
+        margin: "auto",
+        marginTop: "1.5rem",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        paddingTop: "0.75rem",
+        // [theme.breakpoints.down("sm")]: {
+        //   marginTop: "1rem",
+        // },
+        // [theme.breakpoints.up("sm")]: {
+        //   marginTop: "3rem",
+        // },
+        // [theme.breakpoints.down("md")]: {
+        //   maxWidth: "600px",
+        // },
+        // [theme.breakpoints.up("md")]: {
+        //   width: "800px",
+        // },
+      }}
+    >
       <Typography
         component="h2"
         variant="h5"
@@ -39,7 +38,7 @@ const TrendCoins = () => {
       </Typography>
 
       <Carousel />
-    </TrendWrapper>
+    </Paper>
   );
 };
 
