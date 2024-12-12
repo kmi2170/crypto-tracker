@@ -157,15 +157,17 @@ const AddToAndRemoveFromWatchList = (
   return (
     <Button
       variant="outlined"
-      sx={{
+      sx={(theme) => ({
         mb: "0.25rem",
         width: "16rem",
         color: "black",
         fontWeight: "bold",
         border: "none",
         borderRadius: "20px",
-        backgroundColor: inWatchList ? "pink" : "gold",
-      }}
+        backgroundColor: inWatchList
+          ? theme.palette.secondary.light
+          : theme.palette.secondary.main,
+      })}
       onClick={() =>
         inWatchList
           ? removeFromWatchList(id)

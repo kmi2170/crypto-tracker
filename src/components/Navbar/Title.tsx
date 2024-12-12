@@ -7,13 +7,13 @@ import { useSearchParams } from "next/navigation";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 
-const TitleWrapper = styled(Typography)<TypographyProps>({
+const TitleWrapper = styled(Typography)<TypographyProps>(({ theme }) => ({
   "& a": {
-    color: "gold",
+    color: theme.palette.secondary.main,
     fontWeight: "bold",
     cursor: "pointer",
   },
-});
+}));
 
 const Title = memo(() => {
   const searchParams = useSearchParams();

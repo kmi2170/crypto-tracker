@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
 import useLocalStorage from "../../hooks/useLocalStorage";
-import { CloseButton } from "../SearchBar/SearchModalContent/buttons";
+import { CloseButton } from "../SearchBar/SearchModalContent/Buttons";
 import { WatchList } from "../../context/types";
 
 const key = process.env.NEXT_PUBLIC_LOCAL_STORAGE_WATCH_LIST_KEY as string;
@@ -58,27 +58,27 @@ const WatchListSidebar = () => {
     <>
       <Button
         onClick={openDrawer}
-        sx={{
+        sx={(theme) => ({
           height: "40px",
           lineHeight: "1rem",
           fontWeight: "bold",
-          backgroundColor: "gold",
-        }}
+          backgroundColor: theme.palette.secondary.main,
+        })}
         aria-label="watch-list"
       >
         Watch List {watchList?.length}
       </Button>
       <Drawer anchor="right" open={open} onClose={closeDrawer}>
         <Box
-          sx={{
+          sx={(theme) => ({
             width: 350,
             padding: 3,
             height: "100%",
             display: "flex",
             flexDirection: "column",
             fontFamily: "monospace",
-            backgroundColor: "rgba(0,65,106,0.8)",
-          }}
+            backgroundColor: theme.palette.primary.main,
+          })}
         >
           <Typography
             variant="h4"
@@ -127,13 +127,13 @@ const WatchListSidebar = () => {
                     <Button
                       variant="outlined"
                       size="small"
-                      sx={{
+                      sx={(theme) => ({
                         color: "black",
                         fontWeight: "bold",
                         border: "none",
                         borderRadius: "20px",
-                        backgroundColor: "pink",
-                      }}
+                        backgroundColor: theme.palette.secondary.light,
+                      })}
                       onClick={() => removeFromWatchList(id)}
                     >
                       Remove

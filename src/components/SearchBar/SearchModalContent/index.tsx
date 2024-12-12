@@ -55,8 +55,6 @@ type SearchModalContentProps = {
   closeModal(): void;
 };
 
-const lineColor = "rgba(0,65,106,0.8)";
-
 const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
   const { closeModal } = props;
 
@@ -213,7 +211,7 @@ const SearchModalContent = forwardRef((props: SearchModalContentProps, ref) => {
             paddingLeft: 50,
             height: "3rem",
             width: "100%",
-            border: `1px solid ${lineColor}`,
+            border: `1px solid ${theme.palette.primary.main}`,
             borderRadius: "10px",
             outline: "none",
           }}

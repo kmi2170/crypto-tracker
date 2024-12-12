@@ -17,6 +17,7 @@ let theme = createTheme({
     },
     primary: {
       main: "rgba(0,65,106,0.8)",
+      light: "rgba(0,65,106,0.1.5)",
     },
     secondary: {
       main: "rgb(255,215,0)",
