@@ -14,10 +14,10 @@ import { styled, useTheme } from "@mui/material/styles";
 
 import CandidateListItem from "./CandidateListItem";
 import { ClearButton, CloseButton, MagnifyGlass } from "./Buttons";
-import LoadingIndicator from "./loadingIndicator";
 import { fetchCandidateCoins } from "../../../lib/fetchFunctions";
 import { CoinSearch } from "../../../context/types";
 import Message from "./Message";
+import LoadingIndicator from "../../LoadingIndicator";
 
 const InputWrapper = styled("div")({
   position: "relative",

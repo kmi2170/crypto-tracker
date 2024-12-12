@@ -48,14 +48,14 @@ const pulseR = keyframes`
   }
 `;
 
-const Dot = styled("div")({
+const Dot = styled("div")(({ theme }) => ({
   display: "inline-block",
   margin: "0 0.75rem",
   width: "1.0rem",
   height: "1.0rem",
   borderRadius: "50%",
-  backgroundColor: "rgba(0,65,106,0.8)",
-});
+  backgroundColor: theme.palette.primary.main,
+}));
 
 const period = 0.75;
 

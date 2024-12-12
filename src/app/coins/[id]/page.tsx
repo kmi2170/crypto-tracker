@@ -18,6 +18,7 @@ import useLocalStorage from "../../../hooks/useLocalStorage";
 import { getCurrencySymbol } from "../../../lib/getCurrencySymbol";
 import { formatNumber } from "../../../lib/formatNumber";
 import { Currencies, WatchList } from "../../../context/types";
+import LoadingIndicator from "../../../components/LoadingIndicator";
 
 const TitleWrapper = styled("div")({
   display: "flex",
@@ -39,13 +40,26 @@ const Coin = () => {
   const searchParams = useSearchParams();
   const currency = (searchParams.get("currency") || "usd") as Currencies;
 
-  const { data: coin } = useQuery({
+  const { data: coin, isLoading } = useQuery({
     queryKey: ["single-coin", { id }],
     queryFn: () => fetchSingleCoin(id),
     ...configForUseQuery,
   });
 
-  if (!coin) return;
+  if (isLoading || !coin) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          mt: "40vh",
+          mb: "40vh",
+        }}
+      >
+        <LoadingIndicator />;
+      </Box>
+    );
+  }
 
   return (
     <Box
