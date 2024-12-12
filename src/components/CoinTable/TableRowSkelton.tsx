@@ -35,8 +35,9 @@ const width = 60;
 const height = 15;
 
 const bodyRowSkelton = [
-  <Skeleton width={15} height={height} />,
+  <Skeleton key="rank" width={15} height={height} />,
   <Box
+    key="coin"
     sx={{
       display: "flex",
       flexDirection: "row",
@@ -59,8 +60,9 @@ const bodyRowSkelton = [
       <Skeleton width={60} height={height} />
     </Box>
   </Box>,
-  <Skeleton width={width} height={height} />,
+  <Skeleton key="price" width={width} height={height} />,
   <Box
+    key="highLow24h"
     sx={{
       display: "flex",
       flexDirection: "column",
@@ -70,8 +72,8 @@ const bodyRowSkelton = [
     <Skeleton width={width} height={height} />
     <Skeleton width={width} height={height} />
   </Box>,
-  <Skeleton width={width} height={height} />,
-  <Skeleton width={width} height={height} />,
-  <Skeleton width={width} height={height} />,
-  <Skeleton width={width * 1.5} height={height * 2} />,
+  <Skeleton key="change24h" width={width} height={height} />,
+  <Skeleton key="marketCap" width={width} height={height} />,
+  <Skeleton key="totalVolume" width={width} height={height} />,
+  <Skeleton key="last7days" width={width * 1.5} height={height * 2} />,
 ];

@@ -260,6 +260,7 @@ const bodyRow = (row: Coin, currency: Currencies) => {
       {formatNumber(row.current_price, 3)}
     </>,
     <Box
+      key="highLow24h"
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -275,7 +276,10 @@ const bodyRow = (row: Coin, currency: Currencies) => {
         {formatNumber(row.low_24h, 3)}
       </Low>
     </Box>,
-    <Change24h sx={{ color: isProfit ? "rgb(14, 203, 129)" : "red" }}>
+    <Change24h
+      key="change24h"
+      sx={{ color: isProfit ? "rgb(14, 203, 129)" : "red" }}
+    >
       {isProfit && "+"}
       {row.price_change_percentage_24h.toFixed(2)}%
     </Change24h>,
@@ -287,6 +291,6 @@ const bodyRow = (row: Coin, currency: Currencies) => {
       {getCurrencySymbol(currency)}
       {formatNumber(row.total_volume, 2)}
     </>,
-    <LastSevenDays price={row.sparkline_in_7d?.price} />,
+    <LastSevenDays key="last7days" price={row.sparkline_in_7d?.price} />,
   ];
 };
