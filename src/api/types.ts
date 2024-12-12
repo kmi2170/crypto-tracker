@@ -1,26 +1,3 @@
-import exp from "constants";
-import { User } from "firebase/auth";
-
-export interface ContextProps {
-  currency: string;
-  setCurrency: React.Dispatch<React.SetStateAction<string>>;
-  symbol: string;
-  alert: Alert;
-  setAlert: React.Dispatch<React.SetStateAction<Alert>>;
-  user: User | null;
-  watchlist: string[];
-}
-
-export interface Alert {
-  open: boolean;
-  message?: string;
-  type?: string;
-}
-
-export interface ProviderProps {
-  children: React.ReactNode;
-}
-
 export interface Coin {
   id: string;
   name: string;

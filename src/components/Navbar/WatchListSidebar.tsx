@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { CloseButton } from "../SearchBar/SearchModalContent/Buttons";
-import { WatchList } from "../../context/types";
+import { WatchList } from "../../api/types";
 
 const key = process.env.NEXT_PUBLIC_LOCAL_STORAGE_WATCH_LIST_KEY as string;
 

@@ -1,5 +1,6 @@
 import { Chart as ChartJS, TooltipModel, ChartTypeRegistry } from "chart.js";
 import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
+import { Currencies } from "../../api/types";
 
 const getOrCreateTooltip = (chart: ChartJS) => {
   let tooltipEl = chart.canvas.parentNode?.querySelector("div");
@@ -32,9 +33,8 @@ type ContextType = {
   tooltip: TooltipModel<keyof ChartTypeRegistry>;
 };
 
-// export const externalTooltipHandler =
 export const createExternalTooltipHandler =
-  (currency: string) => (context: ContextType) => {
+  (currency: Currencies) => (context: ContextType) => {
     // Tooltip Element
     const { chart, tooltip } = context;
     const tooltipEl = getOrCreateTooltip(chart);

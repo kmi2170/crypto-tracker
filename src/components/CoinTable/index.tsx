@@ -18,7 +18,7 @@ import { styled } from "@mui/material/styles";
 
 import { useQuery } from "@tanstack/react-query";
 
-import { Coin, Currencies } from "../../context/types";
+import { Coin, Currencies } from "../../api/types";
 import { configForUseQuery, fetchCoinList } from "../../lib/fetchFunctions";
 import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
 import { formatNumber } from "../../lib/formatNumber";

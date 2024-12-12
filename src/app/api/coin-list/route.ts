@@ -1,7 +1,7 @@
 "use server";
 
 import axios from "axios";
-import { CoinList } from "../../../config/api-endpoints";
+import { CoinList } from "../../../api/api-endpoints";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {

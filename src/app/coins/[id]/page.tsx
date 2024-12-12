@@ -17,7 +17,7 @@ import {
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { getCurrencySymbol } from "../../../lib/getCurrencySymbol";
 import { formatNumber } from "../../../lib/formatNumber";
-import { Currencies, WatchList } from "../../../context/types";
+import { Currencies, WatchList } from "../../../api/types";
 import LoadingIndicator from "../../../components/LoadingIndicator";
 
 const TitleWrapper = styled("div")({

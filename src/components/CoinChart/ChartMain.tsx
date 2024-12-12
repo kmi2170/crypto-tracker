@@ -19,7 +19,7 @@ import { dataItems, DataItemValue } from "../../config/chart/chartButtons";
 import { verticalLineOnHover } from "../../config/chart/plugins";
 import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
 import { formatNumber } from "../../lib/formatNumber";
-import { Currencies } from "../../context/types";
+import { Currencies } from "../../api/types";
 
 ChartJS.register(
   CategoryScale,

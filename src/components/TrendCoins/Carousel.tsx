@@ -10,7 +10,7 @@ import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 
 import { configForUseQuery, fetchTrendCoins } from "../../lib/fetchFunctions";
-import { Currencies, TrendCoin } from "../../context/types";
+import { Currencies, TrendCoin } from "../../api/types";
 import CarouselItem from "./CarouselItem";
 import CarouselItemSkeletons from "./CarouselItemSkeletons";
 

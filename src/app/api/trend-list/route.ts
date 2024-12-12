@@ -1,7 +1,7 @@
 "use server";
 
 import axios from "axios";
-import { TrendingCoins } from "../../../config/api-endpoints";
+import { TrendingCoins } from "../../../api/api-endpoints";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {

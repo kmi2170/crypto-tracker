@@ -6,7 +6,7 @@ import {
   Search,
   SingleCoin,
   Trends,
-} from "../context/types";
+} from "../api/types";
 import { DaysValue } from "../config/chart/chartButtons";
 
 export const configForUseQuery = {

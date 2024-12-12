@@ -1,4 +1,4 @@
-import { Currencies } from "../context/types";
+import { Currencies } from "../api/types";
 
 export const getCurrencySymbol = (currency: Currencies) => {
   switch (currency) {

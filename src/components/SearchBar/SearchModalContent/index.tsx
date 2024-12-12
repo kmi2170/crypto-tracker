@@ -15,7 +15,7 @@ import { styled, useTheme } from "@mui/material/styles";
 import CandidateListItem from "./CandidateListItem";
 import { ClearButton, CloseButton, MagnifyGlass } from "./Buttons";
 import { fetchCandidateCoins } from "../../../lib/fetchFunctions";
-import { CoinSearch } from "../../../context/types";
+import { CoinSearch } from "../../../api/types";
 import Message from "./Message";
 import LoadingIndicator from "../../LoadingIndicator";
 
