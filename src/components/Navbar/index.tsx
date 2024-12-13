@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import SelectCurrency from "./SelectCurrency";
 import WatchListSidebar from "./WatchListSidebar";
 import Title from "./Title";
+import { Suspense } from "react";
 
 const Navbar = () => {
   return (
@@ -19,7 +20,9 @@ const Navbar = () => {
             justifyContent: "space-between",
           }}
         >
-          <Title />
+          <Suspense>
+            <Title />
+          </Suspense>
           <Box
             sx={{
               display: "flex",
@@ -29,7 +32,9 @@ const Navbar = () => {
               gap: "1.0rem",
             }}
           >
-            <SelectCurrency />
+            <Suspense>
+              <SelectCurrency />
+            </Suspense>
             <WatchListSidebar />
           </Box>
         </Container>

@@ -6,7 +6,7 @@ import {
   dataItems,
   DataItemValue,
   DaysValue,
-} from "../../config/chart/chartButtons";
+} from "../../../config/chart/chartButtons";
 
 const ButtonsWrapper = styled("div")(({ theme }) => ({
   display: "flex",

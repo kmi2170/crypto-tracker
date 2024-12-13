@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/material";
 
@@ -14,6 +14,8 @@ import CarouselItem from "./CarouselItem";
 import LoadingIndicator from "../LoadingIndicator";
 
 import "react-alice-carousel/lib/alice-carousel.css";
+// import AliceCarousel from "react-alice-carousel";
+import CarouselItemSkeletons from "./CarouselItemSkeletons";
 
 const AliceCarousel = dynamic(() => import("react-alice-carousel"), {
   ssr: false,
@@ -89,6 +91,21 @@ const Carousel = () => {
 
   return (
     <CarouselWrapper>
+      {/* {isLoading ? (
+        <CarouselItemSkeletons />
+      ) : (
+        <AliceCarousel
+          mouseTracking
+          infinite
+          autoPlayInterval={10000}
+          animationDuration={1500}
+          // disableDotsControls
+          disableButtonsControls
+          responsive={responsive}
+          autoPlay
+          items={items}
+        />
+      )} */}
       <AliceCarousel
         mouseTracking
         infinite

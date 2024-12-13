@@ -5,35 +5,31 @@ import Skeleton from "@mui/material/Skeleton";
 import { useTheme } from "@mui/material/styles";
 import { useMediaQuery } from "@mui/material";
 
-const CarouselItemSkeletons = ({
-  numOfSkeletons,
-}: {
-  numOfSkeletons: number;
-}) => {
-  // const theme = useTheme();
-  // const isXs = useMediaQuery(theme.breakpoints.down("xs"));
-  // const isSm = useMediaQuery(theme.breakpoints.between("xs", "sm"));
-  // const isMd = useMediaQuery(theme.breakpoints.between("sm", "md"));
-  // const isLg = useMediaQuery(theme.breakpoints.between("md", "lg"));
-  // const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+const CarouselItemSkeletons = () => {
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down("xs"));
+  const isSm = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+  const isMd = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const isLg = useMediaQuery(theme.breakpoints.between("md", "lg"));
+  const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
-  // let numOfSkeletons;
-  // switch (true) {
-  //   case isXs:
-  //   case isSm:
-  //     numOfSkeletons = 4;
-  //     break;
-  //   case isMd:
-  //     numOfSkeletons = 5;
-  //     break;
-  //   case isLg:
-  //   case isXl:
-  //     numOfSkeletons = 8;
-  //     break;
-  //   default:
-  //     numOfSkeletons = 8;
-  //     break;
-  // }
+  let numOfSkeletons;
+  switch (true) {
+    case isXs:
+    case isSm:
+      numOfSkeletons = 4;
+      break;
+    case isMd:
+      numOfSkeletons = 5;
+      break;
+    case isLg:
+    case isXl:
+      numOfSkeletons = 8;
+      break;
+    default:
+      numOfSkeletons = 8;
+      break;
+  }
 
   return (
     <Box

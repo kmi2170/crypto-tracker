@@ -37,16 +37,12 @@ export const fetchCoinList = async (
   currency: Currencies,
   page: number = 1,
   per_page: number = 50
-) => {
-  try {
-    const { data } = await axios.get<Coin[]>(
-      `/api/coin-list?currency=${currency}&page=${page}&per_page=${per_page}`
-    );
+): Promise<Coin[]> => {
+  const { data } = await axios.get<Coin[]>(
+    `${baseUrl}/api/coin-list?currency=${currency}&page=${page}&per_page=${per_page}`
+  );
 
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
+  return data;
 };
 
 export const fetchSingleCoin = async (id: string): Promise<SingleCoin> => {
@@ -61,23 +57,13 @@ export const fetchTrendCoins = async (): Promise<Trends> => {
   return data;
 };
 
-// export const fetchTrendCoins = async () => {
-//   try {
-//     const { data } = await axios.get<Trends>(`/api/trend-list`);
-
-//     return data;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
 export const fetchHistorical = async (
   id: string,
   currency: Currencies,
   days: DaysValue
 ): Promise<Historical> => {
   const { data } = await axios.get<Historical>(
-    `/api/historical?id=${id}&currency=${currency}&days=${days}`
+    `${baseUrl}/api/historical?id=${id}&currency=${currency}&days=${days}`
   );
   return data;
 };
