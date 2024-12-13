@@ -1,8 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -34,32 +34,40 @@ const PricesWrapper = styled("div")({
   alignItems: "center",
 });
 
+const CoinWithSuspense = () => {
+  return (
+    <Suspense
+      fallback={
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mt: "40vh",
+            mb: "40vh",
+          }}
+        >
+          <LoadingIndicator />;
+        </Box>
+      }
+    >
+      <Coin />
+    </Suspense>
+  );
+};
+
+export default CoinWithSuspense;
+
 const Coin = () => {
   const params = useParams();
   const id = params.id as string;
   const searchParams = useSearchParams();
   const currency = (searchParams.get("currency") || "usd") as Currencies;
 
-  const { data: coin, isLoading } = useQuery({
+  const { data: coin, isLoading } = useSuspenseQuery({
     queryKey: ["single-coin", { id }],
     queryFn: () => fetchSingleCoin(id),
     ...configForUseQuery,
   });
-
-  if (isLoading || !coin) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          mt: "40vh",
-          mb: "40vh",
-        }}
-      >
-        <LoadingIndicator />;
-      </Box>
-    );
-  }
 
   return (
     <Box
@@ -110,8 +118,6 @@ const Coin = () => {
     </Box>
   );
 };
-
-export default Coin;
 
 type AddToAndRemoveFromWatchListProps = {
   id: string;

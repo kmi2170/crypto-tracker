@@ -49,13 +49,11 @@ export const fetchCoinList = async (
   }
 };
 
-export const fetchSingleCoin = async (id: string) => {
-  try {
-    const { data } = await axios.get<SingleCoin>(`/api/single-coin?id=${id}`);
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
+export const fetchSingleCoin = async (id: string): Promise<SingleCoin> => {
+  const { data } = await axios.get<SingleCoin>(
+    `${baseUrl}/api/single-coin?id=${id}`
+  );
+  return data;
 };
 
 export async function fetchProject(id: string): Promise<{
@@ -74,6 +72,7 @@ export const fetchTrendCoins = async (): Promise<Trends> => {
   const { data } = await axios.get<Trends>(`${baseUrl}/api/trend-list`);
   return data;
 };
+
 // export const fetchTrendCoins = async () => {
 //   try {
 //     const { data } = await axios.get<Trends>(`/api/trend-list`);
