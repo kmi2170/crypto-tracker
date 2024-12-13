@@ -1,3 +1,5 @@
+"use client";
+
 import { keyframes, styled } from "@mui/material/styles";
 
 const maxScale = 1.5;

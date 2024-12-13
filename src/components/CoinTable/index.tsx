@@ -16,7 +16,7 @@ import TableBody from "@mui/material/TableBody";
 import Pagination from "@mui/material/Pagination";
 import { styled } from "@mui/material/styles";
 
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, useQuery } from "@tanstack/react-query";
 
 import { Coin, Currencies } from "../../api/types";
 import { configForUseQuery, fetchCoinList } from "../../lib/fetchFunctions";

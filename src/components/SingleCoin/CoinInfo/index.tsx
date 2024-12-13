@@ -15,6 +15,7 @@ import {
 import { getCurrencySymbol } from "../../../lib/getCurrencySymbol";
 import { formatNumber } from "../../../lib/formatNumber";
 import { Currencies } from "../../../api/types";
+import AddToAndRemoveFromWatchList from "./AddToAndRemoveFromWatcList";
 
 const CoinNameWrapper = styled("div")({
   display: "flex",
@@ -79,6 +80,13 @@ const CoinInfo = () => {
           Rank: {coin?.market_cap_rank}
         </Typography>
       </PricesWrapper>
+
+      <AddToAndRemoveFromWatchList
+        id={coin?.id}
+        name={coin?.name}
+        imgUrl={coin?.image?.thumb}
+        market_cap_rank={coin?.market_cap_rank}
+      />
     </Box>
   );
 };
