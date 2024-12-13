@@ -4,18 +4,16 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/material";
 
 import { configForUseQuery, fetchTrendCoins } from "../../lib/fetchFunctions";
 import { Currencies, TrendCoin } from "../../api/types";
 import CarouselItem from "./CarouselItem";
-import LoadingIndicator from "../LoadingIndicator";
 
 import "react-alice-carousel/lib/alice-carousel.css";
-// import AliceCarousel from "react-alice-carousel";
-import CarouselItemSkeletons from "./CarouselItemSkeletons";
+import LoadingIndicator from "../LoadingIndicator";
 
 const AliceCarousel = dynamic(() => import("react-alice-carousel"), {
   ssr: false,
@@ -33,21 +31,7 @@ const AliceCarousel = dynamic(() => import("react-alice-carousel"), {
   ),
 });
 
-// Higher-order component to pass props to the loading component
-// const withDynamicLoading = (path: string, Component: ComponentType<any>) => {
-//   return dynamic(() => import(path), {
-//     loading: (props) => <Component {...props} />,
-//     ssr: false,
-//   });
-// };
-// const AliceCarousel = withDynamicLoading(
-//   "react-alice-carousel",
-//   CarouselItemSkeletons
-// );
-
-// export default withDynamicLoading;
-
-const CarouselWrapper = styled("div")({
+export const CarouselWrapper = styled("div")({
   marginLeft: "0.5rem",
   marginRight: "0.5rem",
   height: "11.25rem",
@@ -91,21 +75,6 @@ const Carousel = () => {
 
   return (
     <CarouselWrapper>
-      {/* {isLoading ? (
-        <CarouselItemSkeletons />
-      ) : (
-        <AliceCarousel
-          mouseTracking
-          infinite
-          autoPlayInterval={10000}
-          animationDuration={1500}
-          // disableDotsControls
-          disableButtonsControls
-          responsive={responsive}
-          autoPlay
-          items={items}
-        />
-      )} */}
       <AliceCarousel
         mouseTracking
         infinite

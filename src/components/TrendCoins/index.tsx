@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 
-import Carousel from "./Carousel";
+import Carousel, { CarouselWrapper } from "./Carousel";
 
 const TrendCoins = () => {
   return (
@@ -39,7 +39,7 @@ const TrendCoins = () => {
         Trend
       </Typography>
 
-      <Suspense>
+      <Suspense fallback={<CarouselWrapper></CarouselWrapper>}>
         <Carousel />
       </Suspense>
     </Paper>

@@ -1,6 +1,6 @@
 const baseUrl = "https://api.coingecko.com/api/v3";
 
-const api_key = process.env.NEXT_COIN_GECKO_DEMO_API_KEY as string;
+const api_key = process.env.COIN_GECKO_DEMO_API_KEY as string;
 
 export const CoinList = (currency: string, page: string, per_page: string) => {
   const searchParamsObj = {
