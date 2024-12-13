@@ -1,5 +1,6 @@
 import {
   createContext,
+  Dispatch,
   ReactNode,
   SetStateAction,
   useMemo,
@@ -9,7 +10,7 @@ import { Currencies } from "../api/types";
 
 export type CurrencyContextType = {
   currency: Currencies;
-  setCurrency: React.Dispatch<SetStateAction<Currencies>>;
+  setCurrency: Dispatch<SetStateAction<Currencies>>;
 };
 
 export const CurrencyContext = createContext<CurrencyContextType>(
@@ -28,7 +29,7 @@ export const CurrencyContextProvider = ({
       currency,
       setCurrency,
     }),
-    [currency, setCurrency]
+    [currency]
   );
 
   return (
