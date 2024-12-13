@@ -14,7 +14,6 @@ import CarouselItem from "./CarouselItem";
 import LoadingIndicator from "../LoadingIndicator";
 
 import "react-alice-carousel/lib/alice-carousel.css";
-import { Suspense } from "react";
 
 const AliceCarousel = dynamic(() => import("react-alice-carousel"), {
   ssr: false,
@@ -67,16 +66,6 @@ const responsive = {
   },
 };
 
-const CarouselWishSuspense = () => {
-  return (
-    <Suspense>
-      <Carousel />
-    </Suspense>
-  );
-};
-
-export default CarouselWishSuspense;
-
 const Carousel = () => {
   const searchParams = useSearchParams();
   const currentSearchParams = new URLSearchParams(searchParams).toString();
@@ -114,3 +103,5 @@ const Carousel = () => {
     </CarouselWrapper>
   );
 };
+
+export default Carousel;
