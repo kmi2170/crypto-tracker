@@ -1,4 +1,8 @@
+"use client";
+
+import { isServer } from "@tanstack/react-query";
 import axios from "axios";
+
 import {
   Coin,
   Currencies,
@@ -16,6 +20,18 @@ export const configForUseQuery = {
   refetchOnReconnect: false,
   refetchOnWindowFocus: false,
 };
+
+function getBaseURL() {
+  if (!isServer) {
+    return "";
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  return "http://localhost:3000";
+}
+
+const baseUrl = getBaseURL();
 
 export const fetchCoinList = async (
   currency: Currencies,
@@ -42,15 +58,31 @@ export const fetchSingleCoin = async (id: string) => {
   }
 };
 
-export const fetchTrendCoins = async () => {
-  try {
-    const { data } = await axios.get<Trends>(`/api/trend-list`);
+export async function fetchProject(id: string): Promise<{
+  forks_count: number;
+  stargazers_count: number;
+  watchers_count: number;
+}> {
+  console.info("Fetching project:", id);
 
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
+  const response = await fetch(`https://api.github.com/repos/${id}`);
+  await new Promise((r) => setTimeout(r, 1000));
+  return await response.json();
+}
+
+export const fetchTrendCoins = async (): Promise<Trends> => {
+  const { data } = await axios.get<Trends>(`${baseUrl}/api/trend-list`);
+  return data;
 };
+// export const fetchTrendCoins = async () => {
+//   try {
+//     const { data } = await axios.get<Trends>(`/api/trend-list`);
+
+//     return data;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
 
 export const fetchHistorical = async (
   id: string,
