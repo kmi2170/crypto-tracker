@@ -1,5 +1,3 @@
-import { Suspense } from "react";
-
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 
@@ -39,9 +37,7 @@ const TrendCoins = () => {
         Trend
       </Typography>
 
-      <Suspense>
-        <Carousel />
-      </Suspense>
+      <Carousel />
     </Paper>
   );
 };
