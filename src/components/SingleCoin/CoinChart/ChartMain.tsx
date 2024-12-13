@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { Chart } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -24,10 +24,10 @@ import { Currencies } from "../../../api/types";
 
 ChartJS.register(
   CategoryScale,
-  LineController,
   LinearScale,
   PointElement,
   LineElement,
+  LineController,
   Title,
   Tooltip,
   Legend,
@@ -45,7 +45,7 @@ type ChartMainProps = {
 const ChartMain = (props: ChartMainProps) => {
   const { currency, itemName, labels, values } = props;
 
-  const options: ChartOptions = {
+  const options: ChartOptions<"line"> = {
     responsive: true,
     maintainAspectRatio: true,
     interaction: {
@@ -153,8 +153,7 @@ const ChartMain = (props: ChartMainProps) => {
         justifyContent: "center",
       }}
     >
-      <Chart
-        type="line"
+      <Line
         data={chartData}
         options={options}
         plugins={[verticalLineOnHover]}
