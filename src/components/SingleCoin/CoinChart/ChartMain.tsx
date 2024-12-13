@@ -12,6 +12,7 @@ import {
   ChartOptions,
   ChartData,
   Filler,
+  LineController,
 } from "chart.js";
 import zoomPlugin from "chartjs-plugin-zoom";
 
@@ -23,6 +24,7 @@ import { Currencies } from "../../../api/types";
 
 ChartJS.register(
   CategoryScale,
+  LineController,
   LinearScale,
   PointElement,
   LineElement,
