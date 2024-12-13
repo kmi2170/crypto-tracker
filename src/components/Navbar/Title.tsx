@@ -2,10 +2,10 @@
 
 import { memo } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
+import { useCurrency } from "../../context/hook";
 
 const TitleWrapper = styled(Typography)<TypographyProps>(({ theme }) => ({
   "& a": {
@@ -15,10 +15,8 @@ const TitleWrapper = styled(Typography)<TypographyProps>(({ theme }) => ({
   },
 }));
 
-const Title = memo(function Title(props) {
-  console.log("title", props);
-  const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams);
+const Title = memo(function Title() {
+  const { currency } = useCurrency();
 
   return (
     <TitleWrapper
@@ -30,7 +28,7 @@ const Title = memo(function Title(props) {
         },
       })}
     >
-      <Link href={`/?${params.toString()}`}>Crypto Tracker</Link>
+      <Link href={`/?${currency}`}>Crypto Tracker</Link>
     </TitleWrapper>
   );
 });

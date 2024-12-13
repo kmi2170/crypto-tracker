@@ -3,42 +3,32 @@
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-import { usePathname, useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import useLocalStorage from "../../hooks/useLocalStorage";
+import { useCurrency } from "../../context/hook";
+import { Currencies } from "../../api/types";
 
 const key = process.env.NEXT_PUBLIC_LOCAL_STORAGE_CURRENCY_KEY as string;
 
 const SelectCurrency = () => {
-  const router = useRouter();
-  const pathName = usePathname();
-  const searchParams = useSearchParams();
+  const { currency, setCurrency } = useCurrency();
 
   const { getItemFromLocalStorage, setItemToLocalStorage } = useLocalStorage(
     key,
-    ""
+    "" as Currencies
   );
 
   useEffect(() => {
     const storedValue = getItemFromLocalStorage();
     if (storedValue) {
-      const params = new URLSearchParams(searchParams);
-      params.set("currency", storedValue);
-      const newUrl = `${pathName}?${params.toString()}`;
-      router.push(newUrl);
+      setCurrency(storedValue || "usd");
     }
   }, []);
 
-  const currency = searchParams.get("currency") || "usd";
-
   const handleChange = (e: SelectChangeEvent) => {
-    const params = new URLSearchParams(searchParams);
-    const newCurrency = e.target.value;
-    params.set("currency", newCurrency);
-    const newUrl = `${pathName}?${params.toString()}`;
+    const newCurrency = e.target.value as Currencies;
+    setCurrency(newCurrency);
     setItemToLocalStorage(newCurrency);
-    router.push(newUrl);
   };
 
   return (
