@@ -3,13 +3,13 @@ import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 
 import CssBaseline from "@mui/material/CssBaseline";
-import TanstackQueryClientProvider from "./QueryClientProvider";
+import TanstackQueryClientProvider from "./query-client-provider";
 
 import theme from "../styles/theme/theme";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import "../styles/global.css";
-import CurrencyProvider from "./CurrencyProvider";
+import CurrencyProvider from "./currency-provider";
 
 export const metadata: Metadata = {
   title: "Crypto Tracker",
@@ -28,10 +28,12 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Navbar />
-            <TanstackQueryClientProvider>
-              <CurrencyProvider>{children}</CurrencyProvider>
-            </TanstackQueryClientProvider>
+            <CurrencyProvider>
+              <Navbar />
+              <TanstackQueryClientProvider>
+                {children}
+              </TanstackQueryClientProvider>
+            </CurrencyProvider>
             <Footer />
           </ThemeProvider>
         </AppRouterCacheProvider>
