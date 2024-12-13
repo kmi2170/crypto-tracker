@@ -9,6 +9,7 @@ import theme from "../styles/theme/theme";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import "../styles/global.css";
+import CurrencyProvider from "./CurrencyProvider";
 
 export const metadata: Metadata = {
   title: "Crypto Tracker",
@@ -27,10 +28,9 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-
             <Navbar />
             <TanstackQueryClientProvider>
-              {children}
+              <CurrencyProvider>{children}</CurrencyProvider>
             </TanstackQueryClientProvider>
             <Footer />
           </ThemeProvider>
