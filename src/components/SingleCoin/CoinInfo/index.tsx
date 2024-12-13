@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useParams, useSearchParams } from "next/navigation";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -14,8 +14,8 @@ import {
 } from "../../../lib/fetchFunctions";
 import { getCurrencySymbol } from "../../../lib/getCurrencySymbol";
 import { formatNumber } from "../../../lib/formatNumber";
-import { Currencies } from "../../../api/types";
-import AddToAndRemoveFromWatchList from "./AddToAndRemoveFromWatcList";
+import AddToAndRemoveFromWatchListButton from "./AddToAndRemoveFromWatchListButton";
+import { useCurrency } from "../../../context/hook";
 
 const CoinNameWrapper = styled("div")({
   display: "flex",
@@ -34,14 +34,15 @@ const PricesWrapper = styled("div")({
 const CoinInfo = () => {
   const params = useParams();
   const id = params.id as string;
-  const searchParams = useSearchParams();
-  const currency = (searchParams.get("currency") || "usd") as Currencies;
+  const { currency } = useCurrency();
 
-  const { data: coin, isLoading } = useSuspenseQuery({
+  const { data: coin, isLoading } = useQuery({
     queryKey: ["single-coin", { id }],
     queryFn: () => fetchSingleCoin(id),
     ...configForUseQuery,
   });
+
+  if (isLoading || !coin) return;
 
   return (
     <Box
@@ -81,7 +82,7 @@ const CoinInfo = () => {
         </Typography>
       </PricesWrapper>
 
-      <AddToAndRemoveFromWatchList
+      <AddToAndRemoveFromWatchListButton
         id={coin?.id}
         name={coin?.name}
         imgUrl={coin?.image?.thumb}

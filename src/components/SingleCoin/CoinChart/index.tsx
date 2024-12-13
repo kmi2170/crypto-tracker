@@ -1,29 +1,28 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { DataItemValue, DaysValue } from "../../../config/chart/chartButtons";
 import {
   configForUseQuery,
   fetchHistorical,
 } from "../../../lib/fetchFunctions";
-import { Currencies } from "../../../api/types";
 import { getDate, getTime } from "../../../lib/dateTime";
 import ChartMain from "./ChartMain";
 import SelectButtons from "./SelectButtons";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useCurrency } from "../../../context/hook";
 
 const CoinChart = () => {
   const params = useParams();
   const id = params.id as string;
-  const searchParams = useSearchParams();
-  const currency = (searchParams.get("currency") || "usd") as Currencies;
+  const { currency } = useCurrency();
 
   const [days, setDays] = useState<DaysValue>(1);
   const [itemName, setItemName] = useState<DataItemValue>("prices");
 
-  const { data: historical, isLoading } = useSuspenseQuery({
+  const { data: historical, isLoading } = useQuery({
     queryKey: ["history", { id, currency, days }],
     queryFn: () => fetchHistorical(id, currency, days),
     ...configForUseQuery,

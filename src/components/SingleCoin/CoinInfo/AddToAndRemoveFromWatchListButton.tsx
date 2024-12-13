@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { WatchList } from "../../../api/types";
 
-type AddToAndRemoveFromWatchListProps = {
+type AddToAndRemoveFromWatchListButtonProps = {
   id: string;
   name: string;
   imgUrl: string;
@@ -14,8 +14,8 @@ type AddToAndRemoveFromWatchListProps = {
 
 const key = process.env.NEXT_PUBLIC_LOCAL_STORAGE_WATCH_LIST_KEY as string;
 
-const AddToAndRemoveFromWatchList = (
-  props: AddToAndRemoveFromWatchListProps
+const AddToAndRemoveFromWatchListButton = (
+  props: AddToAndRemoveFromWatchListButtonProps
 ) => {
   const { id, name, imgUrl, market_cap_rank } = props;
   const [watchList, setWatchList] = useState<WatchList[]>([]);
@@ -85,4 +85,4 @@ const AddToAndRemoveFromWatchList = (
   );
 };
 
-export default AddToAndRemoveFromWatchList;
+export default AddToAndRemoveFromWatchListButton;
