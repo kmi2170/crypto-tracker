@@ -1,35 +1,19 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { styled } from "@mui/material/styles";
-import { Box } from "@mui/material";
 
 import { configForUseQuery, fetchTrendCoins } from "../../lib/fetchFunctions";
-import { Currencies, TrendCoin } from "../../api/types";
+import { TrendCoin } from "../../api/types";
 import CarouselItem from "./CarouselItem";
 
-import "react-alice-carousel/lib/alice-carousel.css";
-import LoadingIndicator from "../LoadingIndicator";
+import AliceCarousel from "react-alice-carousel";
+import { useCurrency } from "../../context/hook";
+import CarouselItemSkeletons from "./CarouselItemSkeletons";
 
-const AliceCarousel = dynamic(() => import("react-alice-carousel"), {
-  ssr: false,
-  loading: () => (
-    <Box
-      sx={{
-        height: "7rem",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <LoadingIndicator />
-    </Box>
-  ),
-});
+import "react-alice-carousel/lib/alice-carousel.css";
 
 export const CarouselWrapper = styled("div")({
   marginLeft: "0.5rem",
@@ -53,21 +37,17 @@ const responsive = {
 };
 
 const Carousel = () => {
-  const searchParams = useSearchParams();
-  const currentSearchParams = new URLSearchParams(searchParams).toString();
-  const currency = (searchParams.get("currency") || "usd") as Currencies;
+  const { currency } = useCurrency();
 
-  const { data: trending, isLoading } = useSuspenseQuery({
+  const { data: trending, isLoading } = useQuery({
     queryKey: ["trending"],
     queryFn: () => fetchTrendCoins(),
     ...configForUseQuery,
   });
 
-  if (!trending) return;
-
   const items = trending?.coins?.map(({ item }: { item: TrendCoin }) => {
     return (
-      <Link key={item.id} href={`/coins/${item.id}?${currentSearchParams}`}>
+      <Link key={item.id} href={`/coins/${item.id}`}>
         <CarouselItem coin={item} currency={currency} />
       </Link>
     );
@@ -75,17 +55,21 @@ const Carousel = () => {
 
   return (
     <CarouselWrapper>
-      <AliceCarousel
-        mouseTracking
-        infinite
-        autoPlayInterval={10000}
-        animationDuration={1500}
-        // disableDotsControls
-        disableButtonsControls
-        responsive={responsive}
-        autoPlay
-        items={items}
-      />
+      {isLoading ? (
+        <CarouselItemSkeletons />
+      ) : (
+        <AliceCarousel
+          mouseTracking
+          infinite
+          autoPlayInterval={10000}
+          animationDuration={1500}
+          // disableDotsControls
+          disableButtonsControls
+          responsive={responsive}
+          autoPlay
+          items={items}
+        />
+      )}
     </CarouselWrapper>
   );
 };
