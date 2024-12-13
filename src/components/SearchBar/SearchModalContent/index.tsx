@@ -110,11 +110,9 @@ const SearchModalContent = forwardRef(function SearchModalContent(
   }, [selectedCandidateId, candidates]);
 
   const onTypeWithDebounce = (e: ChangeEvent) => {
-    const query = inputRef.current?.value;
+    const query = inputRef.current?.value as string;
 
-    if (!query) return;
-
-    if (query.length <= 1) {
+    if (query?.length <= 1) {
       if (candidates.length > 0) setCandidates([]);
       if (!isShortCharacter) setIsShortCharacter(true);
       return;

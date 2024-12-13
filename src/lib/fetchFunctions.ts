@@ -56,18 +56,6 @@ export const fetchSingleCoin = async (id: string): Promise<SingleCoin> => {
   return data;
 };
 
-export async function fetchProject(id: string): Promise<{
-  forks_count: number;
-  stargazers_count: number;
-  watchers_count: number;
-}> {
-  console.info("Fetching project:", id);
-
-  const response = await fetch(`https://api.github.com/repos/${id}`);
-  await new Promise((r) => setTimeout(r, 1000));
-  return await response.json();
-}
-
 export const fetchTrendCoins = async (): Promise<Trends> => {
   const { data } = await axios.get<Trends>(`${baseUrl}/api/trend-list`);
   return data;
@@ -95,7 +83,9 @@ export const fetchHistorical = async (
 };
 
 export const fetchCandidateCoins = async (query: string): Promise<Search> => {
-  const { data } = await axios.get<Search>(`/api/search?query=${query}`);
+  const { data } = await axios.get<Search>(
+    `${baseUrl}/api/search?query=${query}`
+  );
   return data;
 };
 

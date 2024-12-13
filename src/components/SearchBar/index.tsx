@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -33,7 +33,9 @@ const SearchBar = () => {
         aria-describedby="modal-modal-description"
         onClose={handleClose}
       >
-        <SearchModalContent closeModal={handleClose} />
+        <Suspense>
+          <SearchModalContent closeModal={handleClose} />
+        </Suspense>
       </Modal>
 
       <div
