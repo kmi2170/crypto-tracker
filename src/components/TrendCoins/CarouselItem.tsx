@@ -6,6 +6,7 @@ import { styled } from "@mui/material/styles";
 import { Currencies, TrendCoin } from "../../api/types";
 import { formatNumber } from "../../lib/formatNumber";
 import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
+import { getPriceChangeColor } from "../../lib/getPriceChangeColor";
 
 type CarouselItemProps = {
   coin: TrendCoin;
@@ -37,7 +38,7 @@ const CarouselItem = ({ coin, currency }: CarouselItemProps) => {
       <Typography
         variant="subtitle1"
         align="center"
-        sx={{ color: "dodgerblue", fontWeight: "bold" }}
+        sx={{ color: "blue", fontWeight: "bold" }}
       >
         {symbol}
       </Typography>
@@ -54,7 +55,7 @@ const CarouselItem = ({ coin, currency }: CarouselItemProps) => {
         variant="subtitle2"
         align="center"
         sx={{
-          color: isPriceUp ? "rgb(14, 203, 129)" : "red",
+          color: getPriceChangeColor(isPriceUp),
           fontWeight: "bold",
         }}
       >

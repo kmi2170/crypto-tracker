@@ -25,6 +25,7 @@ import { formatNumber } from "../../lib/formatNumber";
 import BodyRowSkeletons from "./TableRowSkelton";
 import LastSevenDays from "./LastSevenDays";
 import { useCurrency } from "../../context/hook";
+import { getPriceChangeColor } from "../../lib/getPriceChangeColor";
 
 export const numberWithComma = (x: number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -251,7 +252,7 @@ const bodyRowCoinName = (row: Coin) => {
 };
 
 const bodyRow = (row: Coin, currency: Currencies) => {
-  const isProfit = row.price_change_percentage_24h > 0;
+  const isPriceUp = row.price_change_percentage_24h > 0;
 
   return [
     <>
@@ -275,11 +276,8 @@ const bodyRow = (row: Coin, currency: Currencies) => {
         {formatNumber(row.low_24h, 3)}
       </Low>
     </Box>,
-    <Change24h
-      key="change24h"
-      sx={{ color: isProfit ? "rgb(14, 203, 129)" : "red" }}
-    >
-      {isProfit && "+"}
+    <Change24h key="change24h" sx={{ color: getPriceChangeColor(isPriceUp) }}>
+      {isPriceUp && "+"}
       {row.price_change_percentage_24h.toFixed(2)}%
     </Change24h>,
     <>
