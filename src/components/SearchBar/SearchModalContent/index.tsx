@@ -62,9 +62,6 @@ const SearchModalContent = forwardRef(function SearchModalContent(
   const { closeModal } = props;
 
   const theme = useTheme();
-
-  const searchParams = useSearchParams();
-  const currentSearchPrams = new URLSearchParams(searchParams).toString();
   const router = useRouter();
 
   const [selectedCandidateId, setSelectedCandidateId] = useState(0);
@@ -162,7 +159,7 @@ const SearchModalContent = forwardRef(function SearchModalContent(
   const handleClickCandidate = useCallback(
     (selectedId: number) => {
       const id = candidates[selectedId].id;
-      router.push(`/coins/${id}?${currentSearchPrams}`);
+      router.push(`/coins/${id}`);
       setSelectedCandidateId(0);
       setCandidates([]);
       closeModal();
