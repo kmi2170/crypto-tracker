@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import Box from "@mui/material/Box";
@@ -16,7 +16,7 @@ import TableBody from "@mui/material/TableBody";
 import Pagination from "@mui/material/Pagination";
 import { styled } from "@mui/material/styles";
 
-import { useSuspenseQuery, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { Coin, Currencies } from "../../api/types";
 import { configForUseQuery, fetchCoinList } from "../../lib/fetchFunctions";
@@ -24,6 +24,7 @@ import { getCurrencySymbol } from "../../lib/getCurrencySymbol";
 import { formatNumber } from "../../lib/formatNumber";
 import BodyRowSkeletons from "./TableRowSkelton";
 import LastSevenDays from "./LastSevenDays";
+import { useCurrency } from "../../context/hook";
 
 export const numberWithComma = (x: number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -47,10 +48,8 @@ const per_page = Number(process.env.NEXT_PUBLIC_PAGINATION_NUM_PER_PAGE) || 50;
 
 const CoinsTable = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const currentSearchPrams = new URLSearchParams(searchParams).toString();
 
-  const currency = (searchParams.get("currency") || "usd") as Currencies;
+  const { currency } = useCurrency();
 
   const [page, setPage] = useState<number>(1);
 
@@ -138,7 +137,7 @@ const CoinsTable = () => {
                   <TableRow
                     key={row.name}
                     onClick={() => {
-                      router.push(`/coins/${row.id}?${currentSearchPrams}`);
+                      router.push(`/coins/${row.id}`);
                     }}
                     sx={{
                       // transition: "background-color 0.05s ease",
