@@ -37,7 +37,7 @@ const SelectCurrency = () => {
       sx={{ width: 100, height: 40, backgroundColor: "white" }}
       value={currency}
       onChange={handleChange}
-      aria-label="select currency"
+      label="Currency"
     >
       <MenuItem value="usd">USD</MenuItem>
       <MenuItem value="eur">EUR</MenuItem>
