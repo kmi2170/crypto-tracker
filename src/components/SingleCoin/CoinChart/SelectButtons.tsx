@@ -11,6 +11,7 @@ import {
 const ButtonsWrapper = styled("div")(({ theme }) => ({
   display: "flex",
   [theme.breakpoints.down("sm")]: {
+    marginTop: "1rem",
     flexDirection: "column",
   },
   [theme.breakpoints.up("sm")]: {

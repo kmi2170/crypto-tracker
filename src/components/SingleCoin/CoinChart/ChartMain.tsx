@@ -147,7 +147,8 @@ const ChartMain = (props: ChartMainProps) => {
   return (
     <Box
       sx={{
-        width: "100%",
+        // width: "100%",
+        width: "90%",
         height: "450px",
         display: "flex",
         justifyContent: "center",
