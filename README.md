@@ -1,29 +1,26 @@
 # Crypto Tracker
 
 An app to track cryptocurrency prices, powerd by
-([CoinGecko API](https://www.coingecko.com/en/api),
+[CoinGecko API](https://www.coingecko.com/en/api) (Api key is required)
 
 ## Features
-- Prices of cryputocurrencies ranked by market cap are listed in a table with pagination function.
-- Histrical Charts of the price of each currency (24 hours, 30 days, 3 months, 1 year)
-- Prices are in USD, Euro and JPY (Japanese Yen)
+- Top 15 trend coins
+- Table of coins ranked by market cap with pagination feature.
+- By clicking each coin in the trend or the table, go to each coin information page with historical chart
+- Histrical charts
+ - Price, market-cap,total volume
+ - Period (24 hours, 30 days, 3 months, 1 year)
+ - Chart can be horizontally zoom with mouse wheel.
+- Currencies in USD, EURO and JPY (Japanese Yen)
 
-## Technicals
-### This Project
-It is built with [Next.js](https://nextjs.org/), TypeScript and [Material-UI](https://mui.com/).
+## Techs
+Built with Next.js, TypeScriptj, Tanstack Query and Material UI
 
 ### API End Points
-- [Docs](https://www.coingecko.com/en/api/documentation?)
-
- (Thre is a free plan for personal use.)
+- [Coin Gekko API](https://docs.coingecko.com/v3.0.1/reference/introduction)) (Public API (Demo plan) is free)
 
 ## Getting Started
-First, run the development server:
+- Local enviroment
+  - yarn dev, or yarn start (after yarn build) 
 
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 (or appropriate address) with your browser to see the result.
